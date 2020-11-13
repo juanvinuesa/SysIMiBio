@@ -21,7 +21,7 @@ def home(request):
     1. Change wisg.py using Cling
     1. create Procv
 1. Heroku:
-    1. login and create app
+    1. login and create app :warning: do this in the base dir :warning:  
     1. `cat .env` all this will be set on heroku  
     1. deploy
 ```
