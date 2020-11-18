@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'sysimibio.core',
+    'sysimibio.imibio_occurrences',
 ]
 
 MIDDLEWARE = [

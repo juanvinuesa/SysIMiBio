@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import sysimibio.core.views
+from sysimibio.imibio_occurrences.views import registration
 
 urlpatterns = [
     path('', sysimibio.core.views.home),
     path('admin/', admin.site.urls),
+    path('registro_ocurrencias/', registration),
 ]

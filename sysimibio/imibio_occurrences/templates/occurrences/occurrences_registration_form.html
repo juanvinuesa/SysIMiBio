@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class = "jumbotron">
+    <div class = "container">
+        <h2>Agregar Occurencia</h2>
+        <div class="accordion" id="accordionExample">
+          <form method="POST" action="." class="post-form">
+              {% csrf_token %}
+          <div class="card ">
+            <div class="card-header" id="headingOne">
+              <h3 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Datos de registro
+                </button>
+              </h3>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                  <h5>Obligatórios</h5>
+                  <p><s>dcterms:modified</s></p>
+                  <p>
+                      <label for="{{ form.basisOfRecord.id_for_label }}"> {{ form.basisOfRecord.label }} </label>
+                      {{ form.basisOfRecord.errors }}
+                      {{ form.basisOfRecord }}
+                  </p>
+                  <p>
+                      <label for="{{ form.institutionCode.id_for_label }}"> {{ form.institutionCode.label }} </label>
+                      {{ form.institutionCode.errors }}
+                      {{ form.institutionCode }}
+                  </p>
+                  <p>
+                      <label for="{{ form.collectionCode.id_for_label }}"> {{ form.collectionCode.label }} </label>
+                      {{ form.collectionCode.errors }}
+                      {{ form.collectionCode }}
+                  </p>
+                  <p>
+                      <label for="{{ form.catalogNumber.id_for_label }}"> {{ form.catalogNumber.label }} </label>
+                      {{ form.catalogNumber.errors }}
+                      {{ form.catalogNumber }}
+                  </p>
+                  <p>
+                      <label for="{{ form.recordedBy.id_for_label }}"> {{ form.recordedBy.label }} </label>
+                      {{ form.recordedBy.errors }}
+                      {{ form.recordedBy }}
+                  </p>
+                  <p>
+                      <label for="{{ form.recordNumber.id_for_label }}"> {{ form.recordedBy.label }} </label>
+                      {{ form.recordNumber.errors }}
+                      {{ form.recordNumber }}
+                  </p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+              <div class="card-header" id="headingThree">
+                <h3 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      Datos de la especie
+                    </button>
+                </h3>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                  <div class="card-body">
+                  <h5>Obligatórios</h5>
+                  <p>
+                      <label for="{{ form.scientificName.id_for_label }}"> {{ form.scientificName.label }} </label>
+                      {{ form.scientificName.errors }}
+                      {{ form.scientificName }}
+                  </p>
+                  <p>
+                      <label for="{{ form.kingdom.id_for_label }}"> {{ form.kingdom.label }} </label>
+                      {{ form.kingdom.errors }}
+                      {{ form.kingdom }}
+                  </p>
+                  <p>
+                      <label for="{{ form.phylum.id_for_label }}"> {{ form.phylum.label }} </label>
+                      {{ form.phylum.errors }}
+                      {{ form.phylum }}
+                  </p>
+                  <p>
+                      <label for="{{ form.clase.id_for_label }}"> {{ form.clase.label }} </label>
+                      {{ form.clase.errors }}
+                      {{ form.clase }}
+                  </p>
+                  <p>
+                      <label for="{{ form.order.id_for_label }}"> {{ form.order.label }} </label>
+                      {{ form.order.errors }}
+                      {{ form.order }}
+                  </p>
+                  <p>
+                      <label for="{{ form.family.id_for_label }}"> {{ form.family.label }} </label>
+                      {{ form.family.errors }}
+                      {{ form.family }}
+                  </p>
+                  <p>
+                      <label for="{{ form.genus.id_for_label }}"> {{ form.genus.label }} </label>
+                      {{ form.genus.errors }}
+                      {{ form.genus }}
+                  </p>
+                  <br>
+                  <h5>Opcinonales</h5>
+                  <p>
+                      <label for="{{ form.specificEpithet.id_for_label }}"> {{ form.specificEpithet.label }} </label>
+                      {{ form.specificEpithet.errors }}
+                      {{ form.specificEpithet }}
+                  </p>
+                  <p>
+                      <label for="{{ form.taxonRank.id_for_label }}"> {{ form.taxonRank.label }} </label>
+                      {{ form.taxonRank.errors }}
+                      {{ form.taxonRank }}
+                  </p>
+                  <p>
+                      <label for="{{ form.infraspecificEpithet.id_for_label }}"> {{ form.infraspecificEpithet.label }} </label>
+                      {{ form.infraspecificEpithet.errors }}
+                      {{ form.infraspecificEpithet }} </p>
+                  <p><s>scientificNameAutorship</s></p>
+                  <p>
+                      <label for="{{ form.identificationQualifier.id_for_label }}"> {{ form.identificationQualifier.label }} </label>
+                      {{ form.identificationQualifier.errors }}
+                      {{ form.identificationQualifier }} </p>
+                  </div>
+              </div>
+           </div>
+          <div class="card">
+              <div class="card-header" id="headingFour">
+                <h3 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                      Información espacial
+                    </button>
+                </h3>
+              </div>
+              <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                  <div class="card-body">
+                  <h5>Obligatórios</h5>
+                  <p>
+                      <label for="{{ form.county.id_for_label }}"> {{ form.county.label }} </label>
+                      {{ form.county.errors }}
+                      {{ form.county }}
+                  </p>
+                  <p>
+                      <label for="{{ form.stateProvince.id_for_label }}"> {{ form.stateProvince.label }} </label>
+                      {{ form.stateProvince.errors }}
+                      {{ form.stateProvince }}
+                  </p>
+                  <p>
+                      <label for="{{ form.locality.id_for_label }}"> {{ form.locality.label }} </label>
+                      {{ form.locality.errors }}
+                      {{ form.locality }}
+                  </p>
+                  <br>
+                  <h5>Opcionales</h5>
+                  <p>
+                      <label for="{{ form.decimalLatitude.id_for_label }}"> {{ form.decimalLatitude.label }} </label>
+                      {{ form.decimalLatitude.errors }}
+                      {{ form.decimalLatitude }}
+                  </p>
+                  <p>
+                      <label for="{{ form.decimalLongitude.id_for_label }}"> {{ form.decimalLongitude.label }} </label>
+                      {{ form.decimalLongitude.errors }}
+                      {{ form.decimalLongitude }}
+                  </p>
+                  <p><s>Datum</s></p>
+                  <p><s>Incertidumbre de las coordenada</s></p>
+                  <p><s>Protocolo de georeferenciación</s></p>
+                  <p><s>Fuente de georeferenciación</s></p>
+                  <p><s>waterBody</s></p>
+
+                </div>
+              </div>
+           </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}
