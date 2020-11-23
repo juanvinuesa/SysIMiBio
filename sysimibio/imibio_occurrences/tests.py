@@ -54,3 +54,81 @@ class RegistrationsTest(TestCase):
         'recordNumber',
         'decimalLatitude',
         'decimalLongitude'], list(form.fields))
+
+class RegistrationPost(TestCase):
+    def setUp(self):
+        data = dict(
+            basisOfRecord='Observation',
+            institutionCode=1,
+            collectionCode=1,
+            catalogNumber=2,
+            scientificName='Pathera Onca',
+            kingdom='reino',
+            phylum='filo',
+            clase='clase',
+            order='orden',
+            family='familia',
+            genus='genero',
+            specificEpithet='epiteto especifico',
+            taxonRank='ranking de la taxonomia',
+            infraspecificEpithet='infra espiteto',
+            identificationQualifier='calificacion de identificacion',
+            county='Argentina',
+            stateProvince='Misiones',
+            locality='Posadas',
+            recordedBy='Felipe',
+            recordNumber=1,
+            decimalLatitude=-56,
+            decimalLongitude=-60)
+        self.resp = self.client.post('/registro_ocurrencias/', data)
+
+    def test_post(self):
+        """Valid POST should redirect to /registro_ocurrencias/"""
+        self.assertEqual(302, self.resp.status_code)
+
+class RegistrationInvalidPost(TestCase):
+    def setUp(self):
+        self.resp = self.client.post('/registro_ocurrencias/', {})
+
+    def test_post(self):
+        """Invalid POST should not redirect to /registro_ocurrencias/"""
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.resp, 'occurrences/occurrences_registration_form.html')
+
+    def test_has_form(self):
+        form = self.resp.context['form']
+        self.assertIsInstance(form, OccurrencesRegistrationForm)
+
+    def test_has_errors(self):
+        form = self.resp.context['form']
+        self.assertTrue(form.errors)
+
+class RegistrationSuccessMessage(TestCase):
+    def test_message(self):
+        data = dict(
+            basisOfRecord='Observation',
+            institutionCode=1,
+            collectionCode=1,
+            catalogNumber=2,
+            scientificName='Pathera Onca',
+            kingdom='reino',
+            phylum='filo',
+            clase='clase',
+            order='orden',
+            family='familia',
+            genus='genero',
+            specificEpithet='epiteto especifico',
+            taxonRank='ranking de la taxonomia',
+            infraspecificEpithet='infra espiteto',
+            identificationQualifier='calificacion de identificacion',
+            county='Argentina',
+            stateProvince='Misiones',
+            locality='Posadas',
+            recordedBy='Felipe',
+            recordNumber=1,
+            decimalLatitude=-56,
+            decimalLongitude=-60)
+        response = self.client.post('/registro_ocurrencias/', data, follow=True)
+        self.assertContains(response, 'Registro realizado con exito')

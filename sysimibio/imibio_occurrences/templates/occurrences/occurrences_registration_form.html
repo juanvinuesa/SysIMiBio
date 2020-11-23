@@ -4,6 +4,13 @@
 <div class = "jumbotron">
     <div class = "container">
         <h2>Agregar Occurencia</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="accordion" id="accordionExample">
           <form method="POST" action="." class="post-form">
               {% csrf_token %}
