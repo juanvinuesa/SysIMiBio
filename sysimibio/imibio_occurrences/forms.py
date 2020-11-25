@@ -22,5 +22,5 @@ class OccurrencesRegistrationForm(forms.Form):
     locality = forms.CharField(required=True, label='Localidad')
     recordedBy = forms.CharField(required=False, label='Colectado por')
     recordNumber = forms.CharField(required=False, label='Número de colecta')
-    decimalLatitude = forms.CharField(required=False, label='Latitud')
-    decimalLongitude = forms.CharField(required=False, label='Longitud')
+    decimalLatitude = forms.FloatField(required=False, label='Latitud')
+    decimalLongitude = forms.FloatField(required=False, label='Longitud')

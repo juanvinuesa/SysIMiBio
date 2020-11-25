@@ -1,7 +1,7 @@
 from django.test import TestCase
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
 
-class RegistrationsTest(TestCase):
+class RegistrationGet(TestCase):
     def setUp(self):
         self.resp = self.client.get("/registro_ocurrencias/")
 
@@ -15,9 +15,14 @@ class RegistrationsTest(TestCase):
 
     def test_html(self):
         """HTML must contais input tags"""
-        self.assertContains(self.resp, '<form')
-        self.assertContains(self.resp, '<input')
-        self.assertContains(self.resp, 'type="submit"')
+        tags = (
+            ('<form'),
+            ('<input'),
+            ('type="text"'),
+            ('type="submit"'))
+        for text in tags:
+            with self.subTest():
+                self.assertContains(self.resp, text)
 
     def test_csrf(self):
         """html must contains CSRF"""
@@ -28,34 +33,7 @@ class RegistrationsTest(TestCase):
         form = self.resp.context['form']
         self.assertIsInstance(form, OccurrencesRegistrationForm)
 
-    def test_form_has_fields(self):
-        """Form must have 19 fields"""
-        form = self.resp.context['form']
-        self.assertSequenceEqual([
-        'basisOfRecord',
-        'institutionCode',
-        'collectionCode',
-        'catalogNumber',
-        'scientificName',
-        'kingdom',
-        'phylum',
-        'clase',
-        'order',
-        'family',
-        'genus',
-        'specificEpithet',
-        'taxonRank',
-        'infraspecificEpithet',
-        'identificationQualifier',
-        'county',
-        'stateProvince',
-        'locality',
-        'recordedBy',
-        'recordNumber',
-        'decimalLatitude',
-        'decimalLongitude'], list(form.fields))
-
-class RegistrationPost(TestCase):
+class RegistrationPostValid(TestCase):
     def setUp(self):
         data = dict(
             basisOfRecord='Observation',
@@ -86,7 +64,7 @@ class RegistrationPost(TestCase):
         """Valid POST should redirect to /registro_ocurrencias/"""
         self.assertEqual(302, self.resp.status_code)
 
-class RegistrationInvalidPost(TestCase):
+class RegistrationPostInvalid(TestCase):
     def setUp(self):
         self.resp = self.client.post('/registro_ocurrencias/', {})
 
