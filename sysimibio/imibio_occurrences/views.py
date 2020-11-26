@@ -14,6 +14,7 @@ def create(request):
     form = OccurrencesRegistrationForm(request.POST)
 
     if not form.is_valid():
+        messages.error(request, 'Formulário con error: revise todos los campos')
         return render(request, 'occurrences/occurrences_registration_form.html',
                       {'form': form})
 

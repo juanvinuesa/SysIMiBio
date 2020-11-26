@@ -6,13 +6,20 @@
         <h2>Agregar Occurencia</h2>
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-success" role="alert">
-                    <p>{{ message }}</p>
-                </div>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
         <div class="accordion" id="accordionExample">
-          <form method="POST" action="." class="post-form">
+          <!--<form action="." novalidate method="post">-->
+            <form method="POST" action="." novalidate class="post-form">
               {% csrf_token %}
           <div class="card ">
             <div class="card-header" id="headingOne">
@@ -29,32 +36,56 @@
                   <p><s>dcterms:modified</s></p>
                   <p>
                       <label for="{{ form.basisOfRecord.id_for_label }}"> {{ form.basisOfRecord.label }} </label>
-                      {{ form.basisOfRecord.errors }}
+                      {% for error in form.basisOfRecord.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.basisOfRecord }}
                   </p>
                   <p>
                       <label for="{{ form.institutionCode.id_for_label }}"> {{ form.institutionCode.label }} </label>
-                      {{ form.institutionCode.errors }}
+                      {% for error in form.institutionCode.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.institutionCode }}
                   </p>
                   <p>
                       <label for="{{ form.collectionCode.id_for_label }}"> {{ form.collectionCode.label }} </label>
-                      {{ form.collectionCode.errors }}
+                      {% for error in form.collectionCode.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.collectionCode }}
                   </p>
                   <p>
                       <label for="{{ form.catalogNumber.id_for_label }}"> {{ form.catalogNumber.label }} </label>
-                      {{ form.catalogNumber.errors }}
+                      {% for error in form.catalogNumber.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.catalogNumber }}
                   </p>
                   <p>
                       <label for="{{ form.recordedBy.id_for_label }}"> {{ form.recordedBy.label }} </label>
-                      {{ form.recordedBy.errors }}
+                      {% for error in form.recordedBy.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.recordedBy }}
                   </p>
                   <p>
                       <label for="{{ form.recordNumber.id_for_label }}"> {{ form.recordedBy.label }} </label>
-                      {{ form.recordNumber.errors }}
+                      {% for error in form.recordNumber.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.recordNumber }}
                   </p>
               </div>
@@ -73,59 +104,103 @@
                   <h5>Obligatórios</h5>
                   <p>
                       <label for="{{ form.scientificName.id_for_label }}"> {{ form.scientificName.label }} </label>
-                      {{ form.scientificName.errors }}
+                      {% for error in form.scientificName.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.scientificName }}
                   </p>
                   <p>
                       <label for="{{ form.kingdom.id_for_label }}"> {{ form.kingdom.label }} </label>
-                      {{ form.kingdom.errors }}
+                      {% for error in form.kingdom.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.kingdom }}
                   </p>
                   <p>
                       <label for="{{ form.phylum.id_for_label }}"> {{ form.phylum.label }} </label>
-                      {{ form.phylum.errors }}
+                      {% for error in form.phylum.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.phylum }}
                   </p>
                   <p>
                       <label for="{{ form.clase.id_for_label }}"> {{ form.clase.label }} </label>
-                      {{ form.clase.errors }}
+                      {% for error in form.clase.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.clase }}
                   </p>
                   <p>
                       <label for="{{ form.order.id_for_label }}"> {{ form.order.label }} </label>
-                      {{ form.order.errors }}
+                      {% for error in form.order.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.order }}
                   </p>
                   <p>
                       <label for="{{ form.family.id_for_label }}"> {{ form.family.label }} </label>
-                      {{ form.family.errors }}
+                      {% for error in form.family.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.family }}
                   </p>
                   <p>
                       <label for="{{ form.genus.id_for_label }}"> {{ form.genus.label }} </label>
-                      {{ form.genus.errors }}
+                      {% for error in form.genus.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.genus }}
                   </p>
                   <br>
                   <h5>Opcinonales</h5>
                   <p>
                       <label for="{{ form.specificEpithet.id_for_label }}"> {{ form.specificEpithet.label }} </label>
-                      {{ form.specificEpithet.errors }}
+                      {% for error in form.specificEpithet.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.specificEpithet }}
                   </p>
                   <p>
                       <label for="{{ form.taxonRank.id_for_label }}"> {{ form.taxonRank.label }} </label>
-                      {{ form.taxonRank.errors }}
+                      {% for error in form.taxonRank.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.taxonRank }}
                   </p>
                   <p>
                       <label for="{{ form.infraspecificEpithet.id_for_label }}"> {{ form.infraspecificEpithet.label }} </label>
-                      {{ form.infraspecificEpithet.errors }}
+                      {% for error in form.infraspecificEpithet.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.infraspecificEpithet }} </p>
                   <p><s>scientificNameAutorship</s></p>
                   <p>
                       <label for="{{ form.identificationQualifier.id_for_label }}"> {{ form.identificationQualifier.label }} </label>
-                      {{ form.identificationQualifier.errors }}
+                      {% for error in form.identificationQualifier.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.identificationQualifier }} </p>
                   </div>
               </div>
@@ -143,29 +218,50 @@
                   <h5>Obligatórios</h5>
                   <p>
                       <label for="{{ form.county.id_for_label }}"> {{ form.county.label }} </label>
-                      {{ form.county.errors }}
+                      {% for error in form.county.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.county }}
                   </p>
                   <p>
                       <label for="{{ form.stateProvince.id_for_label }}"> {{ form.stateProvince.label }} </label>
-                      {{ form.stateProvince.errors }}
+                      {% for error in form.stateProvince.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.stateProvince }}
                   </p>
                   <p>
                       <label for="{{ form.locality.id_for_label }}"> {{ form.locality.label }} </label>
-                      {{ form.locality.errors }}
+                      {% for error in form.locality.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.locality }}
                   </p>
                   <br>
                   <h5>Opcionales</h5>
                   <p>
                       <label for="{{ form.decimalLatitude.id_for_label }}"> {{ form.decimalLatitude.label }} </label>
-                      {{ form.decimalLatitude.errors }}
+                      {% for error in form.decimalLatitude.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.locality }}
                       {{ form.decimalLatitude }}
                   </p>
                   <p>
                       <label for="{{ form.decimalLongitude.id_for_label }}"> {{ form.decimalLongitude.label }} </label>
-                      {{ form.decimalLongitude.errors }}
+                      {% for error in form.decimalLongitude.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
                       {{ form.decimalLongitude }}
                   </p>
                   <p><s>Datum</s></p>
