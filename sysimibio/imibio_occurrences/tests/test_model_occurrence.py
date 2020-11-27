@@ -10,7 +10,7 @@ class OcurrenceModelTest(TestCase):
             institutionCode=1,
             collectionCode=1,
             catalogNumber=2,
-            scientificName='Pathera Onca',
+            scientificName='Panthera Onca',
             kingdom='reino',
             phylum='filo',
             clase='clase',
@@ -37,3 +37,6 @@ class OcurrenceModelTest(TestCase):
     def test_created_at(self):
         """Registration must have an auto created_at attr."""
         self.assertIsInstance(self.obj.created_at, datetime)
+
+    def test_str(self):
+        self.assertEqual('Panthera Onca', str(self.obj))

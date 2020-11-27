@@ -135,8 +135,8 @@ class ImibioOccurrence(models.Model):
     maximumDistanceAboveSurfaceInMeters = models.TextField(blank=True, null=True)
     locationAccordingTo = models.TextField(blank=True, null=True)
     locationRemarks = models.TextField(blank=True, null=True)
-    decimalLatitude = models.FloatField(blank=True, null=True)
-    decimalLongitude = models.FloatField(blank=True, null=True)
+    decimalLatitude = models.FloatField("Latitud", blank=True, null=True)
+    decimalLongitude = models.FloatField("Longitud", blank=True, null=True)
     coordinateUncertaintyInMeters = models.FloatField(blank=True, null=True)
     coordinatePrecision = models.TextField(blank=True, null=True)
     pointRadiusSpatialFit = models.TextField(blank=True, null=True)
@@ -243,3 +243,11 @@ class ImibioOccurrence(models.Model):
     repatriated = models.TextField(blank=True, null=True)
     relativeOrganismQuantity = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Ocorrencias'
+        verbose_name = 'Ocurrencia'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.scientificName

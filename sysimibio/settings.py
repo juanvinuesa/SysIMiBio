@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'test_without_migrations',
     'django_extensions',
     'sysimibio.core',
-    'sysimibio.imibio_occurrences',
+    'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
 ]
 
 MIDDLEWARE = [
