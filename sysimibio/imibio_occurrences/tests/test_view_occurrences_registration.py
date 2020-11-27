@@ -1,5 +1,7 @@
 from django.test import TestCase
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
+from sysimibio.imibio_occurrences.models import ImibioOccurrence
+
 
 class RegistrationGet(TestCase):
     def setUp(self):
@@ -64,6 +66,9 @@ class RegistrationPostValid(TestCase):
         """Valid POST should redirect to /registro_ocurrencias/"""
         self.assertEqual(302, self.resp.status_code)
 
+    def test_save_occurrence_registration(self):
+        self.assertTrue(ImibioOccurrence.objects.exists())
+
 class RegistrationPostInvalid(TestCase):
     def setUp(self):
         self.resp = self.client.post('/registro_ocurrencias/', {})
@@ -82,6 +87,10 @@ class RegistrationPostInvalid(TestCase):
     def test_has_errors(self):
         form = self.resp.context['form']
         self.assertTrue(form.errors)
+
+    def test_dont_save_occurrence_registration(self):
+        self.assertFalse(ImibioOccurrence.objects.exists())
+
 
 class RegistrationSuccessMessage(TestCase):
     def test_message(self):

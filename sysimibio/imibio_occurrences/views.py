@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
+from sysimibio.imibio_occurrences.models import ImibioOccurrence
 
 
 def registration(request):
@@ -19,6 +20,7 @@ def create(request):
                       {'form': form})
 
     messages.success(request, "Registro realizado con exito")
+    ImibioOccurrence.objects.create(**form.cleaned_data)
     return HttpResponseRedirect('/registro_ocurrencias/')
 
 def new(request):
