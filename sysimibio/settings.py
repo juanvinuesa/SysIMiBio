@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'sysimibio.core',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
+    'sysimibio.imibio_ecological_data',
 ]
 
 MIDDLEWARE = [

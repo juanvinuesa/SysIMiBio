@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class = "jumbotron">
+    <div class = "container">
+        <h2>Agregar datos ecológicos de especies arbóreas</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="accordion" id="accordionExample">
+            <form method="POST" action="." class="post-form">
+              {% csrf_token %}
+          <div class="card ">
+            <div class="card-header" id="headingOne">
+              <h3 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Datos generales
+                </button>
+              </h3>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                  <h5>Obligatórios</h5>
+                  <p>
+                      <label for="{{ form.fecha.id_for_label }}"> {{ form.fecha.label }} </label>
+                      {% for error in form.fecha.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.fecha }}
+                  </p>
+                  <p>
+                      <label for="{{ form.hora_inicio.id_for_label }}"> {{ form.hora_inicio.label }} </label>
+                      {% for error in form.hora_inicio.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.hora_inicio }}
+                  </p>
+                  <p>
+                      <label for="{{ form.hora_final.id_for_label }}"> {{ form.hora_final.label }} </label>
+                      {% for error in form.hora_final.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.hora_final }}
+                  </p>
+                  <p>
+                      <label for="{{ form.temperatura.id_for_label }}"> {{ form.temperatura.label }} </label>
+                      {% for error in form.temperatura.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.temperatura }}
+                  </p>
+                  <p>
+                      <label for="{{ form.humedad.id_for_label }}"> {{ form.humedad.label }} </label>
+                      {% for error in form.humedad.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.humedad }}
+                  </p>
+                  <p>
+                      <label for="{{ form.responsable.id_for_label }}"> {{ form.responsable.label }} </label>
+                      {% for error in form.responsable.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.responsable }}
+                  </p>
+                  <p>
+                      <label for="{{ form.acompanantes.id_for_label }}"> {{ form.acompanantes.label }} </label>
+                      {% for error in form.acompanantes.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.acompanantes }}
+                  </p>
+                  <p>
+                      <label for="{{ form.id_parcela.id_for_label }}"> {{ form.id_parcela.label }} </label>
+                      {% for error in form.id_parcela.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.id_parcela }}
+                  </p>
+
+              </div>
+            </div>
+          </div>
+          <div class="card">
+              <div class="card-header" id="headingThree">
+                <h3 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                      Datos de los árboles
+                    </button>
+                </h3>
+              </div>
+              <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                  <div class="card-body">
+                  <h5>Obligatórios</h5>
+                  <p>
+                      <label for="{{ form.id_arbol.id_for_label }}"> {{ form.id_arbol.label }} </label>
+                      {% for error in form.id_arbol.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.id_arbol }}
+                  </p>
+                  <p>
+                      <label for="{{ form.especie.id_for_label }}"> {{ form.especie.label }} </label>
+                      {% for error in form.especie.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.especie }}
+                  </p>
+                  <p>
+                      <label for="{{ form.dap.id_for_label }}"> {{ form.dap.label }} </label>
+                      {% for error in form.dap.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.dap }}
+                  </p>
+                  <p>
+                      <label for="{{ form.dab.id_for_label }}"> {{ form.dab.label }} </label>
+                      {% for error in form.dab.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.dab }}
+                  </p>
+                  <p>
+                      <label for="{{ form.altura.id_for_label }}"> {{ form.altura.label }} </label>
+                      {% for error in form.altura.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.altura }}
+                  </p>
+                  <p>
+                      <label for="{{ form.latitud.id_for_label }}"> {{ form.latitud.label }} </label>
+                      {% for error in form.latitud.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.latitud }}
+                  </p>
+                  <p>
+                      <label for="{{ form.longitud.id_for_label }}"> {{ form.longitud.label }} </label>
+                      {% for error in form.longitud.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.longitud }}
+                  </p>
+                  <p>
+                      <label for="{{ form.fotografia.id_for_label }}"> {{ form.fotografia.label }} </label>
+                      {% for error in form.fotografia.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.fotografia }}
+                  </p>
+                  <p>
+                      <label for="{{ form.obs.id_for_label }}"> {{ form.obs.label }} </label>
+                      {% for error in form.obs.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.obs }}
+                  </p>
+                  <p>
+                      <label for="{{ form.estado_arbol.id_for_label }}"> {{ form.estado_arbol.label }} </label>
+                      {% for error in form.estado_arbol.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.estado_arbol }}
+                  </p>
+                  <p>
+                      <label for="{{ form.forma_vida.id_for_label }}"> {{ form.forma_vida.label }} </label>
+                      {% for error in form.forma_vida.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.forma_vida }}
+                  </p>
+                  <p>
+                      <label for="{{ form.clasificacion_sociologica.id_for_label }}"> {{ form.clasificacion_sociologica.label }} </label>
+                      {% for error in form.clasificacion_sociologica.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.clasificacion_sociologica }}
+                  </p>
+                  </div>
+              </div>
+           </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+
+        </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

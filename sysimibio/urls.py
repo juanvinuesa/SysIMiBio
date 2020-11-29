@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 import sysimibio.core.views
 from sysimibio.imibio_occurrences.views import registration
+from sysimibio.imibio_ecological_data.views import TreeEcologicalRegistration
 
 urlpatterns = [
     path('', sysimibio.core.views.home),
     path('admin/', admin.site.urls),
     path('registro_ocurrencias/', registration),
+    path('registro_ecologico_arboreas/', TreeEcologicalRegistration)
 ]
