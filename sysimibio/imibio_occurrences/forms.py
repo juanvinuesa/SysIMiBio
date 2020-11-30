@@ -1,5 +1,6 @@
 from django import forms
 
+
 class OccurrencesRegistrationForm(forms.Form):
     # occurrenceID = forms.CharField(required=True) # not necessary. it is created on insertion
     basisOfRecord = forms.CharField(required=True, label='Tipo de muestra')

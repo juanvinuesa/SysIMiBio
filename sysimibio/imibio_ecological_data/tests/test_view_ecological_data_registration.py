@@ -17,7 +17,7 @@ class TreeEcologicalRegistrationGet(TestCase):
         """HTML must contain input tags"""
         tags = (
             ('<form', 2),
-            ('<input', 20),
+            ('<input', 22),
             ('type="submit"', 2))
         for text, amount in tags:
             with self.subTest():
@@ -36,7 +36,57 @@ class TreeEcologicalRegistrationGet(TestCase):
         """form must have 21 fields"""
         form = self.resp.context['form']
         self.assertEqual(
-            ['fecha', 'hora_inicio', 'hora_final', 'temperatura', 'humedad', 'responsable', 'acompanante',
+            ['fecha', 'hora_inicio', 'hora_final', 'temperatura', 'humedad', 'responsable', 'acompanantes', 'id_parcela',
              'id_arbol', 'especie', 'dap', 'dab', 'altura', 'latitud', 'longitud', 'fotografia', 'obs', 'estado_arbol',
              'forma_vida', 'clasificacion_sociologica'],
         list(form.fields))
+
+
+class TreeEcologicalDataRegistrationPostValid(TestCase):
+    def setUp(self):
+        self.data = dict(
+            fecha='01/01/01',
+            hora_inicio='0:0',
+            hora_final='0:30',
+            temperatura=35.9,
+            humedad=80,
+            responsable="Florencia",
+            acompanantes="Felipe",
+            id_parcela=1,
+            id_arbol=1,
+            especie='Solanaceae',
+            dap=40,
+            dab=60,
+            altura=60,
+            latitud=-43,
+            longitud=-56,
+            fotografia=True,
+            obs='Teste 1',
+            estado_arbol='Teste estado del arbol',
+            forma_vida='Estado de vida',
+            clasificacion_sociologica='Clasificacion de vida')
+        self.resp = self.client.post('/registro_ecologico_arboreas/', self.data)
+
+    def test_Post(self):
+        """Valid post should redirect"""
+        self.assertEqual(302, self.resp.status_code)
+
+
+class TreeEcologicalDataRegistrationPostInvalid(TestCase):
+    def setUp(self):
+        self.resp = self.client.post('/registro_ecologico_arboreas/', {})
+        self.form = self.resp.context['form']
+
+    def test_Post(self):
+        """Invalid post must not redirect"""
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_template(self):
+        self.assertTemplateUsed(self.resp, 'tree_ecological_registration_form.html')
+
+    def test_template_has_form(self):
+        self.assertIsInstance(self.form, TreeEcologicalForm)
+
+    def test_form_has_errors(self):
+        self.assertTrue(self.form.errors)
+
