@@ -1,5 +1,6 @@
 from django.test import TestCase
 from sysimibio.imibio_ecological_data.forms import TreeEcologicalForm
+from sysimibio.imibio_ecological_data.models import TreeEcologicalData
 
 
 class TreeEcologicalRegistrationGet(TestCase):
@@ -63,6 +64,9 @@ class TreeEcologicalDataRegistrationPostValid(TestCase):
         """Valid post should redirect"""
         self.assertEqual(302, self.resp.status_code)
 
+    def test_save_TreeEcologicalRegistration(self):
+        self.assertTrue(TreeEcologicalData.objects.exists())
+
 
 class TreeEcologicalDataRegistrationPostInvalid(TestCase):
     def setUp(self):
@@ -81,3 +85,6 @@ class TreeEcologicalDataRegistrationPostInvalid(TestCase):
 
     def test_form_has_errors(self):
         self.assertTrue(self.form.errors)
+
+    def test_dont_save_TreeEcologicalRegistration(self):
+        self.assertFalse(TreeEcologicalData.objects.exists())

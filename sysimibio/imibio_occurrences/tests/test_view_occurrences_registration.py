@@ -35,6 +35,7 @@ class RegistrationGet(TestCase):
         form = self.resp.context['form']
         self.assertIsInstance(form, OccurrencesRegistrationForm)
 
+
 class RegistrationPostValid(TestCase):
     def setUp(self):
         data = dict(
@@ -68,6 +69,7 @@ class RegistrationPostValid(TestCase):
 
     def test_save_occurrence_registration(self):
         self.assertTrue(ImibioOccurrence.objects.exists())
+
 
 class RegistrationPostInvalid(TestCase):
     def setUp(self):
