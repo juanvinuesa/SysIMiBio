@@ -6,15 +6,21 @@ from sysimibio.imibio_ecological_data.forms import TreeEcologicalForm
 
 def TreeEcologicalRegistration(request):
     if request.method == 'POST':
-        form = TreeEcologicalForm(request.POST)
-
-        if form.is_valid():
-            messages.success(request, "Registro ecológico agregado con exito")
-            # ImibioOccurrence.objects.create(**form.cleaned_data)
-            return HttpResponseRedirect('/registro_ecologico_arboreas/')
-        else:
-            return render(request, 'tree_ecological_registration_form.html',
-                          {'form': form})
+        return create(request)
     else:
-        context = {'form': TreeEcologicalForm()}
-        return render(request, 'tree_ecological_registration_form.html', context)
+        return new(request)
+
+
+def create(request):
+    form = TreeEcologicalForm(request.POST)
+
+    if not form.is_valid():
+        return render(request, 'tree_ecological_registration_form.html',
+                      {'form': form})
+
+    messages.success(request, "Registro ecológico agregado con exito")
+    # ImibioOccurrence.objects.create(**form.cleaned_data)
+    return HttpResponseRedirect('/registro_ecologico_arboreas/')
+
+def new(request):
+    return render(request, 'tree_ecological_registration_form.html', {'form': TreeEcologicalForm()})

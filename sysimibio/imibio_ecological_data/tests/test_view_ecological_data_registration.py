@@ -1,6 +1,7 @@
 from django.test import TestCase
 from sysimibio.imibio_ecological_data.forms import TreeEcologicalForm
 
+
 class TreeEcologicalRegistrationGet(TestCase):
     def setUp(self):
         self.resp = self.client.get("/registro_ecologico_arboreas/")
@@ -31,15 +32,6 @@ class TreeEcologicalRegistrationGet(TestCase):
         """context must have tree ecological data registration form"""
         form = self.resp.context['form']
         self.assertIsInstance(form, TreeEcologicalForm)
-
-    def test_form_has_fields(self):
-        """form must have 21 fields"""
-        form = self.resp.context['form']
-        self.assertEqual(
-            ['fecha', 'hora_inicio', 'hora_final', 'temperatura', 'humedad', 'responsable', 'acompanantes', 'id_parcela',
-             'id_arbol', 'especie', 'dap', 'dab', 'altura', 'latitud', 'longitud', 'fotografia', 'obs', 'estado_arbol',
-             'forma_vida', 'clasificacion_sociologica'],
-        list(form.fields))
 
 
 class TreeEcologicalDataRegistrationPostValid(TestCase):
@@ -89,4 +81,3 @@ class TreeEcologicalDataRegistrationPostInvalid(TestCase):
 
     def test_form_has_errors(self):
         self.assertTrue(self.form.errors)
-
