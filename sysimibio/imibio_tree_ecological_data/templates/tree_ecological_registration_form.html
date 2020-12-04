@@ -39,7 +39,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.fecha }}
+                      {{ form.fecha }} {{ form.fecha.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.hora_inicio.id_for_label }}"> {{ form.hora_inicio.label }} </label>
@@ -48,7 +48,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.hora_inicio }}
+                      {{ form.hora_inicio }}  {{ form.hora_inicio.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.hora_final.id_for_label }}"> {{ form.hora_final.label }} </label>
@@ -57,7 +57,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.hora_final }}
+                      {{ form.hora_final }} {{ form.hora_final.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.temperatura.id_for_label }}"> {{ form.temperatura.label }} </label>
@@ -66,7 +66,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.temperatura }}
+                      {{ form.temperatura }} {{ form.temperatura.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.humedad.id_for_label }}"> {{ form.humedad.label }} </label>
@@ -75,7 +75,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.humedad }}
+                      {{ form.humedad }} {{ form.humedad.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.responsable.id_for_label }}"> {{ form.responsable.label }} </label>
@@ -144,7 +144,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.dap }}
+                      {{ form.dap }} {{ form.dap.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.dab.id_for_label }}"> {{ form.dab.label }} </label>
@@ -153,7 +153,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.dab }}
+                      {{ form.dab }} {{ form.dab.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.altura.id_for_label }}"> {{ form.altura.label }} </label>
@@ -162,7 +162,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.altura }}
+                      {{ form.altura }} {{ form.altura.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.latitud.id_for_label }}"> {{ form.latitud.label }} </label>
