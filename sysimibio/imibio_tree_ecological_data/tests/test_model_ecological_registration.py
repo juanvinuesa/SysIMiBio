@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.test import TestCase
-from sysimibio.imibio_ecological_data.models import TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
 class TreeEcologicalRegistrationTest(TestCase):

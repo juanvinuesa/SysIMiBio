@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 import sysimibio.core.views
 from sysimibio.imibio_occurrences.views import registration
-from sysimibio.imibio_ecological_data.views import TreeEcologicalRegistration
+from sysimibio.imibio_tree_ecological_data.views import TreeEcologicalRegistration
 
 urlpatterns = [
     path('', sysimibio.core.views.home),
