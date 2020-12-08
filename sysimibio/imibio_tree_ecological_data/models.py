@@ -1,4 +1,5 @@
 from django.db import models
+# TODO insternaiconalizar los campos
 
 
 class TreeEcologicalData(models.Model):

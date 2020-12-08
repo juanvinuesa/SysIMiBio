@@ -25,6 +25,5 @@ def create(request):
 
     TreeEcologicalData.objects.create(**form.cleaned_data)
     messages.success(request, "Registro ecológico agregado con exito")
-    # ImibioOccurrence.objects.create(**form.cleaned_data)
     return HttpResponseRedirect(r('imibio_tree_ecological_data:new'))
 
