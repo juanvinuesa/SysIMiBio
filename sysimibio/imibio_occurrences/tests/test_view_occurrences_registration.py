@@ -1,5 +1,6 @@
-from django.test import TestCase
 from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
 from sysimibio.imibio_occurrences.models import ImibioOccurrence
 
@@ -65,8 +66,9 @@ class RegistrationPostValid(TestCase):
         self.resp = self.client.post(r('imibio_occurrences:new'), data)
 
     def test_post(self):
-        """Valid POST should redirect to /registro_ocurrencias/"""
-        self.assertEqual(302, self.resp.status_code)
+        """Valid POST should redirect to /registro_ocurrencias/1/"""
+        #self.assertEqual(302, self.resp.status_code)
+        self.assertRedirects(self.resp, '/registro_ocurrencias/1/')
 
     def test_save_occurrence_registration(self):
         self.assertTrue(ImibioOccurrence.objects.exists())
@@ -93,32 +95,3 @@ class RegistrationPostInvalid(TestCase):
 
     def test_dont_save_occurrence_registration(self):
         self.assertFalse(ImibioOccurrence.objects.exists())
-
-
-class RegistrationSuccessMessage(TestCase):
-    def test_message(self):
-        data = dict(
-            basisOfRecord='Observation',
-            institutionCode=1,
-            collectionCode=1,
-            catalogNumber=2,
-            scientificName='Pathera Onca',
-            kingdom='reino',
-            phylum='filo',
-            clase='clase',
-            order='orden',
-            family='familia',
-            genus='genero',
-            specificEpithet='epiteto especifico',
-            taxonRank='ranking de la taxonomia',
-            infraspecificEpithet='infra espiteto',
-            identificationQualifier='calificacion de identificacion',
-            county='Argentina',
-            stateProvince='Misiones',
-            locality='Posadas',
-            recordedBy='Felipe',
-            recordNumber=1,
-            decimalLatitude=-56,
-            decimalLongitude=-60)
-        response = self.client.post(r('imibio_occurrences:new'), data, follow=True)
-        self.assertContains(response, 'Registro realizado con exito')
