@@ -1,11 +1,12 @@
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
-class TreeEcologicalRegistrationGet(TestCase):
+class TreeEcologicalRegistrationNewGet(TestCase):
     def setUp(self):
-        self.resp = self.client.get("/registro_ecologico_arboreas/")
+        self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
 
     def test_get(self):
         """GET /registro_ecologico/ must get status code 200"""
@@ -35,7 +36,7 @@ class TreeEcologicalRegistrationGet(TestCase):
         self.assertIsInstance(form, TreeEcologicalForm)
 
 
-class TreeEcologicalDataRegistrationPostValid(TestCase):
+class TreeEcologicalDataRegistrationNewPostValid(TestCase):
     def setUp(self):
         self.data = dict(
             fecha='01/01/01',
@@ -58,7 +59,7 @@ class TreeEcologicalDataRegistrationPostValid(TestCase):
             estado_arbol='Teste estado del arbol',
             forma_vida='Estado de vida',
             clasificacion_sociologica='Clasificacion de vida')
-        self.resp = self.client.post('/registro_ecologico_arboreas/', self.data)
+        self.resp = self.client.post(r('imibio_tree_ecological_data:new'), self.data)
 
     def test_Post(self):
         """Valid post should redirect"""
@@ -70,7 +71,7 @@ class TreeEcologicalDataRegistrationPostValid(TestCase):
 
 class TreeEcologicalDataRegistrationPostInvalid(TestCase):
     def setUp(self):
-        self.resp = self.client.post('/registro_ecologico_arboreas/', {})
+        self.resp = self.client.post(r('imibio_tree_ecological_data:new'), {})
         self.form = self.resp.context['form']
 
     def test_Post(self):

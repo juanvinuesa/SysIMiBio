@@ -1,9 +1,10 @@
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 
 class HomeTest(TestCase):
     def setUp(self):
         """creating response instance atribute"""
-        self.response = self.client.get('/')
+        self.response = self.client.get(r('home'))
 
     def test_get(self):
         """GET must return status 200"""
@@ -14,4 +15,5 @@ class HomeTest(TestCase):
         self.assertTemplateUsed(self.response, 'index.html')
 
     def test_registro_link(self):
-        self.assertContains(self.response, 'href="/registro_ocurrencias/"')
+        expected = 'href="{}"'.format(r('imibio_occurrences:new'))
+        self.assertContains(self.response, expected)

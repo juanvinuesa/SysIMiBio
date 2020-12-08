@@ -1,11 +1,12 @@
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
 from sysimibio.imibio_occurrences.models import ImibioOccurrence
 
 
 class RegistrationGet(TestCase):
     def setUp(self):
-        self.resp = self.client.get("/registro_ocurrencias/")
+        self.resp = self.client.get(r("imibio_occurrences:new"))
 
     def test_get(self):
         """get /registro_ocurrencias/ must get status code 200"""
@@ -61,7 +62,7 @@ class RegistrationPostValid(TestCase):
             recordNumber=1,
             decimalLatitude=-56,
             decimalLongitude=-60)
-        self.resp = self.client.post('/registro_ocurrencias/', data)
+        self.resp = self.client.post(r('imibio_occurrences:new'), data)
 
     def test_post(self):
         """Valid POST should redirect to /registro_ocurrencias/"""
@@ -73,7 +74,7 @@ class RegistrationPostValid(TestCase):
 
 class RegistrationPostInvalid(TestCase):
     def setUp(self):
-        self.resp = self.client.post('/registro_ocurrencias/', {})
+        self.resp = self.client.post(r('imibio_occurrences:new'), {})
 
     def test_post(self):
         """Invalid POST should not redirect to /registro_ocurrencias/"""
@@ -119,5 +120,5 @@ class RegistrationSuccessMessage(TestCase):
             recordNumber=1,
             decimalLatitude=-56,
             decimalLongitude=-60)
-        response = self.client.post('/registro_ocurrencias/', data, follow=True)
+        response = self.client.post(r('imibio_occurrences:new'), data, follow=True)
         self.assertContains(response, 'Registro realizado con exito')

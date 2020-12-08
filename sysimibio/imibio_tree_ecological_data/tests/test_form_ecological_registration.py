@@ -1,10 +1,11 @@
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
 
 
 class TreeRegistrationFormTest(TestCase):
     def setUp(self):
-        self.resp = self.client.get("/registro_ecologico_arboreas/")
+        self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.form = TreeEcologicalForm()
 
     def test_form_has_fields(self):

@@ -1,15 +1,19 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url as r
 from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
-def TreeEcologicalRegistration(request):
+def new(request):
     if request.method == 'POST':
         return create(request)
-    else:
-        return new(request)
+
+    return empty_form(request)
+
+
+def empty_form(request):
+    return render(request, 'tree_ecological_registration_form.html', {'form': TreeEcologicalForm()})
 
 
 def create(request):
@@ -22,7 +26,5 @@ def create(request):
     TreeEcologicalData.objects.create(**form.cleaned_data)
     messages.success(request, "Registro ecológico agregado con exito")
     # ImibioOccurrence.objects.create(**form.cleaned_data)
-    return HttpResponseRedirect('/registro_ecologico_arboreas/')
+    return HttpResponseRedirect(r('imibio_tree_ecological_data:new'))
 
-def new(request):
-    return render(request, 'tree_ecological_registration_form.html', {'form': TreeEcologicalForm()})

@@ -14,14 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
 import sysimibio.core.views
-from sysimibio.imibio_occurrences.views import registration
-from sysimibio.imibio_tree_ecological_data.views import TreeEcologicalRegistration
 
 urlpatterns = [
-    path('', sysimibio.core.views.home),
+    path('', sysimibio.core.views.home, name='home'),
     path('admin/', admin.site.urls),
-    path('registro_ocurrencias/', registration),
-    path('registro_ecologico_arboreas/', TreeEcologicalRegistration)
+    path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')),
+    path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')),
 ]
