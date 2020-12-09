@@ -1,28 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<li>{{ occurrence.basisOfRecord.label }}: {{ occurrence.basisOfRecord }}</li>
-                      {{ occurrence.institutionCode }}
-                      {{ occurrence.collectionCode }}
-                      {{ occurrence.catalogNumber }}
-                      {{ occurrence.recordedBy }}
-                      {{ occurrence.recordNumber }}
-                      {{ occurrence.scientificName }}
-                      {{ occurrence.kingdom }}
-                      {{ occurrence.phylum }}
-                      {{ occurrence.clase }}
-                      {{ occurrence.order }}
-                      {{ occurrence.family }}
-                      {{ occurrence.genus }}
-                      {{ occurrence.specificEpithet }}
-                      {{ occurrence.taxonRank }}
-                      {{ occurrence.infraspecificEpithet }}
-                      {{ occurrence.identificationQualifier }}
-                      {{ occurrence.county }}
-                      {{ occurrence.stateProvince }}
-                      {{ occurrence.locality }}
-                      {{ occurrence.decimalLatitude }}
-                      {{ occurrence.decimalLongitude }}
-
-
+<!-- OVERVIEW -->
+        <section>
+        	<div class="content row padding-bottom-3 desktop-12 container">
+                <div class="desktop-6">
+                    <h1>Registro agregado con exito:</h1>
+                    <p><h3>Datos del registro</h3></p>
+                    <ul>
+                        <li>Basis Of Record: {{ occurrence.basisOfRecord }}</li>
+                        <li>{{ occurrence.institutionCode }}</li>
+                        <li>{{ occurrence.collectionCode }}</li>
+                        <li>{{ occurrence.catalogNumber }}</li>
+                        <li>{{ occurrence.recordedBy }}</li>
+                        <li>{{ occurrence.recordNumber }}</li>
+                        <li>{{ occurrence.scientificName }}</li>
+                        <li>{{ occurrence.kingdom }}</li>
+                        <li>{{ occurrence.phylum }}</li>
+                        <li>{{ occurrence.clase }}</li>
+                        <li>{{ occurrence.order }}</li>
+                        <li>{{ occurrence.family }}</li>
+                        <li>{{ occurrence.genus }}</li>
+                        <li>{{ occurrence.specificEpithet }}</li>
+                        <li>{{ occurrence.taxonRank }}</li>
+                        <li>{{ occurrence.infraspecificEpithet }}</li>
+                        <li>{{ occurrence.identificationQualifier }}</li>
+                        <li>{{ occurrence.county }}</li>
+                        <li>{{ occurrence.stateProvince }}</li>
+                        <li>{{ occurrence.locality }}</li>
+                        <li>{{ occurrence.decimalLatitude }}</li>
+                        <li>{{ occurrence.decimalLongitude }}</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 {% endblock %}
