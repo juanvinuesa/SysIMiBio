@@ -68,7 +68,7 @@ class RegistrationPostValid(TestCase):
     def test_post(self):
         """Valid POST should redirect to /registro_ocurrencias/1/"""
         #self.assertEqual(302, self.resp.status_code)
-        self.assertRedirects(self.resp, '/registro_ocurrencias/1/')
+        self.assertRedirects(self.resp, r('imibio_occurrences:detail', 1))
 
     def test_save_occurrence_registration(self):
         self.assertTrue(ImibioOccurrence.objects.exists())

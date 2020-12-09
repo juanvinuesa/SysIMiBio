@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
 from sysimibio.imibio_occurrences.forms import OccurrencesRegistrationForm
 from sysimibio.imibio_occurrences.models import ImibioOccurrence
@@ -21,13 +21,18 @@ def create(request):
     occ = ImibioOccurrence.objects.create(**form.cleaned_data)
     messages.success(request, "Registro realizado con exito")
 
-    return HttpResponseRedirect(r('imibio_occurrences:detail'), occ.pk)
+    return HttpResponseRedirect(r('imibio_occurrences:detail', occ.pk))
 
 
 def new(request):
     return render(request, 'occurrences/occurrences_registration_form.html', {'form': OccurrencesRegistrationForm()})
 
 
-def detail(request):
-    return render(request, 'occurrences/occurrence_detail.html')
+def detail(request, pk):
+    try:
+        occurrence = ImibioOccurrence.objects.get(pk=pk)
+    except ImibioOccurrence.DoesNotExist:
+        raise Http404
+
+    return render(request, 'occurrences/occurrence_detail.html', {'occurrence': occurrence})
 

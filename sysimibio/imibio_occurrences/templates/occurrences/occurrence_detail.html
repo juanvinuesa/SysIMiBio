@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<li>{{ occurrence.basisOfRecord.label }}: {{ occurrence.basisOfRecord }}</li>
+                      {{ occurrence.institutionCode }}
+                      {{ occurrence.collectionCode }}
+                      {{ occurrence.catalogNumber }}
+                      {{ occurrence.recordedBy }}
+                      {{ occurrence.recordNumber }}
+                      {{ occurrence.scientificName }}
+                      {{ occurrence.kingdom }}
+                      {{ occurrence.phylum }}
+                      {{ occurrence.clase }}
+                      {{ occurrence.order }}
+                      {{ occurrence.family }}
+                      {{ occurrence.genus }}
+                      {{ occurrence.specificEpithet }}
+                      {{ occurrence.taxonRank }}
+                      {{ occurrence.infraspecificEpithet }}
+                      {{ occurrence.identificationQualifier }}
+                      {{ occurrence.county }}
+                      {{ occurrence.stateProvince }}
+                      {{ occurrence.locality }}
+                      {{ occurrence.decimalLatitude }}
+                      {{ occurrence.decimalLongitude }}
+
+
+{% endblock %}

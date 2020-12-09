@@ -6,5 +6,5 @@ app_name = 'imibio_occurrences'
 
 urlpatterns = [
     path('', registration, name='new'),
-    path('1/', detail, name='detail')
+    path('<int:pk>/', detail, name='detail')
 ]
