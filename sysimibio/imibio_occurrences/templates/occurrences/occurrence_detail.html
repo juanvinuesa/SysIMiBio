@@ -1,37 +1,131 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- OVERVIEW -->
-        <section>
-        	<div class="content row padding-bottom-3 desktop-12 container">
-                <div class="desktop-6">
-                    <h1>Registro agregado con exito:</h1>
-                    <p><h3>Datos del registro</h3></p>
-                    <ul>
-                        <li>Basis Of Record: {{ occurrence.basisOfRecord }}</li>
-                        <li>{{ occurrence.institutionCode }}</li>
-                        <li>{{ occurrence.collectionCode }}</li>
-                        <li>{{ occurrence.catalogNumber }}</li>
-                        <li>{{ occurrence.recordedBy }}</li>
-                        <li>{{ occurrence.recordNumber }}</li>
-                        <li>{{ occurrence.scientificName }}</li>
-                        <li>{{ occurrence.kingdom }}</li>
-                        <li>{{ occurrence.phylum }}</li>
-                        <li>{{ occurrence.clase }}</li>
-                        <li>{{ occurrence.order }}</li>
-                        <li>{{ occurrence.family }}</li>
-                        <li>{{ occurrence.genus }}</li>
-                        <li>{{ occurrence.specificEpithet }}</li>
-                        <li>{{ occurrence.taxonRank }}</li>
-                        <li>{{ occurrence.infraspecificEpithet }}</li>
-                        <li>{{ occurrence.identificationQualifier }}</li>
-                        <li>{{ occurrence.county }}</li>
-                        <li>{{ occurrence.stateProvince }}</li>
-                        <li>{{ occurrence.locality }}</li>
-                        <li>{{ occurrence.decimalLatitude }}</li>
-                        <li>{{ occurrence.decimalLongitude }}</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-{% endblock %}
+
+<a href=""> voltar </a>
+
+<h1>Detalles de la ocorrencia: {{ occurrence.scientificName }}</h1>
+<strong>id: {{ occurrence.pk }}</strong>
+<div class="row">
+<div class="col-sm-4">
+    <table class = "table table-user-information">
+        <tbody>
+        <tr>
+
+            <th class="text-right">Nombre scientifico</th>
+            <td>{{ occurrence.scientificName }}</td>
+        </tr>
+
+            <th class="text-right">Id de la Ocurencia</th>
+            <td>{{ occurrence.occurrenceID }}</td>
+        </tr>
+
+            <th class="text-right">Basis of record</th>
+            <td>{{ occurrence.basisOfRecord }}</td>
+        </tr>
+
+            <th class="text-right">ID Institución</th>
+            <td>{{ occurrence.institutionCode }}</td>
+        </tr>
+
+            <th class="text-right">ID Colección</th>
+            <td>{{ occurrence.collectionCode }}</td>
+        </tr>
+
+            <th class="text-right">ID Catálogo</th>
+            <td>{{ occurrence.catalogNumber }}</td>
+        </tr>
+
+            <th class="text-right">Reino</th>
+            <td>{{ occurrence.kingdom }}</td>
+        </tr>
+
+            <th class="text-right">Phylum</th>
+            <td>{{ occurrence.phylum }}</td>
+        </tr>
+
+            <th class="text-right">Clase</th>
+            <td>{{ occurrence.clase }}</td>
+        </tr>
+
+            <th class="text-right">Orden</th>
+            <td>{{ occurrence.order }}</td>
+        </tr>
+
+            <th class="text-right">Familia</th>
+            <td>{{ occurrence.family }}</td>
+        </tr>
+
+            <th class="text-right">Genero</th>
+            <td>{{ occurrence.genus }}</td>
+        </tr>
+
+            <th class="text-right">Epíteto</th>
+            <td>{{ occurrence.specificEpithet }}</td>
+        </tr>
+
+            <th class="text-right">Epíteto infraespecífico</th>
+            <td>{{ occurrence.infraspecificEpithet }}</td>
+        </tr>
+
+            <th class="text-right">Taxon rank</th>
+            <td>{{ occurrence.taxonRank }}</td>
+        </tr>
+
+            <th class="text-right">Autor del nombre científico y año de publicación</th>
+            <td>{{ occurrence.scientificNameAuthorship }}</td>
+        </tr>
+
+            <th class="text-right">Calificador de la identificación</th>
+            <td>{{ occurrence.identificationQualifier }}</td>
+        </tr>
+
+            <th class="text-right">Colector</th>
+            <td>{{ occurrence.recordedBy }}</td>
+        </tr>
+
+            <th class="text-right">Número de registro del colector</th>
+            <td>{{ occurrence.recordNumber }}</td>
+        </tr>
+
+            <th class="text-right">Departamento</th>
+            <td>{{ occurrence.county }}</td>
+        </tr>
+
+            <th class="text-right">Provincia o Estado</th>
+            <td>{{ occurrence.stateProvince }}</td>
+        </tr>
+
+            <th class="text-right">Municipalidad</th>
+            <td>{{ occurrence.municipality }}</td>
+        </tr>
+
+            <th class="text-right">Localidad</th>
+            <td>{{ occurrence.locality }}</td>
+        </tr>
+
+            <th class="text-right">Longitude</th>
+            <td>{{ occurrence.decimalLongitude }}</td>
+        </tr>
+
+            <th class="text-right">Latitude</th>
+            <td>{{ occurrence.decimalLatitude }}</td>
+        </tr>
+
+            <th class="text-right">Incertidunbre de las coordenadas</th>
+            <td>{{ occurrence.coordinateUncartaintyInMeters }}</td>
+        </tr>
+
+            <th class="text-right">Protocolo de georeferenciación</th>
+            <td>{{ occurrence.georeferenceProtocol }}</td>
+        </tr>
+
+            <th class="text-right">Fuentes de georeferenciación</th>
+            <td>{{ occurrence.georeferenceSources }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock content %}
