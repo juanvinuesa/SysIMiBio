@@ -11,59 +11,96 @@
 
 <a href=""> voltar </a>
 
-<h1>Detalles de la ocorrencia: {{ occurrence.scientificName }}</h1>
-<strong>id: {{ occurrence.pk }}</strong>
+<h1>Detalles de la ocorrencia: {{ tree_detail.scientificName }}</h1>
+<strong>id: {{ tree_detail.pk }}</strong>
 <div class="row">
 <div class="col-sm-4">
     <table class = "table table-user-information">
-        <tbody>
-        <td>
+        <h3 class="mb-0">
+            Datos generales
+        </h3>
 
-    <h3 class="mb-0">
-        Datos generales
-    </h3>
-            <th class="text-right">Fecha</th>
-            <td>{{ tree_detail.fecha }}</td>
-            <th class="text-right">Hora inicio</th>
-            <td>{{ tree_detail.hora_inicio }}</td>
-            <th class="text-right">Hora final</th>
-            <td>{{ tree_detail.hora_final }}</td>
-            <th class="text-right">Temperatura</th>
-            <td>{{ tree_detail.temperatura }}</td>
+        <tbody>
+            <tr>
+                <th class="text-right">Fecha</th>
+                <td>{{ tree_detail.fecha }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Hora inicio</th>
+                <td>{{ tree_detail.hora_inicio }}</td>
+                </tr>
+            <tr>
+                <th class="text-right">Hora final</th>
+                <td>{{ tree_detail.hora_final }}</td>
+                </tr>
+
+            <tr>
+                <th class="text-right">Temperatura</th>
+                <td>{{ tree_detail.temperatura }}</td>
+                </tr>
+            <tr>
             <th class="text-right">Humedad</th>
             <td>{{ tree_detail.humedad }}</td>
-            <th class="text-right">Responsable</th>
-            <td>{{ tree_detail.responsable }}</td>
-            <th class="text-right">Acompañantes</th>
-            <td>{{ tree_detail.acompanantes }}</td>
+                </tr>
+            <tr>
+                <th class="text-right">Responsable</th>
+                <td>{{ tree_detail.responsable }}</td>
+            <tr>
+                <th class="text-right">Acompañantes</th>
+                <td>{{ tree_detail.acompanantes }}</td>
+            </tr>
+
+            <tr>
             <th class="text-right">ID Parcela</th>
             <td>{{ tree_detail.id_parcela }}</td>
-
-            <th class="text-right">Datos del arbol</th>
-            <td></td>
-            <th class="text-right">ID Arbol</th>
-            <td>{{ tree_detail.id_arbol }}</td>
-            <th class="text-right">Especie</th>
-            <td>{{ tree_detail.especie }}</td>
-            <th class="text-right">DAP</th>
-            <td>{{ tree_detail.dap }}</td>
-            <th class="text-right">DAB</th>
-            <td>{{ tree_detail.dab }}</td>
-            <th class="text-right">Altura</th>
-            <td>{{ tree_detail.altura }}</td>
-            <th class="text-right">Latitud</th>
-            <td>{{ tree_detail.latitud }}</td>
-            <th class="text-right">Logitud</th>
-            <td>{{ tree_detail.longitud }}</td>
-            <th class="text-right">Fotografía</th>
-            <td>{{ tree_detail.fotografia }}</td>
-            <th class="text-right">Observación</th>
-            <td>{{ tree_detail.obs }}</td>
-            <th class="text-right">Estado del arbol</th>
-            <td>{{ tree_detail.estado_arbol }}</td>
-            <th class="text-right">Forma de vida</th>
-            <td>{{ tree_detail.forma_vida }}</td>
-            <th class="text-right">Clasificación Sociologica</th>
-            <td>{{ tree_detail.clasificacion_sociologica }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">ID Arbol</th>
+                <td>{{ tree_detail.id_arbol }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Especie</th>
+                <td>{{ tree_detail.especie }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">DAP</th>
+                <td>{{ tree_detail.dap }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">DAB</th>
+                <td>{{ tree_detail.dab }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Altura</th>
+                <td>{{ tree_detail.altura }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Latitud</th>
+                <td>{{ tree_detail.latitud }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Logitud</th>
+                <td>{{ tree_detail.longitud }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Fotografía</th>
+                <td>{{ tree_detail.fotografia }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Observación</th>
+                <td>{{ tree_detail.obs }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Estado del arbol</th>
+                <td>{{ tree_detail.estado_arbol }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Forma de vida</th>
+                <td>{{ tree_detail.forma_vida }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Clasificación Sociologica</th>
+                <td>{{ tree_detail.clasificacion_sociologica }}</td>
+            </tr>
         </tbody>
 {% endblock %}
