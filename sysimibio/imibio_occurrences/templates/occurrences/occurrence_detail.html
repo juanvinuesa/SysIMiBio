@@ -2,6 +2,14 @@
 
 {% block content %}
 
+{% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+            {% endfor %}
+        {% endif %}
+
 <a href=""> voltar </a>
 
 <h1>Detalles de la ocorrencia: {{ occurrence.scientificName }}</h1>

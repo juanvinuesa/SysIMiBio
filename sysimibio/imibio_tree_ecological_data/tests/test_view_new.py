@@ -62,8 +62,8 @@ class TreeEcologicalDataRegistrationNewPostValid(TestCase):
         self.resp = self.client.post(r('imibio_tree_ecological_data:new'), self.data)
 
     def test_Post(self):
-        """Valid post should redirect"""
-        self.assertEqual(302, self.resp.status_code)
+        """Valid post should redirect to registro_ecologico_arboreas/1/"""
+        self.assertRedirects(self.resp, r('imibio_tree_ecological_data:detail', 1))
 
     def test_save_TreeEcologicalRegistration(self):
         self.assertTrue(TreeEcologicalData.objects.exists())

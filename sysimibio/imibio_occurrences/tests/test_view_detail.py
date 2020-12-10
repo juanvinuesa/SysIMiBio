@@ -34,6 +34,7 @@ class OccurrenceDetailGet(TestCase):
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
+
     def test_template(self):
         self.assertTemplateUsed(self.resp, 'occurrences/occurrence_detail.html')
 
@@ -42,29 +43,29 @@ class OccurrenceDetailGet(TestCase):
         self.assertIsInstance(occurrence, ImibioOccurrence)
 
     def test_html(self):
-        content = (
-            ('Observation'),
-            (1),
-            (1),
-            (2),
-            ('Panthera Onca'),
-            ('reino'),
-            ('filo'),
-            ('clase'),
-            ('orden'),
-            ('familia'),
-            ('genero'),
-            ('epiteto especifico'),
-            ('ranking de la taxonomia'),
-            ('infra espiteto'),
-            ('calificacion de identificacion'),
-            ('Argentina'),
-            ('Misiones'),
-            ('Posadas'),
-            ('Felipe'),
-            (1),
-            (-56),
-            (-60))
+        content = [
+            'Observation',
+            1,
+            1,
+            2,
+            'Panthera Onca',
+            'reino',
+            'filo',
+            'clase',
+            'orden',
+            'familia',
+            'genero',
+            'epiteto especifico',
+            'ranking de la taxonomia',
+            'infra espiteto',
+            'calificacion de identificacion',
+            'Argentina',
+            'Misiones',
+            'Posadas',
+            'Felipe',
+            1,
+            -56,
+            -60]
         with self.subTest():
             for expected in content:
                 self.assertContains(self.resp, expected)

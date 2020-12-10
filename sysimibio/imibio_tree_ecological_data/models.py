@@ -3,7 +3,7 @@ from django.db import models
 
 
 class TreeEcologicalData(models.Model):
-    fecha = models.DateField()
+    fecha = models.TextField()
     hora_inicio = models.TimeField()
     hora_final = models.TimeField()
     temperatura = models.FloatField()
