@@ -1,15 +1,14 @@
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
-from datetime import date, time
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
 class TreeEcologicalRegistrationDetailGet(TestCase):
     def setUp(self):
         self.obj = TreeEcologicalData.objects.create(
-            fecha=date(2020,12,30),
-            hora_inicio=time(0),
-            hora_final=time(0,30),
+            fecha='2020-12-31',
+            hora_inicio='0:0',
+            hora_final='0:30',
             temperatura=35.9,
             humedad=80,
             responsable="Florencia",
@@ -43,9 +42,9 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
 
     def test_html(self):
         content = (
-            self.obj.fecha,#date(2020,12,30),
-            # time(0),
-            # time(0,30),
+            '2020-12-31',
+            '0:0',
+            '0:30',
             35.9,
             80,
             "Florencia",
@@ -63,8 +62,8 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             'Teste estado del arbol',
             'Estado de vida',
             'Clasificacion de vida')
-        with self.subTest():
-            for expected in content:
+        for expected in content:
+            with self.subTest():
                 self.assertContains(self.resp, expected)
 
 class TreeEcologicalRegistrationDetailGet(TestCase):
