@@ -1,4 +1,7 @@
 from django import forms
+from django.core.exceptions import ValidationError
+
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
 class TreeEcologicalForm(forms.Form):
@@ -22,3 +25,11 @@ class TreeEcologicalForm(forms.Form):
     estado_arbol = forms.CharField()
     forma_vida = forms.CharField()
     clasificacion_sociologica = forms.CharField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get('hora_inicio')
+        end_time = cleaned_data.get('hora_final')
+        if start_time > end_time:
+            raise forms.ValidationError("Hora inicial debe ser menor que hora final")
+        return cleaned_data
