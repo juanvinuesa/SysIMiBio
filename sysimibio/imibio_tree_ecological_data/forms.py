@@ -31,5 +31,5 @@ class TreeEcologicalForm(forms.Form):
         start_time = cleaned_data.get('hora_inicio')
         end_time = cleaned_data.get('hora_final')
         if start_time > end_time:
-            raise forms.ValidationError("Hora inicial debe ser menor que hora final")
+            raise forms.ValidationError({"hora_inicio": "Hora inicial debe ser menor que hora final"})
         return cleaned_data
