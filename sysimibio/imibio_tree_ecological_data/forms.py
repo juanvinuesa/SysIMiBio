@@ -1,11 +1,15 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
+from datetime import date
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
+def validate_fecha(value):
+    # pass
+    if value > date.today():
+        raise ValidationError('Fecha debe estar en el formato AAAA-MM-DD y debe ser menor o igual a la fecha de hoy', 'fecha')
 
 class TreeEcologicalForm(forms.Form):
-    fecha = forms.DateField(help_text='ej.: AAAA-MM-DD')
+    fecha = forms.DateField(help_text='ej.: AAAA-MM-DD', validators=[validate_fecha])
     hora_inicio = forms.TimeField(help_text='ej.: 12:30')
     hora_final = forms.TimeField(help_text='ej.: 13:00')
     temperatura= forms.FloatField(help_text='°C')

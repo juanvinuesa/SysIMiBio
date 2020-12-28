@@ -19,7 +19,7 @@ class TreeRegistrationFormTest(TestCase):
              'forma_vida', 'clasificacion_sociologica'], list(self.form.fields))
 
     def make_validated_form(self, **kwargs):
-        valid = dict(fecha = '2020-12-30', hora_inicio = '0:0',
+        valid = dict(fecha = '2020-12-01', hora_inicio = '0:0',
             hora_final = '0:30', temperatura = 35.9,
             humedad = 80, responsable = "Florencia",
             acompanantes = 'Felipe', id_parcela = 1,
@@ -34,6 +34,9 @@ class TreeRegistrationFormTest(TestCase):
 
     def test_start_time_not_bigger_than_end_time(self):
         """Star time must be lower then end time"""
-        # data com
         form = self.make_validated_form(hora_inicio = '0:10', hora_final = '0:0')
         self.assertListEqual(['__all__'], list(form.errors))
+
+    def test_date_not_bigger_then_today(self):
+        form = self.make_validated_form(fecha = '2050-12-31')
+        self.assertListEqual(['fecha'], list(form.errors))
