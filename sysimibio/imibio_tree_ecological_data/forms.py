@@ -28,8 +28,8 @@ class TreeEcologicalForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        start_time = cleaned_data.get('hora_inicio')
-        end_time = cleaned_data.get('hora_final')
+        start_time = self.cleaned_data.get('hora_inicio')
+        end_time = self.cleaned_data.get('hora_final')
         if start_time is not None and end_time is not None and start_time > end_time:
-            raise forms.ValidationError({"hora_inicio": "Hora inicial debe ser menor que hora final"})
+            raise ValidationError("Hora de inicio debe ser menor que hora final")
         return cleaned_data

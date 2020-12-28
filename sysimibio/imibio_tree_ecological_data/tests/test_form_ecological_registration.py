@@ -17,3 +17,23 @@ class TreeRegistrationFormTest(TestCase):
              'id_arbol', 'especie', 'dap', 'dab', 'altura', 'latitud',
              'longitud', 'fotografia', 'obs', 'estado_arbol',
              'forma_vida', 'clasificacion_sociologica'], list(self.form.fields))
+
+    def make_validated_form(self, **kwargs):
+        valid = dict(fecha = '2020-12-30', hora_inicio = '0:0',
+            hora_final = '0:30', temperatura = 35.9,
+            humedad = 80, responsable = "Florencia",
+            acompanantes = 'Felipe', id_parcela = 1,
+            id_arbol = 1, especie = 'Solanaceae',
+            dap = 40, dab = 60, altura = 60, latitud = -43, longitud = -56,
+            fotografia = True, obs = 'Teste 1', estado_arbol = 'Teste estado del arbol',
+            forma_vida = 'Estado de vida', clasificacion_sociologica = 'Clasificacion de vida')
+        data = dict(valid, **kwargs)
+        form = TreeEcologicalForm(data)
+        form.is_valid()
+        return form
+
+    def test_start_time_not_bigger_than_end_time(self):
+        """Star time must be lower then end time"""
+        # data com
+        form = self.make_validated_form(hora_inicio = '0:10', hora_final = '0:0')
+        self.assertListEqual(['__all__'], list(form.errors))

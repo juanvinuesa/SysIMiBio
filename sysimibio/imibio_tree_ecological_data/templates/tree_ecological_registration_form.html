@@ -20,6 +20,9 @@
         <div class="accordion" id="accordionExample">
             <form method="POST" action="." class="post-form">
               {% csrf_token %}
+           <div class="alert alert-warning" role="alert">
+           {{ form.non_field_errors }}
+           </div>
           <div class="card ">
             <div class="card-header" id="headingOne">
               <h3 class="mb-0">
