@@ -24,8 +24,8 @@ class TreeRegistrationFormTest(TestCase):
             humedad = 80, responsable = "Florencia",
             acompanantes = 'Felipe', id_parcela = 1,
             id_arbol = 1, especie = 'Solanaceae',
-            dap = 40, dab = 60, altura = 60, latitud = -43, longitud = -56,
-            fotografia = True, obs = 'Teste 1', estado_arbol = 'Teste estado del arbol',
+            dap = 40, dab = 60, altura = 60, latitud = -26, longitud = -54,
+            fotografia = 'www.google.com', obs = 'Teste 1', estado_arbol = 'Teste estado del arbol',
             forma_vida = 'Estado de vida', clasificacion_sociologica = 'Clasificacion de vida')
         data = dict(valid, **kwargs)
         form = TreeEcologicalForm(data)
@@ -40,3 +40,35 @@ class TreeRegistrationFormTest(TestCase):
     def test_date_not_bigger_then_today(self):
         form = self.make_validated_form(fecha = '2050-12-31')
         self.assertListEqual(['fecha'], list(form.errors))
+
+    def test_temp_not_bigger_45(self):
+        form = self.make_validated_form(temperatura = '46')
+        self.assertListEqual(['temperatura'], list(form.errors))
+
+    def test_temp_not_lower_minus5(self):
+        form = self.make_validated_form(temperatura = '-6')
+        self.assertListEqual(['temperatura'], list(form.errors))
+
+    def test_humedad_not_bigger_100(self):
+        form = self.make_validated_form(humedad = '101')
+        self.assertListEqual(['humedad'], list(form.errors))
+
+    def test_humedad_not_lower_0(self):
+        form = self.make_validated_form(humedad = '-1')
+        self.assertListEqual(['humedad'], list(form.errors))
+
+    def test_min_latitud_value(self):
+        form = self.make_validated_form(latitud = '-28.18')
+        self.assertListEqual(['latitud'], list(form.errors))
+
+    def test_max_latitud_value(self):
+        form = self.make_validated_form(latitud = '-25.47')
+        self.assertListEqual(['latitud'], list(form.errors))
+
+    def test_min_longitud_value(self):
+        form = self.make_validated_form(longitud = '-56.07')
+        self.assertListEqual(['longitud'], list(form.errors))
+
+    def test_max_longitud_value(self):
+        form = self.make_validated_form(longitud = '-53.61')
+        self.assertListEqual(['longitud'], list(form.errors))

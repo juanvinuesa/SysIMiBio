@@ -3,7 +3,7 @@ from django.db import models
 
 
 class TreeEcologicalData(models.Model):
-    fecha = models.TextField()
+    fecha = models.DateField()
     hora_inicio = models.TimeField()
     hora_final = models.TimeField()
     temperatura = models.FloatField()
@@ -18,7 +18,7 @@ class TreeEcologicalData(models.Model):
     altura = models.FloatField()
     latitud = models.FloatField()
     longitud = models.FloatField()
-    fotografia = models.BooleanField()
+    fotografia = models.URLField(null=True, blank=True)
     obs = models.TextField()
     estado_arbol = models.CharField(max_length=100)
     forma_vida = models.CharField(max_length=100)

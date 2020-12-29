@@ -194,7 +194,7 @@
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.fotografia }}
+                      {{ form.fotografia }} {{ form.fotografia.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.obs.id_for_label }}"> {{ form.obs.label }} </label>

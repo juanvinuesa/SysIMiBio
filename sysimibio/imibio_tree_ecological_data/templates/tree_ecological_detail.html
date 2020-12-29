@@ -84,8 +84,14 @@
                 <td>{{ tree_detail.longitud }}</td>
             </tr>
             <tr>
-                <th class="text-right">Fotografía</th>
-                <td>{{ tree_detail.fotografia }}</td>
+                {% if tree_detail.fotografia %}
+                    <th class="text-right">Fotografía</th>
+
+                    <td><a href="{{ tree_detail.fotografia }}">Link para las fotografías</a></td>
+                {% else %}
+                    <th class="text-right">Fotografía</th>
+                    <td> Registro sin fotografía </td>
+                {% endif %}
             </tr>
             <tr>
                 <th class="text-right">Observación</th>
