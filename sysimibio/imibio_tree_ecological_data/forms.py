@@ -16,7 +16,7 @@ class TreeEcologicalForm(forms.Form):
     humedad = forms.FloatField(help_text='%')
     responsable = forms.CharField()
     acompanantes = forms.CharField(label='Acompañantes')
-    id_parcela = forms.CharField()
+    id_parcela = forms.IntegerField()
     id_arbol = forms.IntegerField()
     especie = forms.CharField()
     dap = forms.FloatField(help_text='cm')
