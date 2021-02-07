@@ -34,6 +34,12 @@ heroku config:set DEBUG=False
 gut push heroku master --force
 ```
 
+
+## Base de datos
+
+![](extras/img/modeldb.png)
+
 ## Proceso de desarrollo
 
 Más al respecto del [proceso de desarrolo](./Creation_process.md)
+
