@@ -3,6 +3,22 @@ from django.db import models
 
 
 class TreeEcologicalData(models.Model):
+
+    EMERGENTE = 'Emergente'
+    DOMINANTE = 'Dominante'
+    CODOMINANTE = 'Codominante'
+    INTERMEDIA = 'Intermedia'
+    INFERIOR_SUPRIMIDO = 'Inferior suprimido'
+    INFERIOR_SUMERGIDO = 'Inferior sumergido'
+    SOCIOLOGICAL_CLASSIFICATION_CHOICES = [
+        (EMERGENTE, 'Emergente'),
+        (DOMINANTE, 'Dominante'),
+        (CODOMINANTE, 'Codominante'),
+        (INTERMEDIA, 'Intermedia'),
+        (INFERIOR_SUPRIMIDO, 'Inferior Suprimido'),
+        (INFERIOR_SUMERGIDO, 'Supeior Sumergido'),
+    ]
+
     fecha = models.DateField()
     hora_inicio = models.TimeField()
     hora_final = models.TimeField()
@@ -22,5 +38,9 @@ class TreeEcologicalData(models.Model):
     obs = models.TextField()
     estado_arbol = models.CharField(max_length=100)
     forma_vida = models.CharField(max_length=100)
-    clasificacion_sociologica = models.CharField(max_length=100)
+    clasificacion_sociologica = models.CharField(
+        max_length=100,
+        choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
+        #default=FRESHMAN,
+    )
     created_at = models.DateTimeField(auto_now_add=True)

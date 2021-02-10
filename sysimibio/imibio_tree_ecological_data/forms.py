@@ -2,6 +2,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from datetime import date
 
+from .models import TreeEcologicalData
+
 
 def validate_fecha(value):
     if value > date.today():
@@ -42,18 +44,22 @@ class TreeEcologicalForm(forms.Form):
     responsable = forms.CharField()
     acompanantes = forms.CharField(label='Acompañantes')
     id_parcela = forms.IntegerField()
-    id_arbol = forms.IntegerField()
+    id_arbol = forms.IntegerField() # to be create as "ParcelaXArbolY"
     especie = forms.CharField()
     dap = forms.FloatField(help_text='cm')  # todo a partir de que DAP se va a medir?
     dab = forms.FloatField(help_text='cm')  # todo a partir de que DAB se va a medir?
     altura = forms.FloatField(help_text='m')  # todo a partir de que altura se va a medir?
-    latitud = forms.FloatField(validators=[validate_lat])
+    latitud = forms.FloatField(validators=[validate_lat]) # todo add aclaración de que se esta usando WSG84
     longitud = forms.FloatField(validators=[validate_lon])
-    fotografia = forms.URLField(help_text='ej.: http://www.drive.google.com/fotos_parcelaX', required=False)
+    fotografia = forms.URLField(help_text='ej.: http://www.drive.google.com/fotos_parcelaX', required=False) # todo add file. a tree can have more than one pictures. 1:n
     obs = forms.CharField()
     estado_arbol = forms.CharField()
     forma_vida = forms.CharField()
-    clasificacion_sociologica = forms.CharField()
+    # clasificacion_sociologica = forms.CharField()
+
+    class Meta:
+        model = TreeEcologicalData
+        fields = ('clasificacion_sociologica',)
 
     def clean(self):
         cleaned_data = super().clean()
