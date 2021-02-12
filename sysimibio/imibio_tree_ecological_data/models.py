@@ -52,3 +52,21 @@ class TreeEcologicalData(models.Model):
 
     def __str__(self):
         return f'{self.date} {self.coordinator}'
+
+
+class Tree(models.Model):
+    field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE) # ao deletar um registro de campo os dados de arvore tbm o serao
+    tree_id = models.IntegerField(verbose_name='ID Árbol')
+    specie = models.CharField(verbose_name='especie', max_length=100)
+    dap = models.FloatField()
+    dab = models.FloatField()
+    tree_height = models.FloatField(verbose_name='Altura del árbol')
+    latitude = models.FloatField(verbose_name='latitud')
+    longitude = models.FloatField(verbose_name='longitud')
+    photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
+    obs = models.TextField()
+    tree_status = models.CharField(verbose_name='Estado del árbol', max_length=100)
+    life_form = models.CharField(verbose_name='Forma de Vida', max_length=100)
+    sociological_classification = models.CharField(verbose_name='clasificación sociologica',
+                                                   max_length=100)
+
