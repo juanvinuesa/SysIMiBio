@@ -39,3 +39,7 @@ class TreeEcologicalRegistrationTest(TestCase):
     def test_str(self):
         """str must be species name"""
         self.assertEqual('2020-12-30 Florencia', str(self.obj))
+
+    def test_modified_at(self):
+        """registration must have and created at attr"""
+        self.assertIsInstance(self.obj.last_modification_at, datetime)

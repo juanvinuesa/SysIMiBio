@@ -42,11 +42,13 @@ class TreeEcologicalData(models.Model):
         # choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
         #default=FRESHMAN,
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
+    last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
 
     class Meta:
         verbose_name_plural = 'Registro de campo'
         verbose_name =  'Campo'
+        ordering = ('-date', )
 
     def __str__(self):
         return f'{self.date} {self.coordinator}'
