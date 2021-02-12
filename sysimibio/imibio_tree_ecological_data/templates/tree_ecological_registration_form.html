@@ -3,7 +3,7 @@
 {% block content %}
 <div class = "jumbotron">
     <div class = "container">
-        <h2>Agregar datos ecológicos de especies arbóreas</h2>
+        <h2>Agregar datos ecológicos de species arbóreas</h2>
         {% if messages %}
             {% for message in messages %}
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
@@ -38,76 +38,76 @@
               <div class="card-body">
                   <h5>Obligatórios</h5>
                   <p>
-                      <label for="{{ form.fecha.id_for_label }}"> {{ form.fecha.label }} </label>
-                      {% for error in form.fecha.errors %}
+                      <label for="{{ form.date.id_for_label }}"> {{ form.date.label }} </label>
+                      {% for error in form.date.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.fecha }} {{ form.fecha.help_text }}
+                      {{ form.date }} {{ form.date.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.hora_inicio.id_for_label }}"> {{ form.hora_inicio.label }} </label>
-                      {% for error in form.hora_inicio.errors %}
+                      <label for="{{ form.start_time.id_for_label }}"> {{ form.start_time.label }} </label>
+                      {% for error in form.start_time.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.hora_inicio }}  {{ form.hora_inicio.help_text }}
+                      {{ form.start_time }}  {{ form.start_time.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.hora_final.id_for_label }}"> {{ form.hora_final.label }} </label>
-                      {% for error in form.hora_final.errors %}
+                      <label for="{{ form.end_time.id_for_label }}"> {{ form.end_time.label }} </label>
+                      {% for error in form.end_time.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.hora_final }} {{ form.hora_final.help_text }}
+                      {{ form.end_time }} {{ form.end_time.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.temperatura.id_for_label }}"> {{ form.temperatura.label }} </label>
-                      {% for error in form.temperatura.errors %}
+                      <label for="{{ form.temperatur.id_for_label }}"> {{ form.temperature.label }} </label>
+                      {% for error in form.temperature.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.temperatura }} {{ form.temperatura.help_text }}
+                      {{ form.temperature }} {{ form.temperature.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.humedad.id_for_label }}"> {{ form.humedad.label }} </label>
-                      {% for error in form.humedad.errors %}
+                      <label for="{{ form.humidity.id_for_label }}"> {{ form.humidity.label }} </label>
+                      {% for error in form.humididty.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.humedad }} {{ form.humedad.help_text }}
+                      {{ form.humidity }} {{ form.humidity.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.responsable.id_for_label }}"> {{ form.responsable.label }} </label>
-                      {% for error in form.responsable.errors %}
+                      <label for="{{ form.coordinator.id_for_label }}"> {{ form.coordinator.label }} </label>
+                      {% for error in form.coordinator.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.responsable }}
+                      {{ form.coordinator }}
                   </p>
                   <p>
-                      <label for="{{ form.acompanantes.id_for_label }}"> {{ form.acompanantes.label }} </label>
-                      {% for error in form.acompanantes.errors %}
+                      <label for="{{ form.staff.id_for_label }}"> {{ form.staff.label }} </label>
+                      {% for error in form.staff.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.acompanantes }}
+                      {{ form.staff }}
                   </p>
                   <p>
-                      <label for="{{ form.id_parcela.id_for_label }}"> {{ form.id_parcela.label }} </label>
-                      {% for error in form.id_parcela.errors %}
+                      <label for="{{ form.parcel_id.id_for_label }}"> {{ form.parcel_id.label }} </label>
+                      {% for error in form.parcel_id.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.id_parcela }}
+                      {{ form.parcel_id }}
                   </p>
 
               </div>
@@ -125,22 +125,22 @@
                   <div class="card-body">
                   <h5>Obligatórios</h5>
                   <p>
-                      <label for="{{ form.id_arbol.id_for_label }}"> {{ form.id_arbol.label }} </label>
-                      {% for error in form.id_arbol.errors %}
+                      <label for="{{ form.tree_id.id_for_label }}"> {{ form.tree_id.label }} </label>
+                      {% for error in form.tree_id.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.id_arbol }}
+                      {{ form.tree_id }}
                   </p>
                   <p>
-                      <label for="{{ form.especie.id_for_label }}"> {{ form.especie.label }} </label>
-                      {% for error in form.especie.errors %}
+                      <label for="{{ form.specie.id_for_label }}"> {{ form.specie.label }} </label>
+                      {% for error in form.specie.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.especie }}
+                      {{ form.specie }}
                   </p>
                   <p>
                       <label for="{{ form.dap.id_for_label }}"> {{ form.dap.label }} </label>
@@ -161,40 +161,40 @@
                       {{ form.dab }} {{ form.dab.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.altura.id_for_label }}"> {{ form.altura.label }} </label>
-                      {% for error in form.altura.errors %}
+                      <label for="{{ form.tree_height.id_for_label }}"> {{ form.tree_height.label }} </label>
+                      {% for error in form.tree_height.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.altura }} {{ form.altura.help_text }}
+                      {{ form.tree_height }} {{ form.tree_height.help_text }}
                   </p>
                   <p>
-                      <label for="{{ form.latitud.id_for_label }}"> {{ form.latitud.label }} </label>
-                      {% for error in form.latitud.errors %}
+                      <label for="{{ form.latitude.id_for_label }}"> {{ form.latitude.label }} </label>
+                      {% for error in form.latitude.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.latitud }}
+                      {{ form.latitude }}
                   </p>
                   <p>
-                      <label for="{{ form.longitud.id_for_label }}"> {{ form.longitud.label }} </label>
-                      {% for error in form.longitud.errors %}
+                      <label for="{{ form.longitude.id_for_label }}"> {{ form.longitude.label }} </label>
+                      {% for error in form.longitude.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.longitud }}
+                      {{ form.longitude }}
                   </p>
                   <p>
-                      <label for="{{ form.fotografia.id_for_label }}"> {{ form.fotografia.label }} </label>
-                      {% for error in form.fotografia.errors %}
+                      <label for="{{ form.photo.id_for_label }}"> {{ form.photo.label }} </label>
+                      {% for error in form.photo.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.fotografia }} {{ form.fotografia.help_text }}
+                      {{ form.photo }} {{ form.photo.help_text }}
                   </p>
                   <p>
                       <label for="{{ form.obs.id_for_label }}"> {{ form.obs.label }} </label>
@@ -206,31 +206,31 @@
                       {{ form.obs }}
                   </p>
                   <p>
-                      <label for="{{ form.estado_arbol.id_for_label }}"> {{ form.estado_arbol.label }} </label>
-                      {% for error in form.estado_arbol.errors %}
+                      <label for="{{ form.tree_status.id_for_label }}"> {{ form.tree_status.label }} </label>
+                      {% for error in form.tree_status.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.estado_arbol }}
+                      {{ form.tree_status }}
                   </p>
                   <p>
-                      <label for="{{ form.forma_vida.id_for_label }}"> {{ form.forma_vida.label }} </label>
-                      {% for error in form.forma_vida.errors %}
+                      <label for="{{ form.life_form.id_for_label }}"> {{ form.life_form.label }} </label>
+                      {% for error in form.life_form.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.forma_vida }}
+                      {{ form.life_form }}
                   </p>
                   <p>
-                      <label for="{{ form.clasificacion_sociologica.id_for_label }}"> {{ form.clasificacion_sociologica.label }} </label>
-                      {% for error in form.clasificacion_sociologica.errors %}
+                      <label for="{{ form.sociological_classification.id_for_label }}"> {{ form.sociological_classification.label }} </label>
+                      {% for error in form.sociological_classification.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.clasificacion_sociologica }}
+                      {{ form.sociological_classification }}
                   </p>
                   </div>
               </div>

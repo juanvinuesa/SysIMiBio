@@ -2,22 +2,20 @@ from django import forms
 from django.core.exceptions import ValidationError
 from datetime import date
 
-from .models import TreeEcologicalData
 
-
-def validate_fecha(value):
+def validate_date(value):
     if value > date.today():
         raise ValidationError('Fecha debe estar en el formato AAAA-MM-DD y debe ser menor o igual a la fecha de hoy',
                               'fecha')
 
 
-def validate_temp(temp):
+def validate_temperature(temp):
     if temp < -5 or temp > 45:
         raise ValidationError('Temperatura debe estar en un rango desde -5 hasta 45° Celsius',
                               'temperatura')
 
 
-def validate_humedad(humedad):
+def validate_humidity(humedad):
     if humedad < 0 or humedad > 100:
         raise ValidationError('Humedad debe estar en un rango desde 0 hasta 100%',
                               'humedad')
@@ -36,35 +34,31 @@ def validate_lon(lon):
 
 
 class TreeEcologicalForm(forms.Form):
-    fecha = forms.DateField(help_text='ej.: AAAA-MM-DD', validators=[validate_fecha])
-    hora_inicio = forms.TimeField(help_text='ej.: 12:30')
-    hora_final = forms.TimeField(help_text='ej.: 13:00')
-    temperatura = forms.FloatField(help_text='°C', validators=[validate_temp])
-    humedad = forms.FloatField(help_text='%', validators=[validate_humedad])
-    responsable = forms.CharField()
-    acompanantes = forms.CharField(label='Acompañantes')
-    id_parcela = forms.IntegerField()
-    id_arbol = forms.IntegerField() # to be create as "ParcelaXArbolY"
-    especie = forms.CharField()
+    date = forms.DateField(help_text='ej.: AAAA-MM-DD', validators=[validate_date])
+    start_time = forms.TimeField(help_text='ej.: 12:30')
+    end_time = forms.TimeField(help_text='ej.: 13:00')
+    temperature = forms.FloatField(help_text='°C', validators=[validate_temperature])
+    humidity = forms.FloatField(help_text='%', validators=[validate_humidity])
+    coordinator = forms.CharField()
+    staff = forms.CharField(label='Acompañantes')
+    parcel_id = forms.IntegerField()
+    tree_id = forms.IntegerField() # to be create as "ParcelaXArbolY"
+    specie = forms.CharField()
     dap = forms.FloatField(help_text='cm')  # todo a partir de que DAP se va a medir?
     dab = forms.FloatField(help_text='cm')  # todo a partir de que DAB se va a medir?
-    altura = forms.FloatField(help_text='m')  # todo a partir de que altura se va a medir?
-    latitud = forms.FloatField(validators=[validate_lat]) # todo add aclaración de que se esta usando WSG84
-    longitud = forms.FloatField(validators=[validate_lon])
-    fotografia = forms.URLField(help_text='ej.: http://www.drive.google.com/fotos_parcelaX', required=False) # todo add file. a tree can have more than one pictures. 1:n
+    tree_height = forms.FloatField(help_text='m')  # todo a partir de que altura se va a medir?
+    latitude = forms.FloatField(validators=[validate_lat]) # todo add aclaración de que se esta usando WSG84
+    longitude = forms.FloatField(validators=[validate_lon])
+    photo = forms.URLField(help_text='ej.: http://www.drive.google.com/fotos_parcelaX', required=False) # todo add file. a tree can have more than one pictures. 1:n
     obs = forms.CharField()
-    estado_arbol = forms.CharField()
-    forma_vida = forms.CharField()
-    # clasificacion_sociologica = forms.CharField()
-
-    class Meta:
-        model = TreeEcologicalData
-        fields = ('clasificacion_sociologica',)
+    tree_status = forms.CharField()
+    life_form = forms.CharField()
+    sociological_classification = forms.CharField()
 
     def clean(self):
         cleaned_data = super().clean()
-        start_time = self.cleaned_data.get('hora_inicio')
-        end_time = self.cleaned_data.get('hora_final')
+        start_time = self.cleaned_data.get('start_time')
+        end_time = self.cleaned_data.get('end_time')
         if start_time is not None and end_time is not None and start_time > end_time:
             raise ValidationError("Hora de inicio debe ser menor que hora final")
         return cleaned_data

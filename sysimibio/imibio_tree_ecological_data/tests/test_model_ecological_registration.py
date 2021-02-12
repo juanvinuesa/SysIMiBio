@@ -7,26 +7,26 @@ from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 class TreeEcologicalRegistrationTest(TestCase):
     def setUp(self):
         self.obj = TreeEcologicalData(
-            fecha='2020-12-30',
-            hora_inicio='0:0',
-            hora_final='0:30',
-            temperatura=35.9,
-            humedad=80,
-            responsable="Florencia",
-            acompanantes='Felipe',
-            id_parcela=1,
-            id_arbol=1,
-            especie='Solanaceae',
+            date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator="Florencia",
+            staff='Felipe',
+            parcel_id=1,
+            tree_id=1,
+            specie='Solanaceae',
             dap=40,
             dab=60,
-            altura=60,
-            latitud=-26,
-            longitud=-54,
-            fotografia='www.google.com',
+            tree_height=60,
+            latitude=-26,
+            longitude=-54,
+            photo='www.google.com',
             obs='Teste 1',
-            estado_arbol='Teste estado del arbol',
-            forma_vida='Estado de vida',
-            clasificacion_sociologica='Clasificacion de vida')
+            tree_status='Teste estado del arbol',
+            life_form='Estado de vida',
+            sociological_classification='Clasificacion Sociologica')
         self.obj.save()
 
     def test_create(self):
@@ -35,3 +35,7 @@ class TreeEcologicalRegistrationTest(TestCase):
     def test_created_at(self):
         """ecological registration must have an auto created_at attr."""
         self.assertIsInstance(self.obj.created_at, datetime)
+
+    def test_str(self):
+        """str must be species name"""
+        self.assertEqual('2020-12-30 Florencia', str(self.obj))

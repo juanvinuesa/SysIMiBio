@@ -39,26 +39,26 @@ class TreeEcologicalRegistrationNewGet(TestCase):
 class TreeEcologicalDataRegistrationNewPostValid(TestCase):
     def setUp(self):
         self.data = dict(
-            fecha='01/01/01',
-            hora_inicio='0:0',
-            hora_final='0:30',
-            temperatura=35.9,
-            humedad=80,
-            responsable="Florencia",
-            acompanantes="Felipe",
-            id_parcela=1,
-            id_arbol=1,
-            especie='Solanaceae',
+            date='01/01/01',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator="Florencia",
+            staff="Felipe",
+            parcel_id=1,
+            tree_id=1,
+            specie='Solanaceae',
             dap=40,
             dab=60,
-            altura=60,
-            latitud=-26,
-            longitud=-54,
-            fotografia='www.google.com',
+            tree_height=60,
+            latitude=-26,
+            longitude=-54,
+            photo='www.google.com',
             obs='Teste 1',
-            estado_arbol='Teste estado del arbol',
-            forma_vida='Estado de vida',
-            clasificacion_sociologica='Clasificacion de vida')
+            tree_status='Teste estado del arbol',
+            life_form='Estado de vida',
+            sociological_classification='Clasificacion de vida')
         self.resp = self.client.post(r('imibio_tree_ecological_data:new'), self.data)
 
     def test_Post(self):
@@ -92,14 +92,14 @@ class TreeEcologicalDataRegistrationPostInvalid(TestCase):
 
 class TemplateRegressionTest(TestCase):
     def tes_template_has_non_field_errors(self):
-        invalid_data = dict(fecha = '2020-12-30', hora_inicio = '0:40',
-            hora_final = '0:00', temperatura = 35.9,
-            humedad = 80, responsable = "Florencia",
-            acompanantes = 'Felipe', id_parcela = 1,
-            id_arbol = 1, especie = 'Solanaceae',
-            dap = 40, dab = 60, altura = 60, latitud = -43, longitud = -56,
-            fotografia = True, obs = 'Teste 1', estado_arbol = 'Teste estado del arbol',
-            forma_vida = 'Estado de vida', clasificacion_sociologica = 'Clasificacion de vida')
+        invalid_data = dict(date = '2020-12-30', start_time = '0:40',
+            end_time = '0:00', temperature = 35.9,
+            humidity = 80, coordinator = "Florencia",
+            staff = 'Felipe', parcel_id = 1,
+            tree_id = 1, specie = 'Solanaceae',
+            dap = 40, dab = 60, tree_height = 60, latitude = -43, longitude = -56,
+            photo = True, obs = 'Teste 1', tree_status = 'Teste estado del arbol',
+            life_form = 'Estado de vida', sociological_classification = 'Clasificacion sociologica')
         response = self.client.post(r('imibio_tree_ecological_data:new', invalid_data))
 
         self.assertContais(response, '<ul class="errorlist nonfield">')

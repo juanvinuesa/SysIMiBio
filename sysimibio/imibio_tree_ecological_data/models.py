@@ -1,46 +1,52 @@
 from django.db import models
-# TODO insternaiconalizar los campos
 
 
 class TreeEcologicalData(models.Model):
 
-    EMERGENTE = 'Emergente'
-    DOMINANTE = 'Dominante'
-    CODOMINANTE = 'Codominante'
-    INTERMEDIA = 'Intermedia'
-    INFERIOR_SUPRIMIDO = 'Inferior suprimido'
-    INFERIOR_SUMERGIDO = 'Inferior sumergido'
-    SOCIOLOGICAL_CLASSIFICATION_CHOICES = [
-        (EMERGENTE, 'Emergente'),
-        (DOMINANTE, 'Dominante'),
-        (CODOMINANTE, 'Codominante'),
-        (INTERMEDIA, 'Intermedia'),
-        (INFERIOR_SUPRIMIDO, 'Inferior Suprimido'),
-        (INFERIOR_SUMERGIDO, 'Supeior Sumergido'),
-    ]
+    # EMERGENTE = 'Emergente'
+    # DOMINANTE = 'Dominante'
+    # CODOMINANTE = 'Codominante'
+    # INTERMEDIA = 'Intermedia'
+    # INFERIOR_SUPRIMIDO = 'Inferior suprimido'
+    # INFERIOR_SUMERGIDO = 'Inferior sumergido'
+    # SOCIOLOGICAL_CLASSIFICATION_CHOICES = [
+    #     (EMERGENTE, 'Emergente'),
+    #     (DOMINANTE, 'Dominante'),
+    #     (CODOMINANTE, 'Codominante'),
+    #     (INTERMEDIA, 'Intermedia'),
+    #     (INFERIOR_SUPRIMIDO, 'Inferior Suprimido'),
+    #     (INFERIOR_SUMERGIDO, 'Supeior Sumergido'),
+    # ]
 
-    fecha = models.DateField()
-    hora_inicio = models.TimeField()
-    hora_final = models.TimeField()
-    temperatura = models.FloatField()
-    humedad = models.FloatField()
-    responsable = models.CharField(max_length=100)
-    acompanantes = models.CharField(max_length=100)
-    id_parcela = models.IntegerField()
-    id_arbol = models.IntegerField()
-    especie = models.CharField(max_length=100)
+    date = models.DateField(verbose_name='fecha')
+    start_time = models.TimeField(verbose_name='hora_inicio')
+    end_time = models.TimeField(verbose_name='hora_final')
+    temperature = models.FloatField(verbose_name='temperatura')
+    humidity = models.FloatField(verbose_name='humedad')
+    coordinator = models.CharField(verbose_name='responsable', max_length=100)
+    staff = models.CharField('acompanantes', max_length=100)
+    parcel_id = models.IntegerField(verbose_name='ID parcela')
+    tree_id = models.IntegerField(verbose_name='ID Árbol')
+    specie = models.CharField(verbose_name='especie', max_length=100)
     dap = models.FloatField()
     dab = models.FloatField()
-    altura = models.FloatField()
-    latitud = models.FloatField()
-    longitud = models.FloatField()
-    fotografia = models.URLField(null=True, blank=True)
+    tree_height = models.FloatField(verbose_name='Altura del árbol')
+    latitude = models.FloatField(verbose_name='latitud')
+    longitude = models.FloatField(verbose_name='longitud')
+    photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
     obs = models.TextField()
-    estado_arbol = models.CharField(max_length=100)
-    forma_vida = models.CharField(max_length=100)
-    clasificacion_sociologica = models.CharField(
-        max_length=100,
-        choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
+    tree_status = models.CharField(verbose_name='Estado del árbol', max_length=100)
+    life_form = models.CharField(verbose_name='Forma de Vida', max_length=100)
+    sociological_classification = models.CharField(verbose_name='clasificación sociologica',
+        max_length=100
+        # choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
         #default=FRESHMAN,
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Registro de campo'
+        verbose_name =  'Campo'
+
+    def __str__(self):
+        return f'{self.date} {self.coordinator}'
