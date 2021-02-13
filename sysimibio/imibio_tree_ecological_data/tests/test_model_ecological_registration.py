@@ -14,19 +14,7 @@ class TreeEcologicalRegistrationTest(TestCase):
             humidity=80,
             coordinator="Florencia",
             staff='Felipe',
-            parcel_id=1,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            photo='www.google.com',
-            obs='Teste 1',
-            tree_status='Teste estado del arbol',
-            life_form='Estado de vida',
-            sociological_classification='Clasificacion Sociologica')
+            parcel_id=1)
         self.obj.save()
 
     def test_create(self):
