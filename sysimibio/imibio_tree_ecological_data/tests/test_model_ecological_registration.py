@@ -1,18 +1,21 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
 class TreeEcologicalRegistrationTest(TestCase):
     def setUp(self):
+        coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+
         self.obj = TreeEcologicalData(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
             temperature=35.9,
             humidity=80,
-            coordinator="Florencia",
+            coordinator=coordinator,
             staff='Felipe',
             parcel_id=1)
         self.obj.save()
