@@ -15,7 +15,6 @@ class TreeModelSociologicalTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            staff='Felipe',
             parcel_id=1
         )
 
@@ -149,7 +148,7 @@ class TreeModelSociologicalTest(TestCase):
 class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
+        staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field = TreeEcologicalData.objects.create(
             date='2020-12-30',
             start_time='0:0',
@@ -157,7 +156,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            staff='Felipe',
+            # staff='Felipe',
             parcel_id=1
         )
 

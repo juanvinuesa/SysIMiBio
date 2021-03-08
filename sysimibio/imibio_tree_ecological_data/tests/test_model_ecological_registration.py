@@ -8,6 +8,7 @@ from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 class TreeEcologicalRegistrationTest(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
 
         self.obj = TreeEcologicalData(
             date='2020-12-30',
@@ -16,9 +17,10 @@ class TreeEcologicalRegistrationTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            staff='Felipe',
             parcel_id=1)
+
         self.obj.save()
+        self.obj.staff.add(staff1)
 
     def test_create(self):
         self.assertTrue(TreeEcologicalData.objects.exists())
