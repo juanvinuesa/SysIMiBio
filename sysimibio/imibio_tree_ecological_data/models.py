@@ -9,7 +9,7 @@ class TreeEcologicalData(models.Model):
     temperature = models.FloatField(verbose_name='temperatura')
     humidity = models.FloatField(verbose_name='humedad')
     coordinator = models.ForeignKey(User, related_name='coordenator', verbose_name='responsable', max_length=100, on_delete=models.CASCADE)
-    staff = models.ManyToManyField(User, related_name='staff', verbose_name='acompanantes', max_length=100)
+    staff = models.CharField(verbose_name='acompanantes', max_length=100)
     parcel_id = models.IntegerField(verbose_name='ID parcela')
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
