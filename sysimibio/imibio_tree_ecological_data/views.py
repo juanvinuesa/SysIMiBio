@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, resolve_url as r
 from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
 
 
 def new(request):
@@ -14,8 +14,8 @@ def new(request):
 
 def detail(request, pk):
     try:
-        tree_detail = TreeEcologicalData.objects.get(pk=pk)
-    except TreeEcologicalData.DoesNotExist:
+        tree_detail = Tree.objects.get(pk=pk)
+    except Tree.DoesNotExist:
         raise Http404
     return render(request, 'tree_ecological_detail.html',
                   {'tree_detail': tree_detail})

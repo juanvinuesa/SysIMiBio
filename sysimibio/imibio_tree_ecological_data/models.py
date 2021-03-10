@@ -60,7 +60,7 @@ class Tree(models.Model):
     longitude = models.FloatField(verbose_name='longitud')
     photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
     obs = models.TextField()
-    tree_status = models.CharField(max_length=100)
+    tree_status = models.CharField(max_length=100, null=True)
     phytosanitary_status = models.CharField(max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
