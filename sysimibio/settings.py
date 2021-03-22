@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'test_without_migrations',
     'django_extensions',
+    'djgeojson',
+
+    # APPS
     'sysimibio.core',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
     'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig',

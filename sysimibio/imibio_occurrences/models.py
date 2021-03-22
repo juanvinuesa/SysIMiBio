@@ -1,4 +1,5 @@
 from django.db import models
+from djgeojson.fields import PointField
 #TODO analizar modelo con requisitos TDWC: https://dwc.tdwg.org/terms/
 
 
@@ -244,6 +245,7 @@ class ImibioOccurrence(models.Model):
     repatriated = models.TextField(blank=True, null=True)
     relativeOrganismQuantity = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    geom = PointField()
 
     class Meta:
         verbose_name_plural = 'Ocorrencias'
@@ -252,3 +254,7 @@ class ImibioOccurrence(models.Model):
 
     def __str__(self):
         return self.scientificName
+
+    def save(self, *args, **kwargs):
+        self.geom = {'type': 'Point', 'coordinates': [self.decimalLongitude, self.decimalLatitude]}
+        super(ImibioOccurrence, self).save(*args, **kwargs)

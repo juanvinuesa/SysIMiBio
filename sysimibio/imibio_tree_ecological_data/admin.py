@@ -4,6 +4,7 @@ from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tre
 
 class TreeInline(admin.TabularInline):
     model = Tree
+    exclude = ('geom',)
 
 
 class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
@@ -12,5 +13,6 @@ class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     search_fields = ('date', 'coordinator', 'parcel_id')
     list_filter = ('date', 'coordinator', 'parcel_id')
+
 
 admin.site.register(TreeEcologicalData, TreeEcologicalDataModelAdmin)

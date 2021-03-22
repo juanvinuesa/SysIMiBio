@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from djgeojson.fields import PointField
 
 
 class TreeEcologicalData(models.Model):
@@ -68,8 +69,12 @@ class Tree(models.Model):
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
+    geom = PointField(blank=True)
 
     class Meta:
         verbose_name = 'Árbol'
         verbose_name_plural = 'Árboles'
 
+    def save(self, *args, **kwargs):
+        self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
+        super(Tree, self).save(*args, **kwargs)
