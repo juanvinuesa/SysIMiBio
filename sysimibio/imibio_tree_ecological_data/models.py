@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse_lazy
 from djgeojson.fields import PointField
 
 
@@ -80,6 +81,22 @@ class Tree(models.Model):
         self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
         super(Tree, self).save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
+
     # @property
     # def spp_name(self):
     #     return self.specie
+    # @property
+    # def popup_content(self):
+    #     popup = "<span>Nombre científico: </span>{}".format(
+    #         self.specie)
+    #     popup += "<span>DAP: </span>{}".format(
+    #         self.tree_status)
+    #     popup += "<span>Municipio: </span>{}".format(
+    #         self.phytosanitary_status)
+    #     popup += "<span>Localidad: </span>{}".format(
+    #         self.sociological_classification)
+    #     popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
+    #
+    #     return popup

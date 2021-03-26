@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render, resolve_url as r
+from djgeojson.views import GeoJSONLayerView
+
 from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
 
@@ -35,3 +37,14 @@ def create(request):
     tree_eco_data = TreeEcologicalData.objects.create(**form.cleaned_data)
     messages.success(request, "Registro ecológico agregado con exito")
     return HttpResponseRedirect(r('imibio_tree_ecological_data:detail', tree_eco_data.pk))
+
+
+class TreesGeoJson(GeoJSONLayerView):
+    model = Tree
+    properties = ('specie', 'popup_content',)
+
+    def get_queryset(self):
+        context = Tree.objects.all()
+        return context
+
+trees_geojson = TreesGeoJson.as_view()

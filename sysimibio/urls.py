@@ -21,6 +21,8 @@ from django.views.generic import TemplateView
 import sysimibio.core.views
 from djgeojson.views import GeoJSONLayerView
 from sysimibio.imibio_tree_ecological_data.models import Tree
+from sysimibio.imibio_tree_ecological_data import views as v
+
 
 urlpatterns = [
     path('', sysimibio.core.views.home, name='home'),
@@ -28,9 +30,10 @@ urlpatterns = [
     path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')),
     path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')),
     path('mapa/', TemplateView.as_view(template_name='tree_map.html'), name='map'),
-    url(
-        r'^data.geojson$',
-        GeoJSONLayerView.as_view(model=Tree,
-                                 properties=('specie')
-                                 ), name='data')
+    # url(
+    #     r'^data.geojson$',
+    #     GeoJSONLayerView.as_view(model=Tree,
+    #                              properties=('specie')
+    #                              ), name='data_old'),
+    path('geojson/', v.trees_geojson, name='data'),
 ]
