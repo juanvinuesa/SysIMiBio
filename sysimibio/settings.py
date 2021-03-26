@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'test_without_migrations',
     'django_extensions',
     'djgeojson',
+    'leaflet',
 
     # APPS
     'sysimibio.core',
@@ -128,3 +129,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# leaflet settings
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (-27.0, -54.5),
+    'DEFAULT_ZOOM': 8,
+}

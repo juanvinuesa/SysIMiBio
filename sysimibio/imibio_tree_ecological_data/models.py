@@ -60,6 +60,7 @@ class Tree(models.Model):
     latitude = models.FloatField(verbose_name='latitud')
     longitude = models.FloatField(verbose_name='longitud')
     photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
+    # picture = models.ImageField() # TODO add M2M relation with pictures
     obs = models.TextField()
     tree_status = models.CharField(max_length=100, null=True)
     phytosanitary_status = models.CharField(max_length=100,
@@ -78,3 +79,7 @@ class Tree(models.Model):
     def save(self, *args, **kwargs):
         self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
         super(Tree, self).save(*args, **kwargs)
+
+    # @property
+    # def spp_name(self):
+    #     return self.specie
