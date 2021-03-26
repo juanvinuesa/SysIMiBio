@@ -25,6 +25,11 @@ class TreeEcologicalData(models.Model):
         return f'{self.date} {self.coordinator}'
 
 
+
+class Pictures(models.Model):
+    picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True)
+
+
 class Tree(models.Model):
     EMERGENTE = 'Emergente'
     DOMINANTE = 'Dominante'
@@ -60,8 +65,8 @@ class Tree(models.Model):
     tree_height = models.FloatField(verbose_name='Altura del árbol')
     latitude = models.FloatField(verbose_name='latitud')
     longitude = models.FloatField(verbose_name='longitud')
-    photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
-    # picture = models.ImageField() # TODO add M2M relation with pictures
+    #photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
+    picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True) #models.ManyToManyField(Pictures, related_name='pics')
     obs = models.TextField()
     tree_status = models.CharField(max_length=100, null=True)
     phytosanitary_status = models.CharField(max_length=100,
@@ -84,9 +89,9 @@ class Tree(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
-    # @property
-    # def spp_name(self):
-    #     return self.specie
+    @property
+    def picture_url(self):
+        return self.picture.url
     # @property
     # def popup_content(self):
     #     popup = "<span>Nombre científico: </span>{}".format(

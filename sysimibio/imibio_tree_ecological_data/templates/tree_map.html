@@ -26,7 +26,7 @@
             L.geoJson(data, {
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties;
-                var content = `<img width="300" src="${props.picture_url}"/><h3>${props.specie}</h3>`;
+                var content = `<img width="300" src="${props.picture_url}"/><h3>${props.specie}</h3><p>${props.dap}</p>`;
                 layer.bindPopup(content);
             }}).addTo(map);
           });

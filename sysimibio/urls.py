@@ -14,13 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from django.views.generic import TemplateView
 
 import sysimibio.core.views
-from djgeojson.views import GeoJSONLayerView
-from sysimibio.imibio_tree_ecological_data.models import Tree
 from sysimibio.imibio_tree_ecological_data import views as v
 
 
@@ -36,4 +35,4 @@ urlpatterns = [
     #                              properties=('specie')
     #                              ), name='data_old'),
     path('geojson/', v.trees_geojson, name='data'),
-]
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
