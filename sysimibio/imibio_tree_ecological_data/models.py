@@ -65,8 +65,8 @@ class Tree(models.Model):
     tree_height = models.FloatField(verbose_name='Altura del árbol')
     latitude = models.FloatField(verbose_name='latitud')
     longitude = models.FloatField(verbose_name='longitud')
-    #photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
-    picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True) #models.ManyToManyField(Pictures, related_name='pics')
+    photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE)
     obs = models.TextField()
     tree_status = models.CharField(max_length=100, null=True)
     phytosanitary_status = models.CharField(max_length=100,
@@ -89,19 +89,6 @@ class Tree(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
-    @property
-    def picture_url(self):
-        return self.picture.url
     # @property
-    # def popup_content(self):
-    #     popup = "<span>Nombre científico: </span>{}".format(
-    #         self.specie)
-    #     popup += "<span>DAP: </span>{}".format(
-    #         self.tree_status)
-    #     popup += "<span>Municipio: </span>{}".format(
-    #         self.phytosanitary_status)
-    #     popup += "<span>Localidad: </span>{}".format(
-    #         self.sociological_classification)
-    #     popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
-    #
-    #     return popup
+    # def picture_url(self):
+    #     return self.picture.url

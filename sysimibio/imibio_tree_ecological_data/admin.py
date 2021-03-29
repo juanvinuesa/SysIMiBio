@@ -1,9 +1,14 @@
 from django.contrib import admin
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
+
+
+class PicsInline(admin.TabularInline):
+    model = Pictures
 
 
 class TreeInline(admin.TabularInline):
     model = Tree
+    inlines = [PicsInline]
     exclude = ('geom',)
 
 
@@ -16,3 +21,4 @@ class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TreeEcologicalData, TreeEcologicalDataModelAdmin)
+admin.site.register(Pictures)
