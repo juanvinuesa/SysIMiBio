@@ -92,3 +92,15 @@ class Tree(models.Model):
     # @property
     # def picture_url(self):
     #     return self.picture.url
+    @property
+    def popup_content(self):
+        popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
+            self.specie)
+        popup += "<span>DAP: </span>{}<br>".format(
+            self.dap)
+        popup += "<span>Condición phytosanitaria: </span>{}<br>".format(
+            self.phytosanitary_status)
+        popup += "<span>Clasificación sociologica: </span>{}<br>".format(
+            self.sociological_classification)
+        popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
+        return popup

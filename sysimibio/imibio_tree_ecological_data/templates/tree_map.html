@@ -25,9 +25,8 @@
           .then(function(data) {
             L.geoJson(data, {
               onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties;
-                var content = `<h3>${props.specie}</h3><p>${props.phytosanitary_status}</p>`;
-                layer.bindPopup(content);
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
             }}).addTo(map);
           });
       });

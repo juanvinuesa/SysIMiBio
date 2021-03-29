@@ -41,7 +41,7 @@ def create(request):
 
 class TreesGeoJson(GeoJSONLayerView):
     model = Tree
-    properties = ('specie', 'phytosanitary_status')
+    properties = ('popup_content',)
 
     def get_queryset(self):
         context = Tree.objects.all()
