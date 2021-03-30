@@ -6,8 +6,9 @@ class PicsInline(admin.TabularInline):
     model = Pictures
 
 
-class TreeInline(admin.TabularInline):
+class TreeInline(admin.StackedInline):
     model = Tree
+    extra = 1
     inlines = [PicsInline]
     exclude = ('geom',)
 

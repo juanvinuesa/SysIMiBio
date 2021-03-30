@@ -12,7 +12,7 @@ class TreeEcologicalData(models.Model):
     humidity = models.FloatField(verbose_name='humedad')
     coordinator = models.ForeignKey(User, verbose_name='responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='acompanantes', max_length=100)
-    parcel_id = models.IntegerField(verbose_name='ID parcela')
+    parcel_id = models.IntegerField(verbose_name='ID parcela') # TODO should be ForeignKey?
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
 
@@ -26,9 +26,12 @@ class TreeEcologicalData(models.Model):
 
 
 
-class Pictures(models.Model):
+class Pictures(models.Model): # TODO testar
     picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True)
 
+    class Meta:
+        verbose_name = 'Fotografía'
+        verbose_name_plural = 'Fotografías'
 
 class Tree(models.Model):
     EMERGENTE = 'Emergente'
@@ -59,16 +62,14 @@ class Tree(models.Model):
 
     field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE) # ao deletar um registro de campo os dados de arvore tbm o serao
     tree_id = models.IntegerField(verbose_name='ID Árbol')
-    specie = models.CharField(verbose_name='especie', max_length=100)
+    specie = models.CharField(verbose_name='Nombre especie', max_length=100)
     dap = models.FloatField()
     dab = models.FloatField()
     tree_height = models.FloatField(verbose_name='Altura del árbol')
     latitude = models.FloatField(verbose_name='latitud')
     longitude = models.FloatField(verbose_name='longitud')
-    photo = models.URLField(verbose_name='fotografia', null=True, blank=True)
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE)
-    obs = models.TextField()
-    tree_status = models.CharField(max_length=100, null=True)
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True)
+    obs = models.TextField(verbose_name="Observaciones", blank=True)
     phytosanitary_status = models.CharField(max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
@@ -89,9 +90,7 @@ class Tree(models.Model):
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
-    # @property
-    # def picture_url(self):
-    #     return self.picture.url
+
     @property
     def popup_content(self):
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
@@ -103,4 +102,4 @@ class Tree(models.Model):
         popup += "<span>Clasificación sociologica: </span>{}<br>".format(
             self.sociological_classification)
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
-        return popup
+        return popup # TODO Confirmation about what to show on map

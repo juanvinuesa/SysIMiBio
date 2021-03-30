@@ -9,6 +9,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Juan', 'Juan@imibio.com', 'Juanpassword')
 
+
         self.obj = TreeEcologicalData.objects.create(
             date='2020-12-31',
             start_time='12:22',
@@ -29,9 +30,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
         )
@@ -69,9 +68,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             60,
             -26,
             -54,
-            'www.google.com',
             'Teste 1',
-            'Teste estado del arbol',
             'Bueno',
             'Emergente'
             )

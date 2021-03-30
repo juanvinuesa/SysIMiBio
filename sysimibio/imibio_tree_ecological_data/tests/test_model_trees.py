@@ -28,9 +28,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
         )
@@ -46,9 +45,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Dominante'
         )
@@ -64,9 +62,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Codominante'
         )
@@ -82,9 +79,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Intermedia'
         )
@@ -100,9 +96,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Inferior suprimido'
         )
@@ -118,9 +113,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Inferior sumergido'
         )
@@ -137,9 +131,8 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='http://www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Bad Sociological Classification'
         )
@@ -156,7 +149,6 @@ class TreeModelPhytosanitaryTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            # staff='Felipe',
             parcel_id=1
         )
 
@@ -170,9 +162,8 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
         )
@@ -188,9 +179,8 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Regular',
             sociological_classification='Dominante'
         )
@@ -206,9 +196,8 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Malo',
             sociological_classification='Codominante'
         )
@@ -224,9 +213,8 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='Muerto',
             sociological_classification='Intermedia'
         )
@@ -243,9 +231,8 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            photo='http://www.google.com',
+            # picture=pic_simulation,
             obs='Teste 1',
-            tree_status='Teste estado del arbol',
             phytosanitary_status='BAD phytosanitary',
             sociological_classification='Emergente'
         )
@@ -275,9 +262,8 @@ class TreeModelGeomTest(TestCase):
                 tree_height=60,
                 latitude=-26,
                 longitude=-54,
-                photo='www.google.com',
+                # picture=pic_simulation,
                 obs='Teste 1',
-                tree_status='Teste estado del arbol',
                 phytosanitary_status='Bueno',
                 sociological_classification='Emergente',
                 geom={'type': 'Point', 'coordinates': [0, 0]}
