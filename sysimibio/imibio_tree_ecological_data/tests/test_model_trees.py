@@ -1,11 +1,16 @@
 from django.core.exceptions import ValidationError
-from django.test import TestCase
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, override_settings
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
 from django.contrib.auth.models import User
 
+TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
+
+@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeModelSociologicalTest(TestCase):
     def setUp(self):
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
 
         self.field = TreeEcologicalData.objects.create(
@@ -28,7 +33,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
@@ -45,7 +50,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Dominante'
@@ -62,7 +67,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Codominante'
@@ -79,7 +84,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Intermedia'
@@ -96,7 +101,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Inferior suprimido'
@@ -113,7 +118,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Inferior sumergido'
@@ -131,7 +136,7 @@ class TreeModelSociologicalTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Bad Sociological Classification'
@@ -140,6 +145,7 @@ class TreeModelSociologicalTest(TestCase):
 
 class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field = TreeEcologicalData.objects.create(
@@ -162,7 +168,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
@@ -179,7 +185,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Regular',
             sociological_classification='Dominante'
@@ -196,7 +202,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Malo',
             sociological_classification='Codominante'
@@ -213,7 +219,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='Muerto',
             sociological_classification='Intermedia'
@@ -231,7 +237,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
-            # picture=pic_simulation,
+            picture=self.tempPicture,
             obs='Teste 1',
             phytosanitary_status='BAD phytosanitary',
             sociological_classification='Emergente'
@@ -241,6 +247,7 @@ class TreeModelPhytosanitaryTest(TestCase):
 
 class TreeModelGeomTest(TestCase):
     def setUp(self):
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
 
         self.field = TreeEcologicalData.objects.create(
@@ -262,7 +269,7 @@ class TreeModelGeomTest(TestCase):
                 tree_height=60,
                 latitude=-26,
                 longitude=-54,
-                # picture=pic_simulation,
+                picture=self.tempPicture,
                 obs='Teste 1',
                 phytosanitary_status='Bueno',
                 sociological_classification='Emergente',

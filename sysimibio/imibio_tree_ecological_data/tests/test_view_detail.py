@@ -1,11 +1,16 @@
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.shortcuts import resolve_url as r
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
+
+TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
 
+@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeEcologicalRegistrationDetailGet(TestCase):
     def setUp(self):
+        tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Juan', 'Juan@imibio.com', 'Juanpassword')
 
@@ -30,6 +35,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             tree_height=60,
             latitude=-26,
             longitude=-54,
+            picture = tempPicture,
             obs='Teste 1',
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
@@ -53,10 +59,10 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
         content = (
             'Solanaceae',
             1,
-            'Dec. 31, 2020',
-            '12:22 p.m.',
-            '1:23 p.m.',
-            35.9,
+            '31 de Diciembre de 2020',
+            '12:22',
+            '13:23',
+            35,9,
             80,
             'Florencia',
             'Juan',
