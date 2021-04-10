@@ -2,15 +2,15 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
 from djgeojson.fields import PointField
-# from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, validate_lat, validate_lon
+from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, validate_lat, validate_lon
 
 
 class TreeEcologicalData(models.Model):
-    date = models.DateField(verbose_name='fecha')
+    date = models.DateField(verbose_name='fecha', validators=[validate_date])
     start_time = models.TimeField(verbose_name='hora_inicio')
     end_time = models.TimeField(verbose_name='hora_final')
-    temperature = models.FloatField(verbose_name='temperatura')
-    humidity = models.FloatField(verbose_name='humedad')
+    temperature = models.FloatField(verbose_name='temperatura', validators=[validate_temperature])
+    humidity = models.FloatField(verbose_name='humedad', validators=[validate_humidity])
     coordinator = models.ForeignKey(User, verbose_name='responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='acompanantes', max_length=100)
     parcel_id = models.IntegerField(verbose_name='ID parcela') # TODO should be ForeignKey?
@@ -67,8 +67,8 @@ class Tree(models.Model):
     dap = models.FloatField()
     dab = models.FloatField()
     tree_height = models.FloatField(verbose_name='Altura del árbol')
-    latitude = models.FloatField(verbose_name='latitud')
-    longitude = models.FloatField(verbose_name='longitud')
+    latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])
+    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     phytosanitary_status = models.CharField(max_length=100,

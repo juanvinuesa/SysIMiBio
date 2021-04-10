@@ -35,11 +35,11 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 
 
 class TreeEcologicalForm(forms.Form):
-    date = forms.DateField(help_text='ej.: AAAA-MM-DD', validators=[validate_date])
+    date = forms.DateField(help_text='ej.: AAAA-MM-DD')
     start_time = forms.TimeField(help_text='ej.: 12:30')
     end_time = forms.TimeField(help_text='ej.: 13:00')
-    temperature = forms.FloatField(help_text='°C', validators=[validate_temperature])
-    humidity = forms.FloatField(help_text='%', validators=[validate_humidity])
+    temperature = forms.FloatField(help_text='°C')
+    humidity = forms.FloatField(help_text='%')
     coordinator = forms.CharField()
     staff = forms.CharField(label='Acompañantes')
     parcel_id = forms.IntegerField()
@@ -48,8 +48,8 @@ class TreeEcologicalForm(forms.Form):
     dap = forms.FloatField(help_text='cm')  # todo a partir de que DAP se va a medir?
     dab = forms.FloatField(help_text='cm')  # todo a partir de que DAB se va a medir?
     tree_height = forms.FloatField(help_text='m')  # todo a partir de que altura se va a medir?
-    latitude = forms.FloatField(validators=[validate_lat]) # todo add aclaración de que se esta usando WSG84
-    longitude = forms.FloatField(validators=[validate_lon])
+    latitude = forms.FloatField() # todo add aclaración de que se esta usando WSG84
+    longitude = forms.FloatField()
     picture = forms.FileField(help_text='Choose foto', required=False) # todo add file. a tree can have more than one pictures. 1:n
     obs = forms.CharField()
     phytosanitary_status = forms.CharField()
