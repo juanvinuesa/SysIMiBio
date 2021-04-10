@@ -15,8 +15,8 @@ class TreeRegistrationFormTest(TestCase):
             ['date', 'start_time', 'end_time', 'temperature',
              'humidity', 'coordinator', 'staff', 'parcel_id',
              'tree_id', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
-             'longitude', 'photo', 'obs', 'tree_status',
-             'life_form', 'sociological_classification'], list(self.form.fields))
+             'longitude', 'picture', 'obs',
+             'phytosanitary_status', 'sociological_classification'], list(self.form.fields))
 
     def make_validated_form(self, **kwargs):
         valid = dict(date = '2020-12-01', start_time = '0:0',
@@ -25,8 +25,9 @@ class TreeRegistrationFormTest(TestCase):
             staff = 'Felipe', parcel_id = 1,
             tree_id = 1, specie = 'Solanaceae',
             dap = 40, dab = 60, tree_height = 60, latitude = -26, longitude = -54,
-            photo = 'www.google.com', obs = 'Teste 1', tree_status = 'Teste estado del arbol',
-            life_form = 'Estado de vida', sociological_classification = 'Clasificacion sociologica')
+            # picture = 'www.google.com',
+                     obs = 'Teste 1',
+            phytosanitary_status = 'Muerto', sociological_classification = 'Emergente')
         data = dict(valid, **kwargs)
         form = TreeEcologicalForm(data)
         form.is_valid()

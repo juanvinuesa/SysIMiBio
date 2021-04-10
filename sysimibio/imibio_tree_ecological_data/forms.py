@@ -49,10 +49,9 @@ class TreeEcologicalForm(forms.Form):
     tree_height = forms.FloatField(help_text='m')  # todo a partir de que altura se va a medir?
     latitude = forms.FloatField(validators=[validate_lat]) # todo add aclaración de que se esta usando WSG84
     longitude = forms.FloatField(validators=[validate_lon])
-    photo = forms.URLField(help_text='ej.: http://www.drive.google.com/fotos_parcelaX', required=False) # todo add file. a tree can have more than one pictures. 1:n
+    picture = forms.FileField(help_text='Choose foto', required=False) # todo add file. a tree can have more than one pictures. 1:n
     obs = forms.CharField()
-    tree_status = forms.CharField()
-    life_form = forms.CharField()
+    phytosanitary_status = forms.CharField()
     sociological_classification = forms.CharField()
 
     def clean(self):
