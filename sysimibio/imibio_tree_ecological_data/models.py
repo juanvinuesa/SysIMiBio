@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
 from djgeojson.fields import PointField
+# from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, validate_lat, validate_lon
 
 
 class TreeEcologicalData(models.Model):

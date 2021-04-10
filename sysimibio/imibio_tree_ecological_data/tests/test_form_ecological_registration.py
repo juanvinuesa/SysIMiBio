@@ -19,7 +19,8 @@ class TreeRegistrationFormTest(TestCase):
              'phytosanitary_status', 'sociological_classification'], list(self.form.fields))
 
     def make_validated_form(self, **kwargs):
-        valid = dict(date = '2020-12-01', start_time = '0:0',
+        valid = dict(date = '2020-12-01',
+                     start_time = '0:0',
             end_time = '0:30', temperature = 35.9,
             humidity = 80, coordinator = "Florencia",
             staff = 'Felipe', parcel_id = 1,
