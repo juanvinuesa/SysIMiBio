@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
 from djgeojson.views import GeoJSONLayerView
 
-from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
+from sysimibio.imibio_tree_ecological_data.forms import TreeForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
 
 
@@ -24,11 +24,11 @@ def detail(request, pk):
 
 
 def empty_form(request):
-    return render(request, 'tree_ecological_registration_form.html', {'form': TreeEcologicalForm()})
+    return render(request, 'tree_ecological_registration_form.html', {'form': TreeForm()})
 
 
 def create(request):
-    form = TreeEcologicalForm(request.POST)
+    form = TreeForm(request.POST)
 
     if not form.is_valid():
         return render(request, 'tree_ecological_registration_form.html',
@@ -46,5 +46,6 @@ class TreesGeoJson(GeoJSONLayerView):
     def get_queryset(self):
         context = Tree.objects.all()
         return context
+
 
 trees_geojson = TreesGeoJson.as_view()

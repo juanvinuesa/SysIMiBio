@@ -144,6 +144,7 @@ class TreeModelSociologicalTest(TestCase):
         )
         self.assertRaises(ValidationError, tree.full_clean)
 
+
 class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
