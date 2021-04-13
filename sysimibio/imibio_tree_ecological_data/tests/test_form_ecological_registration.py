@@ -71,36 +71,36 @@ class TreeRegistrationFormTest(TestCase):
 
     def test_date_not_bigger_then_today(self):
         form = self.make_FieldForm_validated(date='2050-12-31')
-        self.assertListEqual(['date'], list(form.errors))
+        self.assertFormCode(form, 'date', 'Date in the future')
 
     def test_temp_not_bigger_45(self):
         form = self.make_FieldForm_validated(temperature='46')
-        self.assertListEqual(['temperature'], list(form.errors))  # todo change to asserFormCode
+        self.assertFormCode(form, 'temperature', 'Temperature out of the range')
 
     def test_temp_not_lower_minus5(self):
         form = self.make_FieldForm_validated(temperature='-6')
-        self.assertListEqual(['temperature'], list(form.errors))
+        self.assertFormCode(form, 'temperature', 'Temperature out of the range')
 
     def test_humedad_not_bigger_100(self):
         form = self.make_FieldForm_validated(humidity='101')
-        self.assertListEqual(['humidity'], list(form.errors))
+        self.assertFormCode(form, 'humidity', 'Humidity out of the range')
 
     def test_humedad_not_lower_0(self):
         form = self.make_FieldForm_validated(humidity='-1')
-        self.assertListEqual(['humidity'], list(form.errors))
+        self.assertFormCode(form, 'humidity', 'Humidity out of the range')
 
     def test_min_latitud_value(self):
         form = self.make_TreeForm_validated(latitude='-28.18')
-        self.assertListEqual(['latitude'], list(form.errors))
+        self.assertFormCode(form, 'latitude', 'Latitude out of the range')
 
     def test_max_latitud_value(self):
         form = self.make_TreeForm_validated(latitude='-25.47')
-        self.assertListEqual(['latitude'], list(form.errors))
+        self.assertFormCode(form, 'latitude', 'Latitude out of the range')
 
     def test_min_longitud_value(self):
         form = self.make_TreeForm_validated(longitude='-56.07')
-        self.assertListEqual(['longitude'], list(form.errors))
+        self.assertFormCode(form, 'longitude', 'Longitude out of the range')
 
     def test_max_longitud_value(self):
         form = self.make_TreeForm_validated(longitude='-53.61')
-        self.assertListEqual(['longitude'], list(form.errors))
+        self.assertFormCode(form, 'longitude', 'Longitude out of the range')
