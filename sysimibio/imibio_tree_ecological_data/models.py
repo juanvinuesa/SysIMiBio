@@ -14,7 +14,7 @@ class TreeEcologicalData(models.Model):
     humidity = models.FloatField(verbose_name='humedad', validators=[validate_humidity], help_text='%')
     coordinator = models.ForeignKey(User, verbose_name='responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='acompanantes',
-                                   max_length=100)  # todo add label='Acompañantes'
+                                   max_length=100)
     parcel_id = models.IntegerField(verbose_name='ID parcela')  # TODO should be ForeignKey?
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
@@ -28,7 +28,7 @@ class TreeEcologicalData(models.Model):
         return f'{self.date} {self.coordinator}'
 
 
-class Pictures(models.Model):  # TODO testar
+class Pictures(models.Model):
     picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True, help_text='Choose foto')
 
     class Meta:
@@ -71,7 +71,7 @@ class Tree(models.Model):
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m')  # todo a partir de que altura se va a medir?
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])  # todo add aclaración de que se esta usando WSG84
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True)  # todo add file. a tree can have more than one pictures. 1:n
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     phytosanitary_status = models.CharField(max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
