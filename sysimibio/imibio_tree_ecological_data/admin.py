@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from sysimibio.imibio_tree_ecological_data.forms import FieldForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
 
 
@@ -14,6 +16,7 @@ class TreeInline(admin.StackedInline):
 
 
 class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
+    form = FieldForm
     inlines = [TreeInline]
     list_display = ('date', 'coordinator', 'start_time', 'end_time', 'parcel_id', 'created_at', 'last_modification_at')
     date_hierarchy = 'date'
