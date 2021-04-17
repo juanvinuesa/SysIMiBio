@@ -10,7 +10,7 @@ class TreeEcologicalRegistrationTest(TestCase):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
 
-        self.obj = TreeEcologicalData(
+        self.field = TreeEcologicalData(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
@@ -19,20 +19,20 @@ class TreeEcologicalRegistrationTest(TestCase):
             coordinator=coordinator,
             parcel_id=1)
 
-        self.obj.save()
-        self.obj.staff.add(staff1)
+        self.field.save()
+        self.field.staff.add(staff1)
 
     def test_create(self):
         self.assertTrue(TreeEcologicalData.objects.exists())
 
     def test_created_at(self):
         """ecological registration must have an auto created_at attr."""
-        self.assertIsInstance(self.obj.created_at, datetime)
+        self.assertIsInstance(self.field.created_at, datetime)
 
     def test_str(self):
         """str must be species name"""
-        self.assertEqual('2020-12-30 Florencia', str(self.obj))
+        self.assertEqual('2020-12-30 Florencia', str(self.field))
 
     def test_modified_at(self):
         """registration must have and created at attr"""
-        self.assertIsInstance(self.obj.last_modification_at, datetime)
+        self.assertIsInstance(self.field.last_modification_at, datetime)

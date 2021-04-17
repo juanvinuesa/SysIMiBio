@@ -24,132 +24,59 @@ class TreeModelSociologicalTest(TestCase):
             parcel_id=1
         )
 
+        self.valid = Tree(field=self.field,
+                     tree_id=1,
+                     specie='Solanaceae',
+                     dap=40,
+                     dab=60,
+                     tree_height=60,
+                     latitude=-26,
+                     longitude=-54,
+                     picture=self.tempPicture,
+                     obs='Teste 1',
+                     phytosanitary_status='Bueno',
+                     sociological_classification='Emergente')
+
     def test_sociologicalclassification_Emergente(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente'
-        )
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_Dominante(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Dominante'
-        )
+        self.valid.sociological_classification = 'Dominante'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_Codominante(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Codominante'
-        )
+        self.valid.sociological_classification = 'Codominante'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_Intermedia(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Intermedia'
-        )
+        self.valid.sociological_classification = 'Intermedia'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_Inferior_suprimido(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Inferior suprimido'
-        )
+        self.valid.sociological_classification = 'Inferior suprimido'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_Inferior_sumergido(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Inferior sumergido'
-        )
+        self.valid.sociological_classification = 'Inferior sumergido'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_sociologicalclassification_CHOICES(self):
-        """"Sociological classification mus be limited by choices"""
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Bad Sociological Classification'
-        )
-        self.assertRaises(ValidationError, tree.full_clean)
+        self.valid.sociological_classification = 'Bad sociological classification'
+        self.valid.save()
+        self.assertRaises(ValidationError, self.valid.full_clean)
 
 
 class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-        staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
+
         self.field = TreeEcologicalData.objects.create(
             date='2020-12-30',
             start_time='0:0',
@@ -160,91 +87,44 @@ class TreeModelPhytosanitaryTest(TestCase):
             parcel_id=1
         )
 
+        self.valid = Tree(field=self.field,
+                          tree_id=1,
+                          specie='Solanaceae',
+                          dap=40,
+                          dab=60,
+                          tree_height=60,
+                          latitude=-26,
+                          longitude=-54,
+                          picture=self.tempPicture,
+                          obs='Teste 1',
+                          phytosanitary_status='Bueno',
+                          sociological_classification='Emergente')
+
     def test_phytosanitary_Bueno(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente'
-        )
+        self.valid.phytosanitary_status='Bueno'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_phytosanitary_Regular(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Regular',
-            sociological_classification='Dominante'
-        )
+        self.valid.phytosanitary_status = 'Regular'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_phytosanitary_Malo(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Malo',
-            sociological_classification='Codominante'
-        )
+        self.valid.phytosanitary_status = 'Malo'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_phytosanitary_Muerto(self):
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Muerto',
-            sociological_classification='Intermedia'
-        )
+        self.valid.phytosanitary_status = 'Muerto'
+        self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
     def test_phytosanitary_CHOICES(self):
         """"Sociological classification mus be limited by choices"""
-        tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
-            latitude=-26,
-            longitude=-54,
-            picture=self.tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='BAD phytosanitary',
-            sociological_classification='Emergente'
-        )
-        self.assertRaises(ValidationError, tree.full_clean)
+        self.valid.phytosanitary_status = 'BAD phytosanitary'
+        self.valid.save()
+        self.assertRaises(ValidationError, self.valid.full_clean)
 
 
 class TreeModelGeomTest(TestCase):
