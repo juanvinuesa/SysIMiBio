@@ -72,7 +72,7 @@ class Tree(models.Model):
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m')  # todo a partir de que altura se va a medir?
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])  # todo add aclaración de que se esta usando WSG84
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True)
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     phytosanitary_status = models.CharField(max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,

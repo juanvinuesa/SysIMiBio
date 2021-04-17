@@ -274,8 +274,7 @@ class TreeModelGeomTest(TestCase):
                 picture=self.tempPicture,
                 obs='Teste 1',
                 phytosanitary_status='Bueno',
-                sociological_classification='Emergente',
-                geom={'type': 'Point', 'coordinates': [0, 0]}
+                sociological_classification='Emergente'
             )
 
     def test_exists(self):

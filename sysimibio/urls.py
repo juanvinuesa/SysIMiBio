@@ -20,7 +20,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 
 import sysimibio.core.views
-from sysimibio.imibio_tree_ecological_data import views as v
+# from sysimibio.imibio_tree_ecological_data import views as v
 
 
 urlpatterns = [
@@ -29,5 +29,5 @@ urlpatterns = [
     path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')),
     path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')),
     path('mapa/', TemplateView.as_view(template_name='tree_map.html'), name='map'),
-    path('geojson/', v.trees_geojson, name='data'),
+    # path('geojson/', v.trees_geojson, name='data'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
