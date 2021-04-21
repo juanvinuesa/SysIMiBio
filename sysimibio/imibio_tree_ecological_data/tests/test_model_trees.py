@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
 from django.contrib.auth.models import User
-# todo refactor tests to have only one dict object
+
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 

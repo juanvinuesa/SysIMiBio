@@ -36,7 +36,7 @@ class TreeEcologicalRegistrationNewGet(TestCase):
     def test_has_form(self):
         """context must have tree ecological data registration form"""
         form = self.resp.context['form']
-        self.assertIsInstance(form, TreeEcologicalForm)  # todo resolver esse teste
+        self.assertIsInstance(form, TreeEcologicalForm)  # todo resolver esse teste quando tiver usando form e template
 
 
 @skip
@@ -87,7 +87,7 @@ class TreeEcologicalDataRegistrationPostInvalid(TestCase):
         self.assertTemplateUsed(self.resp, 'tree_ecological_registration_form.html')
 
     def test_template_has_form(self):
-        self.assertIsInstance(self.form, TreeEcologicalForm)  # todo resolver esse teste
+        self.assertIsInstance(self.form, TreeEcologicalForm)  # todo resolver esse teste quando tiver usando form e template
 
     def test_form_has_errors(self):
         self.assertTrue(self.form.errors)
