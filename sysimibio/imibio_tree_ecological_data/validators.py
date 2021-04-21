@@ -34,4 +34,4 @@ def validate_lon(lon):
 def tree_height_validation(tree_height):
     if tree_height < 1.3:
         raise ValidationError('Altura del árbol no puede ser menor a 1.3 metros',
-                              'Tree height too small')
+                              'Tree heigh too small')

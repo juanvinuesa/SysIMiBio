@@ -68,7 +68,7 @@ class Tree(models.Model):
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
     dap = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
     dab = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
-    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])  # todo el arbol tiene altura mayor a 1.3 metros
+    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])  # todo add aclaración de que se esta usando WSG84
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
