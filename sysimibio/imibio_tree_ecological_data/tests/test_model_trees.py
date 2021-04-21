@@ -66,7 +66,7 @@ class TreeModelSociologicalTest(TestCase):
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
-    def test_sociologicalclassification_CHOICES(self):
+    def test_sociologicalclassification_CHOICES(self): # todo change to form test?
         self.valid.sociological_classification = 'Bad sociological classification'
         self.valid.save()
         self.assertRaises(ValidationError, self.valid.full_clean)
@@ -120,7 +120,7 @@ class TreeModelPhytosanitaryTest(TestCase):
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
-    def test_phytosanitary_CHOICES(self):
+    def test_phytosanitary_CHOICES(self): # todo should ths be in form test?
         """"Sociological classification mus be limited by choices"""
         self.valid.phytosanitary_status = 'BAD phytosanitary'
         self.valid.save()

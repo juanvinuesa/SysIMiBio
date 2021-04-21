@@ -31,7 +31,7 @@ class TreesGeoJsonView(TestCase):
             phytosanitary_status='Bueno',
             sociological_classification='Emergente'
         )
-        self.resp = self.client.get(r('imibio_tree_ecological_data:data'))
+        self.resp = self.client.get(r('data'))
 
     def test_get(self):
         """GET /registro_ecologico/geojson must get status code 200"""

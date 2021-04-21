@@ -30,3 +30,8 @@ def validate_lon(lon):
     if lon < -56.06 or lon > -53.62:
         raise ValidationError('Longitud no corresponde a Misiones',
                               'Longitude out of the range')
+
+def tree_height_validation(tree_height):
+    if tree_height < 1.3:
+        raise ValidationError('Altura del árbol no puede ser menor a 1.3 metros',
+                              'Tree height too small')

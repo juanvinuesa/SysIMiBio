@@ -5,7 +5,7 @@ from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 
-class TreeRegistrationFormTest(TestCase):
+class TreeRegistrationFormTest(TestCase): # todo refactor splitting for each model/form
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Treeform = TreeForm()
@@ -104,3 +104,7 @@ class TreeRegistrationFormTest(TestCase):
     def test_max_longitud_value(self):
         form = self.make_TreeForm_validated(longitude='-53.61')
         self.assertFormCode(form, 'longitude', 'Longitude out of the range')
+
+    def test_min_tree_height(self):
+        form = self.make_TreeForm_validated(tree_height=1.29)
+        self.assertFormCode(form, 'tree_height', 'Tree height too small')

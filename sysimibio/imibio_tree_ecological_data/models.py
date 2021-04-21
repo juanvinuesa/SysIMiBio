@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse_lazy
 from djgeojson.fields import PointField
 from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, \
-    validate_lat, validate_lon
+    validate_lat, validate_lon, tree_height_validation
 
 
 class TreeEcologicalData(models.Model):
@@ -67,9 +66,9 @@ class Tree(models.Model):
     field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE)  # ao deletar um registro de campo os dados de arvore tbm o serao
     tree_id = models.IntegerField(verbose_name='ID Árbol')
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(help_text='cm')  # todo a partir de que DAP se va a medir?
-    dab = models.FloatField(help_text='cm')  # todo a partir de que DAB se va a medir?
-    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m')  # todo a partir de que altura se va a medir?
+    dap = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
+    dab = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
+    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])  # todo el arbol tiene altura mayor a 1.3 metros
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])  # todo add aclaración de que se esta usando WSG84
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
@@ -95,14 +94,12 @@ class Tree(models.Model):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
     @property
-    def popup_content(self):
+    def popup_content(self): # todo Me parece que lo importante es poner alguna foto
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
-        popup += "<span>DAP: </span>{}<br>".format(
-            self.dap)
-        popup += "<span>Condición phytosanitaria: </span>{}<br>".format(
+        popup += "<span>Condición fitosanitario: </span>{}<br>".format(
             self.phytosanitary_status)
-        popup += "<span>Clasificación sociologica: </span>{}<br>".format(
-            self.sociological_classification)
+        popup += "<span>Altura: </span>{}<br>".format(
+            self.tree_height)
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
-        return popup  # TODO Confirmation about what to show on map
+        return popup
