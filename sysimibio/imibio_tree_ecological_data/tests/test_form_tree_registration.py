@@ -1,0 +1,66 @@
+from django.contrib.auth.models import User
+from django.test import TestCase
+from django.shortcuts import resolve_url as r
+from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+
+
+class TreeRegistrationFormTest(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
+        self.Treeform = TreeForm()
+        self.Fieldform = FieldForm()
+        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
+        self.field1 = TreeEcologicalData.objects.create(date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator=self.coordinator1,
+            parcel_id=1)
+
+    def test_Treeform_has_fields(self):
+        """Tree form must have models fields"""
+        self.assertSequenceEqual(
+            ['field', 'tree_id', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
+             'longitude', 'picture', 'obs',
+             'phytosanitary_status', 'sociological_classification'], list(self.Treeform.fields))
+
+    def make_TreeForm_validated(self, **kwargs):
+        valid = dict(field=self.field1,
+            tree_id=1, specie='Solanaceae',
+            dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
+            # picture = 'www.google.com',
+            obs='Teste 1',
+            phytosanitary_status='Muerto', sociological_classification='Emergente')
+        data = dict(valid, **kwargs)
+        form = TreeForm(data)
+        form.is_valid()
+        return form
+
+    def assertFormCode(self, form, field, code):
+        error = form.errors.as_data()
+        error_list = error[field]
+        exception = error_list[0]
+        self.assertEqual(code, exception.code)
+
+    def test_min_latitud_value(self):
+        form = self.make_TreeForm_validated(latitude='-28.18')
+        self.assertFormCode(form, 'latitude', 'Latitude out of the range')
+
+    def test_max_latitud_value(self):
+        form = self.make_TreeForm_validated(latitude='-25.47')
+        self.assertFormCode(form, 'latitude', 'Latitude out of the range')
+
+    def test_min_longitud_value(self):
+        form = self.make_TreeForm_validated(longitude='-56.07')
+        self.assertFormCode(form, 'longitude', 'Longitude out of the range')
+
+    def test_max_longitud_value(self):
+        form = self.make_TreeForm_validated(longitude='-53.61')
+        self.assertFormCode(form, 'longitude', 'Longitude out of the range')
+
+    def test_min_tree_height(self):
+        form = self.make_TreeForm_validated(tree_height=1.29)
+        self.assertFormCode(form, 'tree_height', 'Tree height too small')

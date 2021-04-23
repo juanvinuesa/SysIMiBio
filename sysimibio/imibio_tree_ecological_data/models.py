@@ -86,6 +86,9 @@ class Tree(models.Model):
         verbose_name = 'Árbol'
         verbose_name_plural = 'Árboles'
 
+    def __str__(self):
+        return f'{self.specie} {self.field.date}'
+
     def save(self, *args, **kwargs):
         self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
         super(Tree, self).save(*args, **kwargs)

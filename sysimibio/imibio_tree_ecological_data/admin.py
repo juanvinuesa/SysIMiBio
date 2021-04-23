@@ -16,6 +16,16 @@ class TreeInline(admin.StackedInline):
     inlines = [PicsInline]
     exclude = ('geom',)
 
+class TreeModelAdmin(admin.ModelAdmin):
+    form = TreeForm
+    model = Tree
+    extra = 1
+    # inlines = [PicsInline]
+    exclude = ('geom',)
+    list_display = ('specie', 'sociological_classification', 'phytosanitary_status')
+    # date_hierarchy = 'field.date'
+    search_fields = ('specie',)
+    list_filter = ('specie',)
 
 class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
     form = FieldForm
@@ -28,3 +38,4 @@ class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
 
 admin.site.register(TreeEcologicalData, TreeEcologicalDataModelAdmin)
 admin.site.register(Pictures)
+admin.site.register(Tree, TreeModelAdmin)
