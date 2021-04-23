@@ -1,9 +1,28 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
-from djgeojson.fields import PointField
+from djgeojson.fields import PointField, PolygonField
 from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, \
     validate_lat, validate_lon, tree_height_validation
+
+
+class PermanentParcel(models.Model):
+    nombre = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
+    province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
+    municipality = models.CharField(verbose_name="Municipio", max_length=50) # TODO add 75 municipio como choices
+    locality = models.CharField(verbose_name="Localidad", max_length=50)
+    obs = models.TextField(verbose_name="Obervaciones")
+    latitude = models.FloatField(verbose_name='latitud',
+                                 validators=[validate_lat], blank=True)  # todo add aclaración de que se esta usando WSG84
+    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True)
+    geom = PolygonField(blank=True)
+
+    def __str__(self):
+        return f'{self.nombre}, {self.municipality} - {self.locality}'
+
+    class Meta:
+        verbose_name_plural = 'Parcelas Permanentes'
+        verbose_name = 'Parcela Permanente'
 
 
 class TreeEcologicalData(models.Model):
