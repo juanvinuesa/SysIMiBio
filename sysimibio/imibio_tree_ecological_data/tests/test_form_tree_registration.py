@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
+import geojson
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
@@ -25,13 +26,13 @@ class TreeRegistrationFormTest(TestCase):
         self.assertSequenceEqual(
             ['field', 'tree_id', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
              'longitude', 'picture', 'obs',
-             'phytosanitary_status', 'sociological_classification'], list(self.Treeform.fields))
+             'phytosanitary_status', 'sociological_classification', 'geom'], list(self.Treeform.fields))
 
     def make_TreeForm_validated(self, **kwargs):
         valid = dict(field=self.field1,
             tree_id=1, specie='Solanaceae',
             dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
-            # picture = 'www.google.com',
+            # picture = 'www.google.com', # todo clean
             obs='Teste 1',
             phytosanitary_status='Muerto', sociological_classification='Emergente')
         data = dict(valid, **kwargs)
@@ -64,3 +65,12 @@ class TreeRegistrationFormTest(TestCase):
     def test_min_tree_height(self):
         form = self.make_TreeForm_validated(tree_height=1.29)
         self.assertFormCode(form, 'tree_height', 'Tree height too small')
+
+    def test_form_is_valid(self):
+        form = self.make_TreeForm_validated()
+        form = form.is_valid()
+        self.assertTrue(form)
+
+    def test_geom_is_istance(self):
+        form = self.make_TreeForm_validated()
+        self.assertIsInstance(form.cleaned_data.get('geom'), (geojson.geometry.Point,))

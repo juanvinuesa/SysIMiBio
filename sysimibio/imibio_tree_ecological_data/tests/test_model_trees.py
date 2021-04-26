@@ -127,44 +127,44 @@ class TreeModelPhytosanitaryTest(TestCase):
         self.assertRaises(ValidationError, self.valid.full_clean)
 
 
-class TreeModelGeomTest(TestCase):
-    def setUp(self):
-        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
-        coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
-        self.field = TreeEcologicalData.objects.create(
-            date='2020-12-30',
-            start_time='0:0',
-            end_time='0:30',
-            temperature=35.9,
-            humidity=80,
-            coordinator=coordinator,
-            parcel_id=1
-        )
-
-        self.tree = Tree.objects.create(
-                field=self.field,
-                tree_id=1,
-                specie='Solanaceae',
-                dap=40,
-                dab=60,
-                tree_height=60,
-                latitude=-26,
-                longitude=-54,
-                picture=self.tempPicture,
-                obs='Teste 1',
-                phytosanitary_status='Bueno',
-                sociological_classification='Emergente'
-            )
-
-    def test_exists(self):
-        self.assertTrue(Tree.objects.exists())
-
-    def test_geom_is_Point(self):
-        self.assertEqual(self.tree.geom.get("type"), "Point")
-
-    def test_geom_lon_Equals_lon_field(self):
-        self.assertEqual(self.tree.geom.get("coordinates")[0], self.tree.longitude)
-
-    def test_geom_lon_Equals_lat_field(self):
-        self.assertEqual(self.tree.geom.get("coordinates")[1], self.tree.latitude)
+# class TreeModelGeomTest(TestCase):
+#     def setUp(self):
+#         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
+#         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+#
+#         self.field = TreeEcologicalData.objects.create(
+#             date='2020-12-30',
+#             start_time='0:0',
+#             end_time='0:30',
+#             temperature=35.9,
+#             humidity=80,
+#             coordinator=coordinator,
+#             parcel_id=1
+#         )
+#
+#         self.tree = Tree.objects.create(
+#                 field=self.field,
+#                 tree_id=1,
+#                 specie='Solanaceae',
+#                 dap=40,
+#                 dab=60,
+#                 tree_height=60,
+#                 latitude=-26,
+#                 longitude=-54,
+#                 picture=self.tempPicture,
+#                 obs='Teste 1',
+#                 phytosanitary_status='Bueno',
+#                 sociological_classification='Emergente'
+#             )
+#
+#     def test_exists(self):
+#         self.assertTrue(Tree.objects.exists())
+#
+#     def test_geom_is_Point(self):
+#         self.assertEqual(self.tree.geom.get("type"), "Point")
+#
+#     def test_geom_lon_Equals_lon_field(self):
+#         self.assertEqual(self.tree.geom.get("coordinates")[0], self.tree.longitude)
+#
+#     def test_geom_lon_Equals_lat_field(self):
+#         self.assertEqual(self.tree.geom.get("coordinates")[1], self.tree.latitude)

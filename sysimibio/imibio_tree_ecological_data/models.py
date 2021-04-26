@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
 from djgeojson.fields import PointField, PolygonField
+from geojson import Point
 from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, \
     validate_lat, validate_lon, tree_height_validation
 
@@ -17,6 +18,10 @@ class PermanentParcel(models.Model):
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True)
     geom = PolygonField(blank=True)
 
+    @property
+    def geom_point(self):
+        return Point((self.longitude, self.latitude))
+
     def __str__(self):
         return f'{self.nombre}, {self.municipality} - {self.locality}'
 
@@ -25,7 +30,7 @@ class PermanentParcel(models.Model):
         verbose_name = 'Parcela Permanente'
 
 
-class TreeEcologicalData(models.Model):
+class TreeEcologicalData(models.Model): # todo refactor to field
     date = models.DateField(verbose_name='fecha', validators=[validate_date], help_text='ej.: AAAA-MM-DD')
     start_time = models.TimeField(verbose_name='hora_inicio', help_text='ej.: 12:30')
     end_time = models.TimeField(verbose_name='hora_final', help_text='ej.: 13:00')
@@ -108,9 +113,9 @@ class Tree(models.Model):
     def __str__(self):
         return f'{self.specie} {self.field.date}'
 
-    def save(self, *args, **kwargs):
-        self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
-        super(Tree, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
+    #     super(Tree, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})

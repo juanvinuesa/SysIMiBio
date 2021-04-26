@@ -1,15 +1,27 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib import admin
-from sysimibio.imibio_tree_ecological_data.models import Tree, TreeEcologicalData, Pictures
+from django.forms import HiddenInput
+from geojson import Point
+from sysimibio.imibio_tree_ecological_data.models import Tree, TreeEcologicalData, Pictures, PermanentParcel
 
 
 class TreeForm(forms.ModelForm):
     class Meta:
         model = Tree
         fields = '__all__'
-        exclude = ['geom']
+        widgets = {
+            'geom': HiddenInput(),
+        }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        lon = cleaned_data.get('longitude')
+        lat = cleaned_data.get('latitude')
+        cleaned_data["geom"] = Point((lon, lat))
+        if not cleaned_data["geom"].is_valid:
+            raise ValidationError("Geometria inválida")
+        return cleaned_data
 
 class FieldForm(forms.ModelForm):
     class Meta:
@@ -29,3 +41,22 @@ class PicturesForm(forms.ModelForm):
     class Meta:
         model = Pictures
         fields = '__all__'
+
+
+class PermanenParcelForm(forms.ModelForm):
+    class Meta:
+        model = PermanentParcel
+        fields = '__all__'
+        widgets = {
+            'geom': HiddenInput(),
+        }
+
+
+    def clean(self):
+        cleaned_data = super().clean()
+        lon = cleaned_data.get('longitude')
+        lat = cleaned_data.get('latitude')
+        cleaned_data['geom'] = Point((lon, lat, lon, lat))
+        if not cleaned_data['geom'].is_valid:
+            raise ValidationError('Geometria inválida')
+        return cleaned_data

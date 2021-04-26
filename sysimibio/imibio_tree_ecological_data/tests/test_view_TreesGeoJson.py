@@ -1,7 +1,10 @@
+from unittest import skip
+
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
-from sysimibio.imibio_tree_ecological_data.models import Tree, TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from sysimibio.imibio_tree_ecological_data.forms import TreeForm
 
 
 class TreesGeoJsonView(TestCase):
@@ -18,23 +21,25 @@ class TreesGeoJsonView(TestCase):
             parcel_id=1
         )
 
-        self.tree = Tree.objects.create(
-            field=self.field,
-            tree_id=1,
-            specie='Solanaceae',
-            dap=40.0,
-            dab=60.0,
-            tree_height=60.0,
-            latitude=-26.0,
-            longitude=-54.0,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente'
-        )
+        self.tree = TreeForm({
+            'field':self.field,
+            'tree_id':1,
+            'specie':'Solanaceae',
+            'dap':40.0,
+            'dab':60.0,
+            'tree_height':60.0,
+            'latitude':-26.0,
+            'longitude':-54.0,
+            'obs':'Teste 1',
+            'phytosanitary_status':'Bueno',
+            'sociological_classification':'Emergente'
+        })
+        self.tree.save()
+        self.occurrence = Tree.objects.all()[0]
         self.resp = self.client.get(r('data'))
 
     def test_get(self):
-        """GET /registro_ecologico/geojson must get status code 200"""
+        """GET /geojson/ must get status code 200"""
         self.assertEqual(200, self.resp.status_code)
 
     def test_keys(self):
@@ -48,4 +53,4 @@ class TreesGeoJsonView(TestCase):
 
     def test_properties(self):
         popup = self.resp.json().get('features')[0].get('properties').get('popup_content')
-        self.assertEqual(popup, self.tree.popup_content)
+        self.assertEqual(popup, self.occurrence.popup_content)
