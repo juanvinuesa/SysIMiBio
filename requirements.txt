@@ -7,6 +7,7 @@ bleach==3.3.0
 certifi==2020.12.5
 cffi==1.14.5
 chardet==4.0.0
+crossrefapi==1.5.0
 decorator==4.4.2
 defusedxml==0.7.1
 dj-database-url==0.5.0
@@ -14,11 +15,13 @@ dj-static==0.0.6
 Django==3.2
 django-extensions==3.1.1
 django-geojson==3.1.0
+django-inmemorystorage==0.1.1
 django-leaflet==0.27.1
 django-test-without-migrations==0.6
 entrypoints==0.3
 Faker==4.0.0
-idna==3.1
+geojson==2.5.0
+idna==2.10
 importlib-metadata==3.7.3
 ipykernel==5.5.0
 ipython==7.16.1

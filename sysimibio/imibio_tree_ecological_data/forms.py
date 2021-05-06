@@ -1,6 +1,5 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from django.contrib import admin
 from django.forms import HiddenInput
 from geojson import Point
 from sysimibio.imibio_tree_ecological_data.models import Tree, TreeEcologicalData, Pictures, PermanentParcel
@@ -43,7 +42,7 @@ class PicturesForm(forms.ModelForm):
         fields = '__all__'
 
 
-class PermanenParcelForm(forms.ModelForm):
+class PermanentParcelForm(forms.ModelForm): # todo crear test oara PP forms
     class Meta:
         model = PermanentParcel
         fields = '__all__'

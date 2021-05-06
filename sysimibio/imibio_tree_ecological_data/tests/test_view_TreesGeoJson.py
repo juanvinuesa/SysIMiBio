@@ -1,16 +1,17 @@
-from unittest import skip
-
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, PermanentParcel
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm
 
 
 class TreesGeoJsonView(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.field = TreeEcologicalData.objects.create(
             date='2020-12-30',
             start_time='0:0',
@@ -18,7 +19,7 @@ class TreesGeoJsonView(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            parcel_id=1
+            parcel_id=self.parcel1
         )
 
         self.tree = TreeForm({

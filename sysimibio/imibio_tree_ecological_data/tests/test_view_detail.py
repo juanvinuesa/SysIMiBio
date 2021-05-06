@@ -2,7 +2,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.test import TestCase, override_settings
 from django.shortcuts import resolve_url as r
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
@@ -13,7 +13,10 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
         tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Juan', 'Juan@imibio.com', 'Juanpassword')
-
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
 
         self.obj = TreeEcologicalData.objects.create(
             date='2020-12-31',
@@ -22,7 +25,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            parcel_id=1
+            parcel_id=self.parcel1
         )
         self.obj.staff.add(staff1)
 

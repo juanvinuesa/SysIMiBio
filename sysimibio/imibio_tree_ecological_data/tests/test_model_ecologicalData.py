@@ -2,14 +2,17 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, PermanentParcel
 
 
 class TreeEcologicalRegistrationTest(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
-
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.field = TreeEcologicalData(
             date='2020-12-30',
             start_time='0:0',
@@ -17,7 +20,7 @@ class TreeEcologicalRegistrationTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            parcel_id=1)
+            parcel_id=self.parcel1)
 
         self.field.save()
         self.field.staff.add(staff1)

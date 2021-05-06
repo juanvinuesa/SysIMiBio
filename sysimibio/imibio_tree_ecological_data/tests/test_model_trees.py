@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
 from django.contrib.auth.models import User
 
 
@@ -13,7 +13,10 @@ class TreeModelSociologicalTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.field = TreeEcologicalData.objects.create(
             date='2020-12-30',
             start_time='0:0',
@@ -21,7 +24,7 @@ class TreeModelSociologicalTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            parcel_id=1
+            parcel_id=self.parcel1
         )
 
         self.valid = Tree(field=self.field,
@@ -76,7 +79,10 @@ class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.field = TreeEcologicalData.objects.create(
             date='2020-12-30',
             start_time='0:0',
@@ -84,7 +90,7 @@ class TreeModelPhytosanitaryTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=coordinator,
-            parcel_id=1
+            parcel_id=self.parcel1
         )
 
         self.valid = Tree(field=self.field,
@@ -127,44 +133,39 @@ class TreeModelPhytosanitaryTest(TestCase):
         self.assertRaises(ValidationError, self.valid.full_clean)
 
 
-# class TreeModelGeomTest(TestCase):
-#     def setUp(self):
-#         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
-#         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-#
-#         self.field = TreeEcologicalData.objects.create(
-#             date='2020-12-30',
-#             start_time='0:0',
-#             end_time='0:30',
-#             temperature=35.9,
-#             humidity=80,
-#             coordinator=coordinator,
-#             parcel_id=1
-#         )
-#
-#         self.tree = Tree.objects.create(
-#                 field=self.field,
-#                 tree_id=1,
-#                 specie='Solanaceae',
-#                 dap=40,
-#                 dab=60,
-#                 tree_height=60,
-#                 latitude=-26,
-#                 longitude=-54,
-#                 picture=self.tempPicture,
-#                 obs='Teste 1',
-#                 phytosanitary_status='Bueno',
-#                 sociological_classification='Emergente'
-#             )
-#
-#     def test_exists(self):
-#         self.assertTrue(Tree.objects.exists())
-#
-#     def test_geom_is_Point(self):
-#         self.assertEqual(self.tree.geom.get("type"), "Point")
-#
-#     def test_geom_lon_Equals_lon_field(self):
-#         self.assertEqual(self.tree.geom.get("coordinates")[0], self.tree.longitude)
-#
-#     def test_geom_lon_Equals_lat_field(self):
-#         self.assertEqual(self.tree.geom.get("coordinates")[1], self.tree.latitude)
+class TreeModelPopupTest(TestCase):
+    def setUp(self):
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
+        coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
+        self.field = TreeEcologicalData.objects.create(
+            date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator=coordinator,
+            parcel_id=self.parcel1
+        )
+
+        self.tree = Tree.objects.create(
+                field=self.field,
+                tree_id=1,
+                specie='Solanaceae',
+                dap=40,
+                dab=60,
+                tree_height=60,
+                latitude=-26,
+                longitude=-54,
+                picture=self.tempPicture,
+                obs='Teste 1',
+                phytosanitary_status='Bueno',
+                sociological_classification='Emergente'
+            )
+
+    def test_popup(self):
+        self.assertEqual(self.tree.popup_content,
+                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>Condición fitosanitario: </span>Bueno<br><span>Altura: </span>60<br><span><a href=/registro_ecologico_arboreas/1/>Detalles de la occurrencia</a></strong><br>")

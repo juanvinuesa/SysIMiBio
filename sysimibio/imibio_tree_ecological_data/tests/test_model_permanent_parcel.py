@@ -7,7 +7,7 @@ from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
 class PermanentParcelModelTest(TestCase):
     def setUp(self):
         self.pp1 = PermanentParcel.objects.create(
-            nombre = "Reserva Yrya Pu",
+            name = "Reserva Yrya Pu",
             province = "Misiones",
             municipality = "Puerto Iguazú",
             locality = 'reserva 600 ha',
@@ -23,3 +23,7 @@ class PermanentParcelModelTest(TestCase):
 
     def test_property_geom_point(self):
         self.assertEqual(self.pp1.geom_point, {"coordinates": [-54, -26], "type": "Point"})
+
+    def test_property_geom_point_Valid(self):
+        self.assertTrue(self.pp1.geom_point.is_valid)
+# todo testar geom polygon

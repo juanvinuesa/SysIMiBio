@@ -7,8 +7,8 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
     validate_lat, validate_lon, tree_height_validation
 
 
-class PermanentParcel(models.Model):
-    nombre = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
+class PermanentParcel(models.Model): # todo test modelForm
+    name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
     municipality = models.CharField(verbose_name="Municipio", max_length=50) # TODO add 75 municipio como choices
     locality = models.CharField(verbose_name="Localidad", max_length=50)
@@ -23,7 +23,7 @@ class PermanentParcel(models.Model):
         return Point((self.longitude, self.latitude))
 
     def __str__(self):
-        return f'{self.nombre}, {self.municipality} - {self.locality}'
+        return f'{self.name}, {self.municipality} - {self.locality}'
 
     class Meta:
         verbose_name_plural = 'Parcelas Permanentes'
@@ -39,12 +39,12 @@ class TreeEcologicalData(models.Model): # todo refactor to field
     coordinator = models.ForeignKey(User, verbose_name='responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='acompanantes',
                                    max_length=100)
-    parcel_id = models.IntegerField(verbose_name='ID parcela')  # TODO should be ForeignKey?
+    parcel_id = models.ForeignKey("PermanentParcel", verbose_name='Parcela Permanente', on_delete=models.CASCADE)
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
 
     class Meta:
-        verbose_name_plural = 'Registro de campo'
+        verbose_name_plural = 'Registros de campo'
         verbose_name = 'Campo'
         ordering = ('-date', )
 
@@ -87,7 +87,7 @@ class Tree(models.Model):
         (MUERTO, 'Muerto')
     ]
 
-    field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE)  # ao deletar um registro de campo os dados de arvore tbm o serao
+    field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE)
     tree_id = models.IntegerField(verbose_name='ID Árbol')
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
     dap = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
@@ -112,10 +112,6 @@ class Tree(models.Model):
 
     def __str__(self):
         return f'{self.specie} {self.field.date}'
-
-    # def save(self, *args, **kwargs):
-    #     self.geom = {'type': 'Point', 'coordinates': [self.longitude, self.latitude]}
-    #     super(Tree, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})

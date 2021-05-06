@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.shortcuts import resolve_url as r
 import geojson
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, PermanentParcel
 
 
 class TreeRegistrationFormTest(TestCase):
@@ -11,6 +11,10 @@ class TreeRegistrationFormTest(TestCase):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Treeform = TreeForm()
         self.Fieldform = FieldForm()
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field1 = TreeEcologicalData.objects.create(date='2020-12-30',
@@ -19,7 +23,7 @@ class TreeRegistrationFormTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=self.coordinator1,
-            parcel_id=1)
+            parcel_id=self.parcel1)
 
     def test_Treeform_has_fields(self):
         """Tree form must have models fields"""
@@ -32,7 +36,6 @@ class TreeRegistrationFormTest(TestCase):
         valid = dict(field=self.field1,
             tree_id=1, specie='Solanaceae',
             dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
-            # picture = 'www.google.com', # todo clean
             obs='Teste 1',
             phytosanitary_status='Muerto', sociological_classification='Emergente')
         data = dict(valid, **kwargs)
