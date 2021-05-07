@@ -1,7 +1,6 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
+
 from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
-# from django.contrib.auth.models import User
 
 
 class PermanentParcelModelTest(TestCase):

@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
-from django.test import TestCase
-from django.shortcuts import resolve_url as r
 import geojson
+from django.contrib.auth.models import User
+from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, PermanentParcel
 

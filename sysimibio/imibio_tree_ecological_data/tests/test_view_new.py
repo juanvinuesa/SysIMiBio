@@ -1,8 +1,8 @@
 from unittest import skip
 
-from django.test import TestCase
 from django.shortcuts import resolve_url as r
-# from sysimibio.imibio_tree_ecological_data.forms import TreeEcologicalForm
+from django.test import TestCase
+
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
 
 

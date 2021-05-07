@@ -1,7 +1,8 @@
 from django.contrib import admin
+from leaflet.admin import LeafletGeoAdmin
+
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, PicturesForm, TreeForm, PermanentParcelForm
 from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
-from leaflet.admin import LeafletGeoAdmin, LeafletGeoAdminMixin
 
 
 class PermanentParcelModelAdmin(admin.ModelAdmin):
