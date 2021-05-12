@@ -4,7 +4,7 @@ from django.shortcuts import render, resolve_url as r
 from djgeojson.views import GeoJSONLayerView
 
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree
 
 
 def new(request):
@@ -34,12 +34,12 @@ def create(request):
         return render(request, 'tree_ecological_registration_form.html',
                       {'form': form})
 
-    tree_eco_data = TreeEcologicalData.objects.create(**form.cleaned_data)
+    tree_eco_data = FieldWork.objects.create(**form.cleaned_data)
     messages.success(request, "Registro ecológico agregado con exito")
     return HttpResponseRedirect(r('imibio_tree_ecological_data:detail', tree_eco_data.pk))
 
 
-class TreesGeoJson(GeoJSONLayerView):
+class TreesGeoJson(GeoJSONLayerView): # todo testar geojson view
     model = Tree
     properties = ('popup_content',)
 

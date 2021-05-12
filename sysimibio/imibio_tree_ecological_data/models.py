@@ -8,15 +8,15 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
     validate_lat, validate_lon, tree_height_validation
 
 
-class PermanentParcel(models.Model): # todo test modelForm
+class PermanentParcel(models.Model):
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
     municipality = models.CharField(verbose_name="Municipio", max_length=50) # TODO add 75 municipio como choices
     locality = models.CharField(verbose_name="Localidad", max_length=50)
     obs = models.TextField(verbose_name="Obervaciones")
     latitude = models.FloatField(verbose_name='latitud',
-                                 validators=[validate_lat], blank=True)  # todo add aclaración de que se esta usando WSG84
-    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True)
+                                 validators=[validate_lat], blank=True, help_text="informar en formato graus decimais WGS84")
+    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True, help_text="informar en formato graus decimais WGS84")
     geom = PolygonField(blank=True)
 
     @property
@@ -31,7 +31,7 @@ class PermanentParcel(models.Model): # todo test modelForm
         verbose_name = 'Parcela Permanente'
 
 
-class TreeEcologicalData(models.Model): # todo refactor to field
+class FieldWork(models.Model):
     date = models.DateField(verbose_name='fecha', validators=[validate_date], help_text='ej.: AAAA-MM-DD')
     start_time = models.TimeField(verbose_name='hora_inicio', help_text='ej.: 12:30')
     end_time = models.TimeField(verbose_name='hora_final', help_text='ej.: 13:00')
@@ -88,13 +88,13 @@ class Tree(models.Model):
         (MUERTO, 'Muerto')
     ]
 
-    field = models.ForeignKey('TreeEcologicalData', on_delete=models.CASCADE)
+    field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
     tree_id = models.IntegerField(verbose_name='ID Árbol')
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
-    dab = models.FloatField(help_text='cm')  # todo dap y dab se miden cuando el arbol tiene altura mayor a 1.3 metros
+    dap = models.FloatField(help_text='cm')
+    dab = models.FloatField(help_text='cm')
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])
-    latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat])  # todo add aclaración de que se esta usando WSG84
+    latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat], help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)

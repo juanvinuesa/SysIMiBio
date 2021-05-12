@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
@@ -17,7 +17,7 @@ class TreeModelSociologicalTest(TestCase):
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.field = TreeEcologicalData.objects.create(
+        self.field = FieldWork.objects.create(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
@@ -83,7 +83,7 @@ class TreeModelPhytosanitaryTest(TestCase):
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.field = TreeEcologicalData.objects.create(
+        self.field = FieldWork.objects.create(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
@@ -141,7 +141,7 @@ class TreeModelPopupTest(TestCase):
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.field = TreeEcologicalData.objects.create(
+        self.field = FieldWork.objects.create(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',

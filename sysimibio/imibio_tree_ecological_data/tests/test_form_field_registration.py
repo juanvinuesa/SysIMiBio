@@ -3,7 +3,7 @@ from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentParcel
 
 
 class FieldRegistrationFormTest(TestCase):
@@ -14,7 +14,7 @@ class FieldRegistrationFormTest(TestCase):
                                                            locality='600 ha', obs='Observacion', latitude=-26, longitude=-56, geom='')
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
-        self.field1 = TreeEcologicalData.objects.create(date='2020-12-30',
+        self.field1 = FieldWork.objects.create(date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
             temperature=35.9,

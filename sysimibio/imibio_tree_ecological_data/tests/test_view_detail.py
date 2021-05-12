@@ -3,7 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import resolve_url as r
 from django.test import TestCase, override_settings
 
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
@@ -19,7 +19,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
 
-        self.obj = TreeEcologicalData.objects.create(
+        self.obj = FieldWork.objects.create(
             date='2020-12-31',
             start_time='12:22',
             end_time='13:23',

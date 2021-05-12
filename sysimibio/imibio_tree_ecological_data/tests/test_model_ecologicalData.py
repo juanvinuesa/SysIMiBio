@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.test import TestCase
 
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentParcel
 
 
 class TreeEcologicalRegistrationTest(TestCase):
@@ -14,7 +14,7 @@ class TreeEcologicalRegistrationTest(TestCase):
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.field = TreeEcologicalData(
+        self.field = FieldWork(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',
@@ -27,7 +27,7 @@ class TreeEcologicalRegistrationTest(TestCase):
         self.field.staff.add(staff1)
 
     def test_create(self):
-        self.assertTrue(TreeEcologicalData.objects.exists())
+        self.assertTrue(FieldWork.objects.exists())
 
     def test_created_at(self):
         """ecological registration must have an auto created_at attr."""

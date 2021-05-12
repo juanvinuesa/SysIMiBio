@@ -2,7 +2,7 @@ from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, PicturesForm, TreeForm, PermanentParcelForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, Pictures, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
 
 
 class PermanentParcelModelAdmin(admin.ModelAdmin):
@@ -20,7 +20,6 @@ class TreeInline(admin.StackedInline):
     model = Tree
     extra = 1
     inlines = [PicsInline]
-    exclude = ('geom',)
 
 
 class TreeModelAdmin(admin.ModelAdmin):
@@ -28,14 +27,13 @@ class TreeModelAdmin(admin.ModelAdmin):
     model = Tree
     extra = 1
     # inlines = [PicsInline]
-    exclude = ('geom',)
     list_display = ('specie', 'sociological_classification', 'phytosanitary_status')
     # date_hierarchy = 'field.date'
     search_fields = ('specie',)
     list_filter = ('specie',)
 
 
-class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
+class FieldWorkModelAdmin(admin.ModelAdmin):
     form = FieldForm
     inlines = [TreeInline]
     list_display = ('date', 'coordinator', 'start_time', 'end_time', 'parcel_id', 'created_at', 'last_modification_at')
@@ -44,7 +42,7 @@ class TreeEcologicalDataModelAdmin(admin.ModelAdmin):
     list_filter = ('date', 'coordinator', 'parcel_id')
 
 
-admin.site.register(TreeEcologicalData, TreeEcologicalDataModelAdmin)
+admin.site.register(FieldWork, FieldWorkModelAdmin)
 admin.site.register(Pictures)
 admin.site.register(Tree, TreeModelAdmin)
 admin.site.register(PermanentParcel,LeafletGeoAdmin)

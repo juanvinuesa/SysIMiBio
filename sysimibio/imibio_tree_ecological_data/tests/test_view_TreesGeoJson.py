@@ -3,7 +3,7 @@ from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData, Tree, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel
 
 
 class TreesGeoJsonView(TestCase):
@@ -13,7 +13,7 @@ class TreesGeoJsonView(TestCase):
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.field = TreeEcologicalData.objects.create(
+        self.field = FieldWork.objects.create(
             date='2020-12-30',
             start_time='0:0',
             end_time='0:30',

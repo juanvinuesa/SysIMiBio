@@ -3,7 +3,7 @@ from unittest import skip
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+from sysimibio.imibio_tree_ecological_data.models import FieldWork
 
 
 @skip
@@ -40,7 +40,7 @@ class TreeEcologicalRegistrationNewGet(TestCase):
 
 
 @skip
-class TreeEcologicalDataRegistrationNewPostValid(TestCase):
+class FieldWorkRegistrationNewPostValid(TestCase):
     def setUp(self):
         self.data = dict(
             date='01/01/01',
@@ -70,11 +70,11 @@ class TreeEcologicalDataRegistrationNewPostValid(TestCase):
         self.assertRedirects(self.resp, r('imibio_tree_ecological_data:detail', 1))
 
     def test_save_TreeEcologicalRegistration(self):
-        self.assertTrue(TreeEcologicalData.objects.exists())
+        self.assertTrue(FieldWork.objects.exists())
 
 
 @skip
-class TreeEcologicalDataRegistrationPostInvalid(TestCase):
+class FieldWorkRegistrationPostInvalid(TestCase):
     def setUp(self):
         self.resp = self.client.post(r('imibio_tree_ecological_data:new'), {})
         self.form = self.resp.context['form']
@@ -93,7 +93,7 @@ class TreeEcologicalDataRegistrationPostInvalid(TestCase):
         self.assertTrue(self.form.errors)
 
     def test_dont_save_TreeEcologicalRegistration(self):
-        self.assertFalse(TreeEcologicalData.objects.exists())
+        self.assertFalse(FieldWork.objects.exists())
 
 
 class TemplateRegressionTest(TestCase):
