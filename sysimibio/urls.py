@@ -19,8 +19,9 @@ from django.urls import path, include
 import sysimibio.core.views
 
 urlpatterns = [
-    path('', sysimibio.core.views.home, name='home'),
+    path('', sysimibio.core.views.home, name='home'), # todo melhorar esse import
     path('admin/', admin.site.urls),
     path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')),
     path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')),
+    path('bioblitz/', include('sysimibio.bioblitz.urls')),
 ]

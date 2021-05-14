@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-
-class ImibioEcologicalDataConfig(AppConfig):
-    name = 'imibio_ecological_data'
+# todo resolver isso
+# class ImibioEcologicalDataConfig(AppConfig):
+#     default_auto_field = 'django.db.models.BigAutoField'
+#     name = 'apps.imibio_ecological_data'

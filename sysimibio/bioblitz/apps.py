@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-# todo resolver apps
-# class CoreConfig(AppConfig):
+
+# class BioblitzConfig(AppConfig):
 #     default_auto_field = 'django.db.models.BigAutoField'
-#     name = 'apps.core'
+#     name = 'bioblitz'
