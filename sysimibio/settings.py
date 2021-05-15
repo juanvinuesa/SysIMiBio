@@ -42,10 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'test_without_migrations',
     'django_extensions',
-    'sysimibio.core', # todo resolver apps
+    'sysimibio.core',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
-    'sysimibio.imibio_tree_ecological_data', # todo resolver apps
-    'sysimibio.bioblitz'
+    'sysimibio.imibio_tree_ecological_data.apps.ImibioTreeEcologicalDataConfig',
+    'sysimibio.bioblitz.apps.BioblitzConfig'
 ]
 
 MIDDLEWARE = [
