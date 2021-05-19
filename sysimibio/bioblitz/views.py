@@ -1,5 +1,6 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404
+from django.db.models import Count
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, resolve_url as r
 from pyinaturalist.node_api import get_projects, get_observations
 
@@ -118,3 +119,33 @@ def bioblitz_occurrence_detail(request, pk):
     except BioblitzProject.DoesNotExist:
         raise Http404
     return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
+
+def group_pie_chart(request):
+    labels = []
+    data = []
+
+    queryset = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name'))
+    for group in queryset:
+        labels.append(group.get('iconic_taxon_name'))
+        data.append(group.get('name__count'))
+
+    return render(request, 'bioblitz/bioblitz_stats.html', {
+        'labels': labels,
+        'data': data,
+    })
+
+
+def user_bar_chart(request):
+    labels = []
+    data = []
+
+    queryset = BioblitzOccurrence.objects.values('user_id').annotate(user_observations=Count('name')).order_by(
+        '-user_observations')
+    for entry in queryset:
+        labels.append(entry['user_id'])
+        data.append(entry['user_observations'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })

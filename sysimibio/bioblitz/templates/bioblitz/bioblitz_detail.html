@@ -52,8 +52,7 @@
 </div>
 <br>
 <a  role="button" class="btn navbar-btn btn-warning" href="{% url 'bioblitz:get_occurrences' pk=project.project_id %}">Get occs</a>
-</br>
-<br>
 <a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' %}">View occs</a>
-</br>
+<a  role="button" class="btn navbar-btn btn-dark" href="{% url 'bioblitz:pie-chart' %}">View stats</a>
+<br>
 {% endblock content %}
