@@ -1,6 +1,8 @@
 from django.db import models
-
+from djgeojson.fields import PointField
 # Create your models here.
+# todo crear metodo get_absolut link
+
 
 class BioblitzProject(models.Model):
     iconURL = models.URLField(verbose_name="URL del icono del proyecto", blank=True)
@@ -15,8 +17,17 @@ class BioblitzProject(models.Model):
     manager_login = models.CharField(verbose_name="Login del administrador", max_length=200)
     manager_name = models.CharField(verbose_name="Nombre del administrador", max_length=200)
 
+    def __str__(self):
+        return f'{self.title} {self.manager_name} {self.project_id}'
+
+
+    class Meta:
+        verbose_name = "Proyecto de BioBlitz"
+        verbose_name_plural = "Proyecto de BioBlitz"
+
 
 class BioblitzOccurrence(models.Model):
+    proj_id = models.ForeignKey("BioBlitzProject", on_delete=models.CASCADE) # todo melhorar nombre
     obs_id = models.IntegerField("ID de la observación")
     quality_grade = models.CharField("Calidad de ranking", max_length=50)
     created_at = models.DateTimeField("Fecha de la observación")
@@ -29,3 +40,15 @@ class BioblitzOccurrence(models.Model):
     threatened = models.BooleanField("Especie amenazada?", default=False)
     introduced = models.BooleanField("Especie introducida?", default=False)
     native = models.BooleanField("Especie nativa?", default=False)
+    # geo
+    geom = PointField()
+    # User
+    user_id = models.IntegerField("ID del observador")
+
+    def __str__(self):
+        return f'{self.name} - {self.proj_id}'
+
+
+    class Meta:
+        verbose_name = "Especie obseervada"
+        verbose_name_plural = "Especies observadas"

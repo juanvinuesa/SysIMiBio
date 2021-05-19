@@ -30,8 +30,6 @@ obs.get("results")[3]['taxon']['endemic']
 obs.get("results")[3]['taxon']['threatened']
 obs.get("results")[3]['taxon']['introduced']
 obs.get("results")[3]['taxon']['native']
-
-# todo los que siguen
 # geo
 obs.get("results")[3]['geojson']
 # User info

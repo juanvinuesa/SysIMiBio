@@ -45,6 +45,9 @@ def register_bioblitz_project(request):
 
     return render(request, 'bioblitz/bioblitz_registration_form.html', {'form': BioblitzModelForm()})
 
+def list_bioblitz_project(request):
+    ptojects = BioblitzProject.objects.all()
+    return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
 
 def detail(request, pk):
     try:
@@ -61,6 +64,7 @@ def register_bioblitz_occurrences(request, pk):
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"):
             print(obs.get("id"))
+            proj_id = project
             obs_id = obs.get('id')
             quality_grade = obs.get("quality_grade")
             created_at = obs.get('created_at')
@@ -73,6 +77,8 @@ def register_bioblitz_occurrences(request, pk):
                 threatened = obs.get('taxon').get('threatened')
                 introduced = obs.get('taxon').get('introduced')
                 native = obs.get('taxon').get('native')
+                geom = obs.get('geojson')
+                user_id = obs.get('user').get("id")
             else:
                 name = ''
                 rank = ''
@@ -82,6 +88,7 @@ def register_bioblitz_occurrences(request, pk):
                 introduced = False
                 native = False
             BioblitzOccurrence.objects.create(
+                proj_id = proj_id,
                 obs_id=obs_id,
                 quality_grade=quality_grade,
                 created_at=created_at,
@@ -92,7 +99,10 @@ def register_bioblitz_occurrences(request, pk):
                 endemic=endemic,
                 threatened=threatened,
                 introduced=introduced,
-                native=native)
+                native=native,
+                geom = geom,
+                user_id = user_id
+            )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
         return HttpResponseRedirect(r('bioblitz:list_occs'))

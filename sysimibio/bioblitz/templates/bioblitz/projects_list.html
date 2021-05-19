@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="col-md-8">
+    {% if user.is_authenticated %}
+    {% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+            {% endfor %}
+        {% endif %}
+
+        <h2>
+<!--            <i class ="fa-pagelines"></i> -->
+            Lista proyectos</h2>
+        {% if projects %}
+            <table class = 'table table-striped'>
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo de proyecto</th>
+                    <th>Fecha de creación</th>
+                    <th>Organizador</th>
+                </tr>
+                </thead>
+
+                {% for project in projects %}
+                <tr>
+                    <td>
+                        <a href="{{ project.get_absolute_url }}">{{ project.title }}</a>
+                    </td>
+                    <td>{{ project.project_type }}</td>
+                    <td>{{ project.created_at }}</td>
+                    <td>{{ project.manager_name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        {% else %}
+            <p class="alert alert-warning">
+            <i class="fa fa-warning"></i> Base de datos sin registros!</p>
+        {% endif %}
+</div>
+
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            Acceso negado. Logar o crear usuário.
+        </div>
+    {% endif %}
+
+{% endblock content %}
