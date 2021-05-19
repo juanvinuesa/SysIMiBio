@@ -14,3 +14,18 @@ class BioblitzProject(models.Model):
     manager_id = models.IntegerField(verbose_name="Id del administrador", unique=True)
     manager_login = models.CharField(verbose_name="Login del administrador", max_length=200)
     manager_name = models.CharField(verbose_name="Nombre del administrador", max_length=200)
+
+
+class BioblitzOccurrence(models.Model):
+    obs_id = models.IntegerField("ID de la observación")
+    quality_grade = models.CharField("Calidad de ranking", max_length=50)
+    created_at = models.DateTimeField("Fecha de la observación")
+    uri = models.URLField("URL de la observación")
+    # taxon
+    name = models.CharField("Nombre cientifico de la especie", max_length=300)
+    rank = models.CharField("Ranking taxonomico", max_length=50)
+    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50)
+    endemic = models.BooleanField("Especie endémica?", default=False)
+    threatened = models.BooleanField("Especie amenazada?", default=False)
+    introduced = models.BooleanField("Especie introducida?", default=False)
+    native = models.BooleanField("Especie nativa?", default=False)

@@ -8,7 +8,7 @@
                         <p>{{ message }}</p>
                     </div>
             {% endfor %}
-        {% endif %}
+{% endif %}
 
 <br>
 <a  role="button" class="btn navbar-btn btn-success" href="{% url 'home' %}">Voltar</a>
@@ -21,9 +21,13 @@
     <table class = "table table-user-information">
         <tbody>
         <tr>
-
-            <th class="text-right">Nombre del proyectp</th>
+            <th class="text-right">Nombre del proyecto</th>
             <td>{{ project.title }}</td>
+        </tr>
+        <tr>
+
+            <th class="text-right">ID del proyecto</th>
+            <td>{{ project.project_id }}</td>
         </tr>
 
             <th class="text-right">Fecha de creación</th>
@@ -46,4 +50,7 @@
     </table>
 </div>
 </div>
+<br>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:get_occs' pk=project.project_id %}">Get occs</a>
+<br>
 {% endblock content %}
