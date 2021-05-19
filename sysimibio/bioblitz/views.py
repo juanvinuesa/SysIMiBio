@@ -17,10 +17,8 @@ def register_bioblitz_project(request):
             messages.error(request, 'Formulário con error: revise todos los campos')
             return render(request, 'bioblitz/bioblitz_registration_form.html',
                           {'form': form})
-        # print(form.cleaned_data.get("project_slug")) # todo get_projects(id=8348) o get_projects_by_id(project_id=8348)
         bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
-        # print(bioblitz_project_data.keys())
-        # print(bioblitz_project_data.get("total_results"))
+
         if bioblitz_project_data.get("total_results") == 0:
             messages.error(request, 'Proyecto no encontrado. confirmar nombre o id')
             return render(request, 'bioblitz/bioblitz_registration_form.html',
@@ -41,7 +39,7 @@ def register_bioblitz_project(request):
         )
         messages.success(request, "Proyecto registrado con exito")
 
-        return HttpResponseRedirect(r('bioblitz:proj_detail', project.pk))
+        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk))
 
     return render(request, 'bioblitz/bioblitz_registration_form.html', {'form': BioblitzModelForm()})
 
@@ -49,11 +47,11 @@ def list_bioblitz_project(request):
     ptojects = BioblitzProject.objects.all()
     return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
 
-def detail(request, pk):
+def project_detail(request, pk):
     try:
         project = BioblitzProject.objects.get(pk=pk)
     except BioblitzProject.DoesNotExist:
-        raise Http404 # todo resolver isso
+        raise Http404
 
     return render(request, 'bioblitz/bioblitz_detail.html', {'project': project})
 
@@ -64,7 +62,7 @@ def register_bioblitz_occurrences(request, pk):
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"):
             print(obs.get("id"))
-            proj_id = project
+            project_id = project
             obs_id = obs.get('id')
             quality_grade = obs.get("quality_grade")
             created_at = obs.get('created_at')
@@ -88,7 +86,7 @@ def register_bioblitz_occurrences(request, pk):
                 introduced = False
                 native = False
             BioblitzOccurrence.objects.create(
-                proj_id = proj_id,
+                project_id = project_id,
                 obs_id=obs_id,
                 quality_grade=quality_grade,
                 created_at=created_at,
@@ -105,7 +103,7 @@ def register_bioblitz_occurrences(request, pk):
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
-        return HttpResponseRedirect(r('bioblitz:list_occs'))
+        return HttpResponseRedirect(r('bioblitz:list_occurrences'))
 
     except BioblitzProject.DoesNotExist:
         raise Http404
@@ -113,3 +111,10 @@ def register_bioblitz_occurrences(request, pk):
 def list_bioblitz_occurrences(request):
     observations = BioblitzOccurrence.objects.all()
     return render(request, 'bioblitz/occurrences_list.html', {'observations': observations})
+
+def bioblitz_occurrence_detail(request, pk):
+    try:
+        observation = BioblitzOccurrence.objects.get(pk=pk)
+    except BioblitzProject.DoesNotExist:
+        raise Http404
+    return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})

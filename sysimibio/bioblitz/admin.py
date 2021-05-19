@@ -10,7 +10,7 @@ class BioblitzProjectModelAdmin(admin.ModelAdmin):
 
 
 class BioblitzOccurrenceModelAdmin(admin.ModelAdmin):
-    list_display = ("name", "quality_grade", "rank", "iconic_taxon_name", "created_at", "proj_id")
+    list_display = ("name", "quality_grade", "rank", "iconic_taxon_name", "created_at", "project_id")
     date_hierarchy = "created_at"
     search_fields = ('name', 'created_at', 'iconic_taxon_name', 'proj_id')
 

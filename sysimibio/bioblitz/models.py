@@ -1,7 +1,7 @@
 from django.db import models
+from django.urls import reverse_lazy
 from djgeojson.fields import PointField
 # Create your models here.
-# todo crear metodo get_absolut link
 
 
 class BioblitzProject(models.Model):
@@ -20,6 +20,9 @@ class BioblitzProject(models.Model):
     def __str__(self):
         return f'{self.title} {self.manager_name} {self.project_id}'
 
+    def get_absolute_url(self):
+        return reverse_lazy('bioblitz:project_detail', kwargs={'pk': self.pk})
+
 
     class Meta:
         verbose_name = "Proyecto de BioBlitz"
@@ -27,7 +30,7 @@ class BioblitzProject(models.Model):
 
 
 class BioblitzOccurrence(models.Model):
-    proj_id = models.ForeignKey("BioBlitzProject", on_delete=models.CASCADE) # todo melhorar nombre
+    project_id = models.ForeignKey("BioBlitzProject", on_delete=models.CASCADE)
     obs_id = models.IntegerField("ID de la observación")
     quality_grade = models.CharField("Calidad de ranking", max_length=50)
     created_at = models.DateTimeField("Fecha de la observación")
@@ -48,7 +51,10 @@ class BioblitzOccurrence(models.Model):
     def __str__(self):
         return f'{self.name} - {self.proj_id}'
 
+    def get_absolute_url(self):
+        return reverse_lazy('bioblitz:occurrence_detail', kwargs={'pk': self.pk})
+
 
     class Meta:
-        verbose_name = "Especie obseervada"
+        verbose_name = "Especie observada"
         verbose_name_plural = "Especies observadas"

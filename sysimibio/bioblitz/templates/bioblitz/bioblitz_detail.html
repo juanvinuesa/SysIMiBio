@@ -51,6 +51,9 @@
 </div>
 </div>
 <br>
-<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:get_occs' pk=project.project_id %}">Get occs</a>
+<a  role="button" class="btn navbar-btn btn-warning" href="{% url 'bioblitz:get_occurrences' pk=project.project_id %}">Get occs</a>
+</br>
 <br>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' %}">View occs</a>
+</br>
 {% endblock content %}
