@@ -1,24 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div id="container" style="width: 75%;">
-    <canvas id="pie-chart"></canvas>
-  </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<br>
+<div class="col">
+    <div class="col-sm-8">
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+      <div class="jumbotron" style="width: 50%;">
+        <h3>Observaciones por grupo taxonómico</h3>
+        <div id="container">
+          <canvas id="pie-chart"></canvas>
+        </div>
+      </div>
+<!--     </div>-->
+<!--  <div class="col-sm-8">-->
+
+      <div class="jumbotron" style="width: 50%;">
+        <h3>Observaciones por usuário</h3>
+        <div id="containe">
+          <canvas id="bar-chart"></canvas>
+        </div>
+      </div>
+     </div>
+</div>
+
+
   <script>
 
     var config = {
       type: 'pie',
       data: {
         datasets: [{
-          data: {{ data|safe }},
+          data: {{ data.bar|safe }},
           backgroundColor: [
-            '#696969', '#808080', '#A9A9A9', '#C0C0C0', '#D3D3D3'
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
           ],
           label: 'Group'
         }],
-        labels: {{ labels|safe }}
+        labels: {{ labels.bar|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+   var configBar = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.dough|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.dough|safe }}
       },
       options: {
         responsive: true
@@ -26,10 +62,13 @@
     };
 
     window.onload = function() {
+
       var ctx = document.getElementById('pie-chart').getContext('2d');
       window.myPie = new Chart(ctx, config);
+
+      var ctxBar = document.getElementById('bar-chart').getContext('2d');
+      window.myBar = new Chart(ctxBar, configBar);
     };
 
   </script>
-
 {% endblock %}

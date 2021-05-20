@@ -76,8 +76,6 @@ def register_bioblitz_occurrences(request, pk):
                 threatened = obs.get('taxon').get('threatened')
                 introduced = obs.get('taxon').get('introduced')
                 native = obs.get('taxon').get('native')
-                geom = obs.get('geojson')
-                user_id = obs.get('user').get("id")
             else:
                 name = ''
                 rank = ''
@@ -86,6 +84,9 @@ def register_bioblitz_occurrences(request, pk):
                 threatened = False
                 introduced = False
                 native = False
+                geom = obs.get('geojson')
+            geom = obs.get('geojson')
+            user_id = obs.get('user').get("id")
             BioblitzOccurrence.objects.create(
                 project_id = project_id,
                 obs_id=obs_id,
@@ -121,31 +122,30 @@ def bioblitz_occurrence_detail(request, pk):
     return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
 
 def group_pie_chart(request):
-    labels = []
-    data = []
+    labelsPie = []
+    dataPie = []
+    labelsDough = []
+    dataDough = []
+    data = dict()
+    labels = dict()
 
     queryset = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name'))
     for group in queryset:
-        labels.append(group.get('iconic_taxon_name'))
-        data.append(group.get('name__count'))
+        labelsPie.append(group.get('iconic_taxon_name'))
+        dataPie.append(group.get('name__count'))
 
-    return render(request, 'bioblitz/bioblitz_stats.html', {
-        'labels': labels,
-        'data': data,
-    })
-
-
-def user_bar_chart(request):
-    labels = []
-    data = []
+    data["bar"] = dataPie
+    labels["bar"] = labelsPie
 
     queryset = BioblitzOccurrence.objects.values('user_id').annotate(user_observations=Count('name')).order_by(
-        '-user_observations')
+        '-user_observations')[:5]
     for entry in queryset:
-        labels.append(entry['user_id'])
-        data.append(entry['user_observations'])
+        labelsDough.append(entry['user_id'])
+        dataDough.append(entry['user_observations'])
 
-    return JsonResponse(data={
+    data["dough"] = dataDough
+    labels["dough"] = labelsDough
+    return render(request, 'bioblitz/bioblitz_stats.html', {
         'labels': labels,
         'data': data,
     })
