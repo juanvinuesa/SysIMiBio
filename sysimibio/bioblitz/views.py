@@ -121,30 +121,68 @@ def bioblitz_occurrence_detail(request, pk):
         raise Http404
     return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
 
-def group_pie_chart(request):
-    labelsPie = []
-    dataPie = []
-    labelsDough = []
-    dataDough = []
+def data_chart(request):
+    # Observations
+    labelsObsQGrade = []
+    dataObsQGrade = []
+    labelsObsRank = []
+    dataObsRank = []
+    labelsObsITName = []
+    dataObsITName = []
+    labelsObsUser = []
+    dataObsUser = []
+
+    # Species
+    labelsSppQGrade = []
+    dataSppQGrade = []
+    labelsSppRank = []
+    dataSppRank = []
+    labelsSppITName = []
+    dataSppITName = []
+    labelsSppUser = []
+    dataSppUser = []
+
+    # return object
     data = dict()
     labels = dict()
 
-    queryset = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name'))
-    for group in queryset:
-        labelsPie.append(group.get('iconic_taxon_name'))
-        dataPie.append(group.get('name__count'))
+    # Observation
+    # quality grade
+    querysetGrade = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('obs_id'))
+    for QGrade in querysetGrade:
+        labelsObsQGrade.append(QGrade.get('quality_grade'))
+        dataObsQGrade.append(QGrade.get('obs_id__count'))
 
-    data["bar"] = dataPie
-    labels["bar"] = labelsPie
+    data["ObsQGrade"] = dataObsQGrade
+    labels["ObsQGrade"] = labelsObsQGrade
 
-    queryset = BioblitzOccurrence.objects.values('user_id').annotate(user_observations=Count('name')).order_by(
-        '-user_observations')[:5]
-    for entry in queryset:
-        labelsDough.append(entry['user_id'])
-        dataDough.append(entry['user_observations'])
+    # Rank
+    querysetRank = BioblitzOccurrence.objects.values('rank').annotate(Count('obs_id'))
+    for rank in querysetRank:
+        labelsObsRank.append(rank.get('rank'))
+        dataObsRank.append(rank.get('obs_id__count'))
 
-    data["dough"] = dataDough
-    labels["dough"] = labelsDough
+    data["ObsRank"] = dataObsRank
+    labels["ObsRank"] = labelsObsRank
+
+    # ITName
+    querysetITName = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('obs_id'))
+    for ITName in querysetITName:
+        labelsObsITName.append(ITName.get('iconic_taxon_name'))
+        dataObsITName.append(ITName.get('obs_id__count'))
+
+    data["ObsITName"] = dataObsITName
+    labels["ObsITName"] = labelsObsITName
+
+    # User_id
+    querysetUser = BioblitzOccurrence.objects.values('user_id').annotate(Count('obs_id')).order_by('-obs_id__count')
+    for user in querysetUser:
+        labelsObsUser.append(user.get('user_id'))
+        dataObsUser.append(user.get('obs_id__count'))
+
+    data["ObsUser"] = dataObsUser
+    labels["ObsUser"] = labelsObsUser
+
     return render(request, 'bioblitz/bioblitz_stats.html', {
         'labels': labels,
         'data': data,

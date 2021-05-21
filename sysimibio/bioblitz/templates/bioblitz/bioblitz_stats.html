@@ -7,18 +7,30 @@
     <div class="col-sm-8">
 
       <div class="jumbotron" style="width: 50%;">
-        <h3>Observaciones por grupo taxonómico</h3>
+        <h3>Observaciones por grado de calidad</h3>
         <div id="container">
-          <canvas id="pie-chart"></canvas>
+          <canvas id="ObsQGrade"></canvas>
         </div>
       </div>
-<!--     </div>-->
-<!--  <div class="col-sm-8">-->
 
       <div class="jumbotron" style="width: 50%;">
-        <h3>Observaciones por usuário</h3>
-        <div id="containe">
-          <canvas id="bar-chart"></canvas>
+        <h3>Observaciones por ranking</h3>
+        <div id="container">
+          <canvas id="ObsRank"></canvas>
+        </div>
+      </div>
+
+      <div class="jumbotron" style="width: 50%;">
+        <h3>Observaciones por Iconic Taxon Name</h3>
+        <div id="container">
+          <canvas id="ObsITName"></canvas>
+        </div>
+      </div>
+
+      <div class="jumbotron" style="width: 50%;">
+        <h3>Observaciones por usuario</h3>
+        <div id="container">
+          <canvas id="ObsUser"></canvas>
         </div>
       </div>
      </div>
@@ -27,34 +39,68 @@
 
   <script>
 
-    var config = {
+    var configObsQGrade = {
       type: 'pie',
       data: {
         datasets: [{
-          data: {{ data.bar|safe }},
+          data: {{ data.ObsQGrade|safe }},
           backgroundColor: [
             '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
           ],
-          label: 'Group'
+          label: 'group'
         }],
-        labels: {{ labels.bar|safe }}
+        labels: {{ labels.ObsQGrade|safe }}
       },
       options: {
         responsive: true
       }
     };
 
-   var configBar = {
+   var configObsRank = {
       type: 'doughnut',
       data: {
         datasets: [{
-          data: {{ data.dough|safe }},
+          data: {{ data.ObsRank|safe }},
           backgroundColor: [
             '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
           ],
           label: 'Group'
         }],
-        labels: {{ labels.dough|safe }}
+        labels: {{ labels.ObsRank|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configObsITName = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.ObsITName|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.ObsITName|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configObsUser = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data.ObsUser|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.ObsUser|safe }}
       },
       options: {
         responsive: true
@@ -63,11 +109,17 @@
 
     window.onload = function() {
 
-      var ctx = document.getElementById('pie-chart').getContext('2d');
-      window.myPie = new Chart(ctx, config);
+      var ctxObsQGrade = document.getElementById('ObsQGrade').getContext('2d');
+      window.ObsQGrade = new Chart(ctxObsQGrade, configObsQGrade);
 
-      var ctxBar = document.getElementById('bar-chart').getContext('2d');
-      window.myBar = new Chart(ctxBar, configBar);
+      var ctxObsRank = document.getElementById('ObsRank').getContext('2d');
+      window.ObsRank = new Chart(ObsRank, configObsRank);
+
+      var ctxObsITName = document.getElementById('ObsITName').getContext('2d');
+      window.ObsITName = new Chart(ctxObsITName, configObsITName);
+
+      var ctxObsUser = document.getElementById('ObsUser').getContext('2d');
+      window.ObsUser = new Chart(ctxObsUser, configObsUser);
     };
 
   </script>

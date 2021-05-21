@@ -49,7 +49,7 @@ class BioblitzOccurrence(models.Model):
     user_id = models.IntegerField("ID del observador")
 
     def __str__(self):
-        return f'{self.name} - {self.proj_id}'
+        return f'{self.name} - {self.project_id}'
 
     def get_absolute_url(self):
         return reverse_lazy('bioblitz:occurrence_detail', kwargs={'pk': self.pk})
