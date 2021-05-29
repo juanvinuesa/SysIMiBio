@@ -47,6 +47,8 @@ class BioblitzOccurrence(models.Model):
     geom = PointField()
     # User
     user_id = models.IntegerField("ID del observador")
+    user_login = models.CharField("Login del observador", max_length=50)
+    user_name = models.CharField("Nombre del observador", max_length=100)
 
     def __str__(self):
         return f'{self.name} - {self.project_id}'

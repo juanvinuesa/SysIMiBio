@@ -84,9 +84,18 @@ def register_bioblitz_occurrences(request, pk):
                 threatened = False
                 introduced = False
                 native = False
-                geom = obs.get('geojson')
             geom = obs.get('geojson')
             user_id = obs.get('user').get("id")
+            if obs.get('user').get("login"):
+                user_login = obs.get('user').get("login")
+            else:
+                user_login = ''
+
+            if obs.get('user').get("name"):
+                user_name = obs.get('user').get("name")
+            else:
+                user_name = ''
+
             BioblitzOccurrence.objects.create(
                 project_id = project_id,
                 obs_id=obs_id,
@@ -101,7 +110,9 @@ def register_bioblitz_occurrences(request, pk):
                 introduced=introduced,
                 native=native,
                 geom = geom,
-                user_id = user_id
+                user_id = user_id,
+                user_name = user_name,
+                user_login = user_login
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
@@ -175,9 +186,9 @@ def data_chart(request):
     labels["ObsITName"] = labelsObsITName
 
     # User_id
-    querysetUser = BioblitzOccurrence.objects.values('user_id').annotate(Count('obs_id')).order_by('-obs_id__count')
+    querysetUser = BioblitzOccurrence.objects.values('user_name').annotate(Count('obs_id')).order_by('-obs_id__count')
     for user in querysetUser:
-        labelsObsUser.append(user.get('user_id'))
+        labelsObsUser.append(user.get('user_name'))
         dataObsUser.append(user.get('obs_id__count'))
 
     data["ObsUser"] = dataObsUser
