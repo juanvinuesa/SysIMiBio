@@ -1,9 +1,8 @@
 from django.contrib import messages
 from django.db.models import Count
-from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
 from pyinaturalist.node_api import get_projects, get_observations
-
 
 # Create your views here.
 from sysimibio.bioblitz.forms import BioblitzModelForm
@@ -16,13 +15,13 @@ def register_bioblitz_project(request):
 
         if not form.is_valid():
             messages.error(request, 'Formulário con error: revise todos los campos')
-            return render(request, 'bioblitz/bioblitz_registration_form.html',
+            return render(request, 'bioblitz/bioblitz_registration_form.html', # todo cambiar nombre html
                           {'form': form})
-        bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
+        bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810) # todo crear view especifica con validacion
 
         if bioblitz_project_data.get("total_results") == 0:
             messages.error(request, 'Proyecto no encontrado. confirmar nombre o id')
-            return render(request, 'bioblitz/bioblitz_registration_form.html',
+            return render(request, 'bioblitz/bioblitz_registration_form.html', # todo cambiar nombre html
                           {'form': form})
 
         project = BioblitzProject.objects.create(
@@ -40,13 +39,13 @@ def register_bioblitz_project(request):
         )
         messages.success(request, "Proyecto registrado con exito")
 
-        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk))
+        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk)) # todo cambiar nombre html
 
-    return render(request, 'bioblitz/bioblitz_registration_form.html', {'form': BioblitzModelForm()})
+    return render(request, 'bioblitz/bioblitz_registration_form.html', {'form': BioblitzModelForm()}) # todo cambiar nombre html
 
 def list_bioblitz_project(request):
     ptojects = BioblitzProject.objects.all()
-    return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
+    return render(request, 'bioblitz/projects_list.html', {'projects': ptojects}) # todo cambiar nombre html
 
 def project_detail(request, pk):
     try:
@@ -54,12 +53,12 @@ def project_detail(request, pk):
     except BioblitzProject.DoesNotExist:
         raise Http404
 
-    return render(request, 'bioblitz/bioblitz_detail.html', {'project': project})
+    return render(request, 'bioblitz/bioblitz_detail.html', {'project': project}) # todo cambiar nombre html
 
 def register_bioblitz_occurrences(request, pk):
     try:
         project = BioblitzProject.objects.get(project_id=pk)
-        observations = get_observations(project_id=project.project_id)
+        observations = get_observations(project_id=project.project_id) # todo work on accessing all observations # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"):
             print(obs.get("id"))
@@ -68,33 +67,19 @@ def register_bioblitz_occurrences(request, pk):
             quality_grade = obs.get("quality_grade")
             created_at = obs.get('created_at')
             uri = obs.get('uri')
-            if obs.get('taxon'):
-                name = obs.get('taxon').get('name')
-                rank = obs.get('taxon').get('rank')
-                iconic_taxon_name = obs.get('taxon').get('iconic_taxon_name')
-                endemic = obs.get('taxon').get('endemic')
-                threatened = obs.get('taxon').get('threatened')
-                introduced = obs.get('taxon').get('introduced')
-                native = obs.get('taxon').get('native')
-            else:
-                name = ''
-                rank = ''
-                iconic_taxon_name = ''
-                endemic = False
-                threatened = False
-                introduced = False
-                native = False
-            geom = obs.get('geojson')
+            geom = obs.get('geojson', '')
+            # taxon
+            name = obs.get('taxon').get('name')
+            rank = obs.get('taxon').get('rank')
+            iconic_taxon_name = obs.get('taxon').get('iconic_taxon_name')
+            endemic = obs.get('taxon').get('endemic')
+            threatened = obs.get('taxon').get('threatened')
+            introduced = obs.get('taxon').get('introduced')
+            native = obs.get('taxon').get('native')
+            # user
+            user_login = obs.get('user').get("login")
+            user_name = obs.get('user').get("name")
             user_id = obs.get('user').get("id")
-            if obs.get('user').get("login"):
-                user_login = obs.get('user').get("login")
-            else:
-                user_login = ''
-
-            if obs.get('user').get("name"):
-                user_name = obs.get('user').get("name")
-            else:
-                user_name = ''
 
             BioblitzOccurrence.objects.create(
                 project_id = project_id,
@@ -116,21 +101,21 @@ def register_bioblitz_occurrences(request, pk):
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
-        return HttpResponseRedirect(r('bioblitz:list_occurrences'))
+        return HttpResponseRedirect(r('bioblitz:list_occurrences')) # todo cambiar nombre html
 
     except BioblitzProject.DoesNotExist:
         raise Http404
 
 def list_bioblitz_occurrences(request):
     observations = BioblitzOccurrence.objects.all()
-    return render(request, 'bioblitz/occurrences_list.html', {'observations': observations})
+    return render(request, 'bioblitz/occurrences_list.html', {'observations': observations}) # todo cambiar nombre html
 
 def bioblitz_occurrence_detail(request, pk):
     try:
         observation = BioblitzOccurrence.objects.get(pk=pk)
     except BioblitzProject.DoesNotExist:
         raise Http404
-    return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
+    return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation}) # todo cambiar nombre html
 
 def data_chart(request):
     # Observations
@@ -186,9 +171,9 @@ def data_chart(request):
     labels["ObsITName"] = labelsObsITName
 
     # User_id
-    querysetUser = BioblitzOccurrence.objects.values('user_name').annotate(Count('obs_id')).order_by('-obs_id__count')
+    querysetUser = BioblitzOccurrence.objects.values('user_login').annotate(Count('obs_id')).order_by('-obs_id__count')
     for user in querysetUser:
-        labelsObsUser.append(user.get('user_name'))
+        labelsObsUser.append(user.get('user_login'))
         dataObsUser.append(user.get('obs_id__count'))
 
     data["ObsUser"] = dataObsUser

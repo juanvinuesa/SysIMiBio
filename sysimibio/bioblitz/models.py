@@ -36,19 +36,19 @@ class BioblitzOccurrence(models.Model):
     created_at = models.DateTimeField("Fecha de la observación")
     uri = models.URLField("URL de la observación")
     # taxon
-    name = models.CharField("Nombre cientifico de la especie", max_length=300)
-    rank = models.CharField("Ranking taxonomico", max_length=50)
-    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50)
+    name = models.CharField("Nombre cientifico de la especie", max_length=300, null=True)
+    rank = models.CharField("Ranking taxonomico", max_length=50, null=True)
+    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50, null=True)
     endemic = models.BooleanField("Especie endémica?", default=False)
     threatened = models.BooleanField("Especie amenazada?", default=False)
     introduced = models.BooleanField("Especie introducida?", default=False)
     native = models.BooleanField("Especie nativa?", default=False)
     # geo
-    geom = PointField()
+    geom = PointField(null=True)
     # User
     user_id = models.IntegerField("ID del observador")
     user_login = models.CharField("Login del observador", max_length=50)
-    user_name = models.CharField("Nombre del observador", max_length=100)
+    user_name = models.CharField("Nombre del observador", max_length=100, null=True)
 
     def __str__(self):
         return f'{self.name} - {self.project_id}'

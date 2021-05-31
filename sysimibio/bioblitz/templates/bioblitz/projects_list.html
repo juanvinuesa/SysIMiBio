@@ -2,20 +2,21 @@
 
 {% block content %}
 <div class="col-md-8">
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
     {% if messages %}
-            {% for message in messages %}
-                    <div class="alert alert-success" role="alert">
+        {% for message in messages %}
+            <div class="alert alert-success" role="alert">
                         <p>{{ message }}</p>
                     </div>
-            {% endfor %}
-        {% endif %}
+        {% endfor %}
+    {% endif %}
 
-        <h2>
-<!--            <i class ="fa-pagelines"></i> -->
-            Lista proyectos</h2>
-        {% if projects %}
-            <table class = 'table table-striped'>
+    <h2>
+        <!--<i class ="fa-pagelines"></i> -->
+        Lista proyectos
+    </h2>
+    {% if projects %}
+        <table class = 'table table-striped'>
                 <thead>
                 <tr>
                     <th>Nombre</th>
@@ -36,17 +37,15 @@
                 </tr>
                 {% endfor %}
             </table>
-
-        {% else %}
+    {% else %}
             <p class="alert alert-warning">
             <i class="fa fa-warning"></i> Base de datos sin registros!</p>
-        {% endif %}
-</div>
-
-    {% else %}
-        <div class="alert alert-danger" role="alert">
-            Acceso negado. Logar o crear usuário.
-        </div>
     {% endif %}
+</div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        Acceso negado. Logar o crear usuário.
+    </div>
+{% endif %}
 
 {% endblock content %}
