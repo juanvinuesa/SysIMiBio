@@ -1,6 +1,8 @@
 from django.apps import AppConfig
 
-# todo resolver isso
-# class ImibioEcologicalDataConfig(AppConfig):
-#     default_auto_field = 'django.db.models.BigAutoField'
-#     name = 'apps.imibio_ecological_data'
+
+class ImibioEcologicalDataConfig(AppConfig):
+    default_auto_field = 'django.db.models.AutoField'
+    name = 'sysimibio.imibio_tree_ecological_data'
+    verbose_name = 'Datos de parcelas permanentes'
+

@@ -1,32 +1,51 @@
-from django.test import TestCase
+from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import resolve_url as r
-from sysimibio.imibio_tree_ecological_data.models import TreeEcologicalData
+from django.test import TestCase, override_settings
+
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
+
+TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
 
+@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeEcologicalRegistrationDetailGet(TestCase):
     def setUp(self):
-        self.obj = TreeEcologicalData.objects.create(
-            fecha='2020-12-31',
-            hora_inicio='0:0',
-            hora_final='0:30',
-            temperatura=35.9,
-            humedad=80,
-            responsable="Florencia",
-            acompanantes='Felipe',
-            id_parcela=1,
-            id_arbol=1,
-            especie='Solanaceae',
+        tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
+        coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        staff1 = User.objects.create_user('Juan', 'Juan@imibio.com', 'Juanpassword')
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
+
+        self.obj = FieldWork.objects.create(
+            date='2020-12-31',
+            start_time='12:22',
+            end_time='13:23',
+            temperature=35.9,
+            humidity=80,
+            coordinator=coordinator,
+            parcel_id=self.parcel1
+        )
+        self.obj.staff.add(staff1)
+
+        self.tree = Tree.objects.create(
+            field=self.obj,
+            tree_id=1,
+            specie='Solanaceae',
             dap=40,
             dab=60,
-            altura=60,
-            latitud=-26,
-            longitud=-54,
-            fotografia='www.google.com',
+            tree_height=60,
+            latitude=-26,
+            longitude=-54,
+            picture = tempPicture,
             obs='Teste 1',
-            estado_arbol='Teste estado del arbol',
-            forma_vida='Estado de vida',
-            clasificacion_sociologica='Clasificacion de vida')
-        self.resp = self.client.get(r('imibio_tree_ecological_data:detail', self.obj.pk))
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente'
+        )
+
+        self.resp = self.client.get(r('imibio_tree_ecological_data:detail', self.tree.pk))
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
@@ -38,35 +57,36 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
 
     def test_context(self):
         tree_detail = self.resp.context['tree_detail']
-        self.assertIsInstance(tree_detail, TreeEcologicalData)
+        self.assertIsInstance(tree_detail, Tree)
 
     def test_html(self):
         content = (
-            '2020-12-31',
-            '0:0',
-            '0:30',
-            35.9,
+            'Solanaceae',
+            1,
+            '31 de Diciembre de 2020',
+            '12:22',
+            '13:23',
+            35,9,
             80,
-            "Florencia",
-            'Felipe',
+            'Florencia',
+            'Juan',
             1,
             1,
             'Solanaceae',
             40,
             60,
             60,
-            -43,
-            -56,
-            'www.google.com',
+            -26,
+            -54,
             'Teste 1',
-            'Teste estado del arbol',
-            'Estado de vida',
-            'Clasificacion de vida')
+            'Bueno',
+            'Emergente'
+            )
         for expected in content:
             with self.subTest():
                 self.assertContains(self.resp, expected)
 
-class TreeEcologicalRegistrationDetailGet(TestCase):
+class TreeEcologicalRegistrationDetailNotFound(TestCase):
     def test_not_found(self):
         resp = self.client.get(r('imibio_tree_ecological_data:detail', 0))
         self.assertEqual(404, resp.status_code)

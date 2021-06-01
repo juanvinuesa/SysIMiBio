@@ -42,10 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'test_without_migrations',
     'django_extensions',
+    'djgeojson',
+    'leaflet',
+
+    # apps
     'sysimibio.core', # todo resolver apps
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
-    'sysimibio.imibio_tree_ecological_data', # todo resolver apps
-    'sysimibio.bioblitz'
+    'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig', # todo resolver apps
+    'sysimibio.bioblitz',
+    'sysimibio.bibliography.apps.BibliographyConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -110,9 +116,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ES'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Argentina/Buenos_Aires'
 
 USE_I18N = True
 
@@ -126,3 +132,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'pics')
+MEDIA_URL = '/media/'
+
+# leaflet settings
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (-27.0, -54.5),
+    'DEFAULT_ZOOM': 8,
+}

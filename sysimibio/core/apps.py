@@ -1,6 +1,7 @@
 from django.apps import AppConfig
 
-# todo resolver apps
-# class CoreConfig(AppConfig):
-#     default_auto_field = 'django.db.models.BigAutoField'
-#     name = 'apps.core'
+
+class CoreConfig(AppConfig):
+    default_auto_fiesld = 'django.db.models.AutoField'
+    name = 'sysimibio.core'
+

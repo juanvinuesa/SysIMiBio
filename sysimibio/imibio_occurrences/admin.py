@@ -13,5 +13,6 @@ class ImibioOccurrenceModelAdmin(admin.ModelAdmin):
 
     has_latlong.short_description = "Posee georreferencia?"
     has_latlong.boolean = True
+    exclude = ('geom',)
 
 admin.site.register(ImibioOccurrence, ImibioOccurrenceModelAdmin)

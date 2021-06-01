@@ -14,7 +14,7 @@
 <a  role="button" class="btn navbar-btn btn-success" href="{% url 'imibio_tree_ecological_data:new' %}">Voltar</a>
 <br>
 
-<h1>Detalles de la ocorrencia: {{ tree_detail.especie }}</h1>
+<h1>Detalles de la ocorrencia: {{ tree_detail.specie }}</h1>
 <strong>id: {{ tree_detail.pk }}</strong>
 <div class="row">
 <div class="col-sm-4">
@@ -26,44 +26,48 @@
         <tbody>
             <tr>
                 <th class="text-right">Fecha</th>
-                <td>{{ tree_detail.fecha }}</td>
+                <td>{{ tree_detail.field.date }}</td>
             </tr>
             <tr>
                 <th class="text-right">Hora inicio</th>
-                <td>{{ tree_detail.hora_inicio }}</td>
+                <td>{{ tree_detail.field.start_time }}</td>
                 </tr>
             <tr>
                 <th class="text-right">Hora final</th>
-                <td>{{ tree_detail.hora_final }}</td>
+                <td>{{ tree_detail.field.end_time }}</td>
                 </tr>
 
             <tr>
                 <th class="text-right">Temperatura</th>
-                <td>{{ tree_detail.temperatura }}</td>
+                <td>{{ tree_detail.field.temperature }}</td>
                 </tr>
             <tr>
             <th class="text-right">Humedad</th>
-            <td>{{ tree_detail.humedad }}</td>
+            <td>{{ tree_detail.field.humidity }}</td>
                 </tr>
             <tr>
                 <th class="text-right">Responsable</th>
-                <td>{{ tree_detail.responsable }}</td>
-            <tr>
-                <th class="text-right">Acompañantes</th>
-                <td>{{ tree_detail.acompanantes }}</td>
-            </tr>
+                <td>{{ tree_detail.field.coordinator }}</td>
+            {% if tree_detail.field.staff %}
+                {% for member in tree_detail.field.staff.all %}
+                    <tr>
+                        <th class="text-right">Acompañantes</th>
+                        <td>{{ member }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
 
             <tr>
             <th class="text-right">ID Parcela</th>
-            <td>{{ tree_detail.id_parcela }}</td>
+            <td>{{ tree_detail.field.parcel_id }}</td>
             </tr>
             <tr>
                 <th class="text-right">ID Arbol</th>
-                <td>{{ tree_detail.id_arbol }}</td>
+                <td>{{ tree_detail.tree_id }}</td>
             </tr>
             <tr>
                 <th class="text-right">Especie</th>
-                <td>{{ tree_detail.especie }}</td>
+                <td>{{ tree_detail.specie }}</td>
             </tr>
             <tr>
                 <th class="text-right">DAP</th>
@@ -75,21 +79,21 @@
             </tr>
             <tr>
                 <th class="text-right">Altura</th>
-                <td>{{ tree_detail.altura }}</td>
+                <td>{{ tree_detail.tree_height }}</td>
             </tr>
             <tr>
                 <th class="text-right">Latitud</th>
-                <td>{{ tree_detail.latitud }}</td>
+                <td>{{ tree_detail.latitude }}</td>
             </tr>
             <tr>
                 <th class="text-right">Logitud</th>
-                <td>{{ tree_detail.longitud }}</td>
+                <td>{{ tree_detail.longitude }}</td>
             </tr>
             <tr>
-                {% if tree_detail.fotografia %}
+                {% if tree_detail.photo %}
                     <th class="text-right">Fotografía</th>
 
-                    <td><a href="{{ tree_detail.fotografia }}">Link para las fotografías</a></td>
+                    <td><a href="{{ tree_detail.photo }}">Link para las fotografías</a></td>
                 {% else %}
                     <th class="text-right">Fotografía</th>
                     <td> Registro sin fotografía </td>
@@ -101,15 +105,15 @@
             </tr>
             <tr>
                 <th class="text-right">Estado del arbol</th>
-                <td>{{ tree_detail.estado_arbol }}</td>
+                <td>{{ tree_detail.tree_status }}</td>
             </tr>
             <tr>
                 <th class="text-right">Forma de vida</th>
-                <td>{{ tree_detail.forma_vida }}</td>
+                <td>{{ tree_detail.phytosanitary_status }}</td>
             </tr>
             <tr>
                 <th class="text-right">Clasificación Sociologica</th>
-                <td>{{ tree_detail.clasificacion_sociologica }}</td>
+                <td>{{ tree_detail.sociological_classification }}</td>
             </tr>
         </tbody>
 {% endblock %}

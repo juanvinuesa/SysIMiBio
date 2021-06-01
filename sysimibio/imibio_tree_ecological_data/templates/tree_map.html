@@ -1,0 +1,43 @@
+{% load leaflet_tags %}
+<!--{% load static %}-->
+<html>
+  <head>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Font-awesome -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <style>
+      .leaflet-container { height: 100%; }
+    </style>
+    <script>
+      var dataurl = '{% url "data" %}';
+
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
+            }}).addTo(map);
+          });
+      });
+
+    </script>
+<!--    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>-->
+  </head>
+  <body>
+      {% include "includes/nav.html" %}
+
+<!--    <h1>Mushrooms Spots</h1>-->
+    {% leaflet_map "main" %}
+  </body>
+</html>
