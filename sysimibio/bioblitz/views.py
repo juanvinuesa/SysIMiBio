@@ -15,13 +15,13 @@ def register_bioblitz_project(request):
 
         if not form.is_valid():
             messages.error(request, 'Formulário con error: revise todos los campos')
-            return render(request, 'bioblitz/bioblitz_registration_form.html', # todo cambiar nombre html
+            return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
         bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810) # todo crear view especifica con validacion
 
         if bioblitz_project_data.get("total_results") == 0:
             messages.error(request, 'Proyecto no encontrado. confirmar nombre o id')
-            return render(request, 'bioblitz/bioblitz_registration_form.html', # todo cambiar nombre html
+            return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
 
         project = BioblitzProject.objects.create(
@@ -39,13 +39,13 @@ def register_bioblitz_project(request):
         )
         messages.success(request, "Proyecto registrado con exito")
 
-        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk)) # todo cambiar nombre html
+        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk))
 
-    return render(request, 'bioblitz/bioblitz_registration_form.html', {'form': BioblitzModelForm()}) # todo cambiar nombre html
+    return render(request, 'bioblitz/project_registration_form.html', {'form': BioblitzModelForm()})
 
 def list_bioblitz_project(request):
     ptojects = BioblitzProject.objects.all()
-    return render(request, 'bioblitz/projects_list.html', {'projects': ptojects}) # todo cambiar nombre html
+    return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
 
 def project_detail(request, pk):
     try:
@@ -53,12 +53,13 @@ def project_detail(request, pk):
     except BioblitzProject.DoesNotExist:
         raise Http404
 
-    return render(request, 'bioblitz/bioblitz_detail.html', {'project': project}) # todo cambiar nombre html
+    return render(request, 'bioblitz/project_detail.html', {'project': project})
 
 def register_bioblitz_occurrences(request, pk):
     try:
         project = BioblitzProject.objects.get(project_id=pk)
-        observations = get_observations(project_id=project.project_id) # todo work on accessing all observations # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
+        observations = get_observations(project_id=project.project_id) # todo work on accessing all observations using len(obs.get("results"))
+        # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"):
             print(obs.get("id"))
@@ -101,23 +102,23 @@ def register_bioblitz_occurrences(request, pk):
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
-        return HttpResponseRedirect(r('bioblitz:list_occurrences')) # todo cambiar nombre html
+        return HttpResponseRedirect(r('bioblitz:list_occurrences'))
 
     except BioblitzProject.DoesNotExist:
         raise Http404
 
 def list_bioblitz_occurrences(request):
     observations = BioblitzOccurrence.objects.all()
-    return render(request, 'bioblitz/occurrences_list.html', {'observations': observations}) # todo cambiar nombre html
+    return render(request, 'bioblitz/occurrences_list.html', {'observations': observations})
 
 def bioblitz_occurrence_detail(request, pk):
     try:
         observation = BioblitzOccurrence.objects.get(pk=pk)
     except BioblitzProject.DoesNotExist:
         raise Http404
-    return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation}) # todo cambiar nombre html
+    return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
 
-def data_chart(request):
+def project_stats(request):
     # Observations
     labelsObsQGrade = []
     dataObsQGrade = []
@@ -179,7 +180,7 @@ def data_chart(request):
     data["ObsUser"] = dataObsUser
     labels["ObsUser"] = labelsObsUser
 
-    return render(request, 'bioblitz/bioblitz_stats.html', {
+    return render(request, 'bioblitz/project_stats.html', {
         'labels': labels,
         'data': data,
     })

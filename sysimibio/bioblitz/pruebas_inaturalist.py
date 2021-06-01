@@ -11,9 +11,10 @@ obs = get_all_observations(user_id='institutomisionerodebiodiversidad')
 
 from pyinaturalist.node_api import get_observation
 obs = get_observation(observation_id=105820)
+
 from pyinaturalist.node_api import get_observations
 # obs = get_observations(user_id='niconoe', response_format='dwc')
-obs = get_observations(project_id=69644, per_page = 10000)
+obs = get_observations(project_id=105820, per_page = 20)
 obs.keys()
 obs.get("results")[0].keys()
 # observation
