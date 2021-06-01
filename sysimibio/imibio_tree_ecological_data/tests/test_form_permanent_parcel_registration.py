@@ -42,4 +42,4 @@ class PermanenParcelFormTest(TestCase):
         """"geom must be polygon geojson"""
         form = self.make_PPForm_validated(geom=Point((-54.6,-27.0)))
         form.is_valid()
-        self.assertEquals(form.errors["geom"][0], "Point does not Match geometry type")
+        self.assertEquals(form.errors["geom"][0], "Point does not match geometry type")

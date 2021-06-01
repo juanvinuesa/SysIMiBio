@@ -24,7 +24,7 @@ def detail(request, pk):
 
 
 def empty_form(request):
-    return render(request, 'tree_ecological_registration_form.html', {'form': TreeForm()})
+    return render(request, 'tree_ecological_registration_form.html', {'form': TreeForm()}) # todo considerar Fieldwork form
 
 
 def create(request):
