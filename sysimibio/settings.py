@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'sysimibio.core',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
     'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig',
+    'sysimibio.bibliography.apps.BibliographyConfig',
 ]
 
 MIDDLEWARE = [
