@@ -135,6 +135,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pics')
 MEDIA_URL = '/media/'
 
+# Heroku
+GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
+
 # leaflet settings
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (-27.0, -54.5),
