@@ -78,6 +78,8 @@ six==1.15.0
 sqlformatter==1.4
 sqlparse==0.4.1
 static3==0.7.0
+gunicorn==20.1.0
+psycopg2-binary==2.8.6
 terminado==0.9.3
 testpath==0.4.4
 text-unidecode==1.3
