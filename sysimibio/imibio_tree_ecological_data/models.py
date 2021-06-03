@@ -89,10 +89,10 @@ class Tree(models.Model):
     ]
 
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
-    tree_id = models.IntegerField(verbose_name='ID Árbol')
+    tree_id = models.IntegerField(verbose_name='ID Árbol') # todo ID Árbol: N colecta nombre subparcela (SY) o 2 numeros y cuatro letras o tres numeros y cuatro letras
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(help_text='cm')
-    dab = models.FloatField(help_text='cm')
+    dap = models.FloatField(verbose_name='DAP', help_text='cm')
+    dab = models.FloatField(verbose_name='DAB', help_text='cm')
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat], help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
