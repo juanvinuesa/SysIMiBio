@@ -75,35 +75,35 @@
                                   <div class="col">
                                       <div class="jumbotron">
                                         <h3>Observaciones por grado de calidad</h3>
-<!--                                        <div id="container">-->
-<!--                                          <canvas id="ObsQGrade"></canvas>-->
-<!--                                        </div>-->
+                                        <div id="container">
+                                          <canvas id="SppQGrade"></canvas>
+                                        </div>
                                       </div>
                                   </div>
 
                                   <div class="col">
                                       <div class="jumbotron">
                                         <h3>Observaciones por ranking</h3>
-<!--                                        <div id="container">-->
-<!--                                          <canvas id="ObsRank"></canvas>-->
-<!--                                        </div>-->
+                                        <div id="container">
+                                          <canvas id="SppRank"></canvas>
+                                        </div>
                                       </div>
                                   </div>
 
                                   <div class="col">
                                       <div class="jumbotron">
                                         <h3>Observaciones por Iconic Taxon Name</h3>
-<!--                                        <div id="container">-->
-<!--                                          <canvas id="ObsITName"></canvas>-->
-<!--                                        </div>-->
+                                        <div id="container">
+                                          <canvas id="SppITName"></canvas>
+                                        </div>
                                       </div>
                                   </div>
                                   <div class="col">
                                       <div class="jumbotron">
                                         <h3>Observaciones por usuario</h3>
-<!--                                        <div id="container">-->
-<!--                                          <canvas id="ObsUser"></canvas>-->
-<!--                                        </div>-->
+                                        <div id="container">
+                                          <canvas id="SppUser"></canvas>
+                                        </div>
                                       </div>
                                      </div>
                                 </div>
@@ -225,6 +225,76 @@
       }
     };
 
+
+var configSppQGrade = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data.SppQGrade|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'group'
+        }],
+        labels: {{ labels.SppQGrade|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+   var configSppRank = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.SppRank|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.SppRank|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configSppITName = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.SppITName|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.SppITName|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configSppUser = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data.SppUser|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.SppUser|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+
     window.onload = function() {
 
       var ctxObsQGrade = document.getElementById('ObsQGrade').getContext('2d');
@@ -238,6 +308,18 @@
 
       var ctxObsUser = document.getElementById('ObsUser').getContext('2d');
       window.ObsUser = new Chart(ctxObsUser, configObsUser);
+
+      var ctxSppQGrade = document.getElementById('SppQGrade').getContext('2d');
+      window.SppQGrade = new Chart(ctxSppQGrade, configSppQGrade);
+
+      var ctxSppRank = document.getElementById('SppRank').getContext('2d');
+      window.SppRank = new Chart(SppRank, configSppRank);
+
+      var ctxSppITName = document.getElementById('SppITName').getContext('2d');
+      window.SppITName = new Chart(ctxSppITName, configSppITName);
+
+      var ctxSppUser = document.getElementById('SppUser').getContext('2d');
+      window.SppUser = new Chart(ctxSppUser, configSppUser);
     };
 
   </script>

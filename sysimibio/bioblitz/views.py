@@ -180,7 +180,45 @@ def project_stats(request):
     data["ObsUser"] = dataObsUser
     labels["ObsUser"] = labelsObsUser
 
+    # species
+    # quality grade
+    querysetGradeSpp = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('name'))
+    for QGradeSpp in querysetGradeSpp:
+        labelsSppQGrade.append(QGradeSpp.get('quality_grade'))
+        dataSppQGrade.append(QGradeSpp.get('name__count'))
+
+    data["SppQGrade"] = dataSppQGrade
+    labels["SppQGrade"] = labelsSppQGrade
+
+    # Rank
+    querysetRankSpp = BioblitzOccurrence.objects.values('rank').annotate(Count('name'))
+    for rankSpp in querysetRankSpp:
+        labelsSppRank.append(rankSpp.get('rank'))
+        dataSppRank.append(rankSpp.get('name__count'))
+
+    data["SppRank"] = dataSppRank
+    labels["SppRank"] = labelsSppRank
+
+    # ITName
+    querysetITNameSpp = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name'))
+    for ITNameSpp in querysetITNameSpp:
+        labelsSppITName.append(ITNameSpp.get('iconic_taxon_name'))
+        dataSppITName.append(ITNameSpp.get('name__count'))
+
+    data["SppITName"] = dataSppITName
+    labels["SppITName"] = labelsSppITName
+
+    # User_id
+    querysetUserSpp = BioblitzOccurrence.objects.values('user_login').annotate(Count('name')).order_by('-name__count')
+    for userSpp in querysetUserSpp:
+        labelsSppUser.append(userSpp.get('user_login'))
+        dataSppUser.append(userSpp.get('name__count'))
+
+    data["SppUser"] = dataSppUser
+    labels["SppUser"] = labelsSppUser
+
     return render(request, 'bioblitz/project_stats.html', {
         'labels': labels,
         'data': data,
     })
+
