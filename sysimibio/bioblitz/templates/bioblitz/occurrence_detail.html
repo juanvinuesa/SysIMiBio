@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+            {% endfor %}
+{% endif %}
+
+<br>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' %}">Voltar</a>
+<br>
+
+<h1>Detalles de la observación: {{ observation.name }}</h1>
+<strong>id: {{ observation.pk }}</strong>
+<div class="row">
+<div class="col-sm-4">
+    <table class = "table table-user-information">
+        <tbody>
+        <tr>
+            <th class="text-right">proj_id</th>
+            <td>{{ observation.project_id }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">name</th>
+            <td><a href="{{ observation.uri }}">{{ observation.name }}</a></td>
+        </tr>
+        <tr>
+            <th class="text-right">Calidad</th>
+            <td>{{ observation.quality_grade }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">Fecha de creación</th>
+            <td>{{ observation.created_at }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">Ranking taxonómico</th>
+            <td>{{ observation.rank }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">grupo</th>
+            <td>{{ observation.iconic_taxon_name }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">endemic</th>
+            <td>{{ observation.endemic|yesno:'Sí,No' }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">threatened</th>
+            <td>{{ observation.threatened|yesno:'Sí,No' }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">introduced</th>
+            <td>{{ observation.introduced|yesno:'Sí,No' }}</td>
+        </tr>
+        <tr>
+            <th class="text-right">native</th>
+            <td>{{ observation.native|yesno:'Sí,No' }}</td>
+        </tr>
+<!--todo add geo (mapa) -->
+        </tbody>
+    </table>
+</div>
+</div>
+
+{% endblock content %}

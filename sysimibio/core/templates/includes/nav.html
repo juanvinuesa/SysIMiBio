@@ -37,16 +37,23 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bibliografía</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="nav-link dropdown-toggle" href="" id="bioblitz" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Datos Bioblitz</a>
+                <div class="dropdown-menu" aria-labelledby="bioblitz">
+                    <a class="dropdown-item" href="{% url 'bioblitz:register_bioblitz' %}">
+                        <i class="fa fa-plus"></i> Registrar proyecto</a>
+                    <a class="dropdown-item" href="{% url 'bioblitz:list_bioblitz' %}">
+                        <i class="fa fa-book"></i> Lista de proyectos de Bioblitz</a>
+                </div>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="bibliografia" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bibliografía</a>
+                <div class="dropdown-menu" aria-labelledby="bibliografia">
                     <a class="dropdown-item " href="{% url 'bibliography:publication_new' %}">
-
-                        <i class="fa fa-plus "></i> Agregar Bibliografía</a>
-
+                        <i class="fa fa-plus"></i> Agregar Bibliografía</a>
                     <a class="dropdown-item " href="{% url 'bibliography:publication_list' %}">
                         <i class="fa fa-book"></i> Lista Bibliografías</a>
-
-
                 </div>
             </li>
         </ul>

@@ -2,6 +2,5 @@ from django.apps import AppConfig
 
 
 class CoreConfig(AppConfig):
-    default_auto_fiesld = 'django.db.models.AutoField'
+    default_auto_field = 'django.db.models.AutoField'
     name = 'sysimibio.core'
-

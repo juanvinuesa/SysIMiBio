@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class = "jumbotron">
+    <div class = "container">
+        <h2>Registros de proyectos de bioblitz (INaturalist)</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="accordion" id="accordionExample">
+            <form method="POST" action="." class="post-form">
+              {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+          <div class="card ">
+            <div class="card-header" id="headingOne">
+              <h3 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Datos del proyecto
+                </button>
+              </h3>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                  <h5>Datos obligatórios</h5>
+                  <p>
+                      <label for="{{ form.project_slug.id_for_label }}"> {{ form.project_slug.label }} </label>
+                      {% for error in form.project_slug.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.project_slug }} {{ form.project_slug.help_text }}
+                  </p>
+                  <p>
+                      <label for="{{ form.project_id.id_for_label }}"> {{ form.project_id.label }} </label>
+                      {% for error in form.project_id.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.project_id }} {{ form.project_id.help_text }}
+                  </p>
+              </div>
+            </div>
+          </div>
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+    </div>
+</div>
+</div>
+
+{% endblock %}

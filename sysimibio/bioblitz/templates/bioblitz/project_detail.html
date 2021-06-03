@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if messages %}
+            {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+            {% endfor %}
+{% endif %}
+
+<br>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_bioblitz' %}">Voltar</a>
+<br>
+
+<h1>Detalles del Bioblitz: {{ project.title }}</h1>
+<strong>id: {{ project.pk }}</strong>
+<div class="row">
+<div class="col-sm-4">
+    <table class = "table table-user-information">
+        <tbody>
+        <tr>
+            <th class="text-right">Nombre del proyecto</th>
+            <td>{{ project.title }}</td>
+        </tr>
+        <tr>
+
+            <th class="text-right">ID del proyecto</th>
+            <td>{{ project.project_id }}</td>
+        </tr>
+
+            <th class="text-right">Fecha de creación</th>
+            <td>{{ project.created_at }}</td>
+        </tr>
+
+            <th class="text-right">Descripción</th>
+            <td>{{ project.description }}</td>
+        </tr>
+
+            <th class="text-right">Tipo de proyecto</th>
+            <td>{{ project.project_type }}</td>
+        </tr>
+
+            <th class="text-right">Administrador</th>
+            <td>{{ project.manager_name }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</div>
+<br>
+<a  role="button" class="btn navbar-btn btn-warning" href="{% url 'bioblitz:get_occurrences' pk=project.project_id %}">Get occs</a>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' %}">View occs</a>
+<a  role="button" class="btn navbar-btn btn-dark" href="{% url 'bioblitz:project_stats' %}">View stats</a>
+<br>
+{% endblock content %}

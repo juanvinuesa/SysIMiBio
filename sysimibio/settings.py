@@ -41,17 +41,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'test_without_migrations',
+
     'django_extensions',
     'djgeojson',
     'leaflet',
 
     # apps
-    'sysimibio.core', # todo resolver apps
+    'sysimibio.core',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
-    'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig', # todo resolver apps
-    'sysimibio.bioblitz',
+    'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig',
+    'sysimibio.bioblitz.apps.BioblitzConfig',
     'sysimibio.bibliography.apps.BibliographyConfig',
-
 ]
 
 MIDDLEWARE = [

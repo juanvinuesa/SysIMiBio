@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<br>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_bioblitz' %}">Voltar</a>
+<br>
+<div class = "jumbotron">
+    <div class = "container-fluid">
+        <div class="accordion" id="accordionExample">
+            <div class="card ">
+                <div class="card-header" id="headingOne">
+                    <h3 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Estadísticas de observaciones
+                        </button>
+                    </h3>
+                </div>
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="row row-cols-2">
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por grado de calidad</h3>
+                                        <div id="container">
+                                          <canvas id="ObsQGrade"></canvas>
+                                        </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por ranking</h3>
+                                        <div id="container">
+                                          <canvas id="ObsRank"></canvas>
+                                        </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por Iconic Taxon Name</h3>
+                                        <div id="container">
+                                          <canvas id="ObsITName"></canvas>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por usuario</h3>
+                                        <div id="container">
+                                          <canvas id="ObsUser"></canvas>
+                                        </div>
+                                      </div>
+                                     </div>
+                                </div>
+
+
+                        </div>
+                    </div>
+            </div>
+            <div class="card ">
+                <div class="card-header" id="headingTwo">
+                    <h3 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                            Estadísticas de Species
+                        </button>
+                    </h3>
+                </div>
+                    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <div class="row row-cols-2">
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por grado de calidad</h3>
+<!--                                        <div id="container">-->
+<!--                                          <canvas id="ObsQGrade"></canvas>-->
+<!--                                        </div>-->
+                                      </div>
+                                  </div>
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por ranking</h3>
+<!--                                        <div id="container">-->
+<!--                                          <canvas id="ObsRank"></canvas>-->
+<!--                                        </div>-->
+                                      </div>
+                                  </div>
+
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por Iconic Taxon Name</h3>
+<!--                                        <div id="container">-->
+<!--                                          <canvas id="ObsITName"></canvas>-->
+<!--                                        </div>-->
+                                      </div>
+                                  </div>
+                                  <div class="col">
+                                      <div class="jumbotron">
+                                        <h3>Observaciones por usuario</h3>
+<!--                                        <div id="container">-->
+<!--                                          <canvas id="ObsUser"></canvas>-->
+<!--                                        </div>-->
+                                      </div>
+                                     </div>
+                                </div>
+
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="row row-cols-2">-->
+
+<!--  <div class="col">-->
+<!--      <div class="jumbotron">-->
+<!--        <h3>Observaciones por grado de calidad</h3>-->
+<!--        <div id="container">-->
+<!--          <canvas id="ObsQGrade"></canvas>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--  </div>-->
+
+<!--  <div class="col">-->
+<!--      <div class="jumbotron">-->
+<!--        <h3>Observaciones por ranking</h3>-->
+<!--        <div id="container">-->
+<!--          <canvas id="ObsRank"></canvas>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--  </div>-->
+<!---->
+<!--  <div class="col">-->
+<!--      <div class="jumbotron">-->
+<!--        <h3>Observaciones por Iconic Taxon Name</h3>-->
+<!--        <div id="container">-->
+<!--          <canvas id="ObsITName"></canvas>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--  </div>-->
+<!--  <div class="col">-->
+<!--      <div class="jumbotron">-->
+<!--        <h3>Observaciones por usuario</h3>-->
+<!--        <div id="container">-->
+<!--          <canvas id="ObsUser"></canvas>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--     </div>-->
+<!--</div>-->
+
+  <script>
+
+    var configObsQGrade = {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: {{ data.ObsQGrade|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'group'
+        }],
+        labels: {{ labels.ObsQGrade|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+   var configObsRank = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.ObsRank|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.ObsRank|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configObsITName = {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: {{ data.ObsITName|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.ObsITName|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var configObsUser = {
+      type: 'bar',
+      data: {
+        datasets: [{
+          data: {{ data.ObsUser|safe }},
+          backgroundColor: [
+            '#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'
+          ],
+          label: 'Group'
+        }],
+        labels: {{ labels.ObsUser|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+
+      var ctxObsQGrade = document.getElementById('ObsQGrade').getContext('2d');
+      window.ObsQGrade = new Chart(ctxObsQGrade, configObsQGrade);
+
+      var ctxObsRank = document.getElementById('ObsRank').getContext('2d');
+      window.ObsRank = new Chart(ObsRank, configObsRank);
+
+      var ctxObsITName = document.getElementById('ObsITName').getContext('2d');
+      window.ObsITName = new Chart(ctxObsITName, configObsITName);
+
+      var ctxObsUser = document.getElementById('ObsUser').getContext('2d');
+      window.ObsUser = new Chart(ctxObsUser, configObsUser);
+    };
+
+  </script>
+
+{% endblock %}
