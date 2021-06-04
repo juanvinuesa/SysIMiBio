@@ -58,7 +58,7 @@ def project_detail(request, pk):
 def register_bioblitz_occurrences(request, pk):
     try:
         project = BioblitzProject.objects.get(project_id=pk)
-        observations = get_observations(project_id=project.project_id) # todo work on accessing all observations using len(obs.get("results"))
+        observations = get_observations(project_id=project.project_id, page = 2) # todo work on accessing all observations using len(obs.get("results"))
         # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"):
@@ -182,7 +182,7 @@ def project_stats(request):
 
     # species
     # quality grade
-    querysetGradeSpp = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('name'))
+    querysetGradeSpp = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('name', distinct=True))
     for QGradeSpp in querysetGradeSpp:
         labelsSppQGrade.append(QGradeSpp.get('quality_grade'))
         dataSppQGrade.append(QGradeSpp.get('name__count'))
@@ -191,7 +191,7 @@ def project_stats(request):
     labels["SppQGrade"] = labelsSppQGrade
 
     # Rank
-    querysetRankSpp = BioblitzOccurrence.objects.values('rank').annotate(Count('name'))
+    querysetRankSpp = BioblitzOccurrence.objects.values('rank').annotate(Count('name', distinct=True))
     for rankSpp in querysetRankSpp:
         labelsSppRank.append(rankSpp.get('rank'))
         dataSppRank.append(rankSpp.get('name__count'))
@@ -200,7 +200,7 @@ def project_stats(request):
     labels["SppRank"] = labelsSppRank
 
     # ITName
-    querysetITNameSpp = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name'))
+    querysetITNameSpp = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('name', distinct=True))
     for ITNameSpp in querysetITNameSpp:
         labelsSppITName.append(ITNameSpp.get('iconic_taxon_name'))
         dataSppITName.append(ITNameSpp.get('name__count'))
@@ -209,7 +209,7 @@ def project_stats(request):
     labels["SppITName"] = labelsSppITName
 
     # User_id
-    querysetUserSpp = BioblitzOccurrence.objects.values('user_login').annotate(Count('name')).order_by('-name__count')
+    querysetUserSpp = BioblitzOccurrence.objects.values('user_login').annotate(Count('name', distinct=True)).order_by('-name__count')
     for userSpp in querysetUserSpp:
         labelsSppUser.append(userSpp.get('user_login'))
         dataSppUser.append(userSpp.get('name__count'))
