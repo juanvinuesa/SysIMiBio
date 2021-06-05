@@ -29,16 +29,16 @@ class BioblitzProject(models.Model):
         verbose_name_plural = "Proyecto de BioBlitz"
 
 
-class BioblitzOccurrence(models.Model):
+class BioblitzOccurrence(models.Model): # todo work with sounds?
     project_id = models.ForeignKey("BioBlitzProject", on_delete=models.CASCADE)
     obs_id = models.IntegerField("ID de la observación")
     quality_grade = models.CharField("Calidad de ranking", max_length=50)
     created_at = models.DateTimeField("Fecha de la observación")
     uri = models.URLField("URL de la observación")
     # taxon
-    name = models.CharField("Nombre cientifico de la especie", max_length=300, null=True)
-    rank = models.CharField("Ranking taxonomico", max_length=50, null=True)
-    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50, null=True)
+    taxon_name = models.CharField("Nombre cientifico de la especie", max_length=300, blank=True, default='')
+    taxon_rank = models.CharField("Ranking taxonomico", max_length=50, blank=True, default='')
+    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50, blank=True, default='')
     endemic = models.BooleanField("Especie endémica?", default=False)
     threatened = models.BooleanField("Especie amenazada?", default=False)
     introduced = models.BooleanField("Especie introducida?", default=False)
