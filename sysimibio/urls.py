@@ -29,7 +29,5 @@ urlpatterns = [
     path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')), # todo cambiar a ingles
     path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')), # todo cambiar a ingles
     path('bioblitz/', include('sysimibio.bioblitz.urls')),
-    path('mapa/', TemplateView.as_view(template_name='tree_map.html'), name='map'), # todo cambiar a ingles
-    path('geojson/', v.trees_geojson, name='data'),
     path('publications/', include('sysimibio.bibliography.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

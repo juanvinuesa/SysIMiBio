@@ -13,7 +13,7 @@
       .leaflet-container { height: 100%; }
     </style>
     <script>
-      var dataurl = '{% url "data" %}';
+      var dataurl = '{% url "imibio_tree_ecological_data:data" %}';
 
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -33,6 +33,7 @@
 
     </script>
 <!--    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>-->
+<!--    todo confirmar o pq isso acima está comentado -->
   </head>
   <body>
       {% include "includes/nav.html" %}
