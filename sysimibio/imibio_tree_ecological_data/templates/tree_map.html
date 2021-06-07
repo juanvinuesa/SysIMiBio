@@ -1,17 +1,18 @@
+<!-- TODO poner mapa en fullscreen-->
+{% extends 'base.html' %}
 {% load leaflet_tags %}
-<!--{% load static %}-->
-<html>
-  <head>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- Font-awesome -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
+{% load static %}
+{% block js %}
     {% leaflet_js %}
+{% endblock %}
+{% block css %}
     {% leaflet_css %}
-    <style>
-      .leaflet-container { height: 100%; }
-    </style>
+{% endblock %}
+{% block content %}
+<div class = "col">
+  <div class = "container-fluid">
+    <div class = "jumbotron">
+
     <script>
       var dataurl = '{% url "imibio_tree_ecological_data:data" %}';
 
@@ -32,13 +33,9 @@
       });
 
     </script>
-<!--    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>-->
-<!--    todo confirmar o pq isso acima está comentado -->
-  </head>
-  <body>
-      {% include "includes/nav.html" %}
+    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>
 
-<!--    <h1>Mushrooms Spots</h1>-->
     {% leaflet_map "main" %}
-  </body>
-</html>
+    </div>
+  </div>
+{% endblock %}
