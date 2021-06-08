@@ -22,6 +22,7 @@ from sysimibio.core.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('sysimibio.accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('', home, name='home'),

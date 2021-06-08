@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # apps
     'sysimibio.core',
+    'sysimibio.accounts.apps.AccountsConfig',
     'sysimibio.imibio_occurrences.apps.ImibioOccurrenceConfig',
     'sysimibio.imibio_tree_ecological_data.apps.ImibioEcologicalDataConfig',
     'sysimibio.bioblitz.apps.BioblitzConfig',

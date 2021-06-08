@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="post">
+
+    <div class="container-sm">
+
+    <div class="row">
+    <div class="col">
+    <div class="jumbotron">
+    <div class="col align-items-center text-center">
+        <img src="https://imibio.misiones.gob.ar/logocolorchico.png" style="height: 80px; width: auto;" alt="">
+        {% csrf_token %}
+        <br>
+        <br>
+      <h2>Crear nuevo usuário</h2>
+        {% if form.non_field_errors  %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <p>{{ error|escape }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+              {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <div class="card-body">
+          {% for item in form %}
+        <p>
+        <label for="{{ item.id_for_label }}"> {{ item.label }} </label>
+                      {% for error in item.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ item }}
+        </p>
+          {% endfor %}
+        <button class="w-50 btn btn-lg btn-primary" type="submit">crear</button>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</form>
+
+{% endblock content %}
