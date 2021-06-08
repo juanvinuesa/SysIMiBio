@@ -73,7 +73,7 @@
                 {% endif %}
 
             <li class="nav-item">
-                <a role="button" class="btn btn-danger" href="">
+                <a role="button" class="btn btn-danger" href="{% url 'logout' %}">
                     <span></span><span class="fa fa-sign-in"></span> Salir </a>
             </li>
 
@@ -81,7 +81,7 @@
 
             {% else %}
             <li class="nav-item">
-                <a  role="button" class="btn navbar-btn btn-success" href="">
+                <a  role="button" class="btn navbar-btn btn-success" href="{% url 'login' %}">
                     <span class="fa fa-user"></span> Login </a>
             </li>
             {% endif %}

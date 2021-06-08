@@ -136,7 +136,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'pics')
 MEDIA_URL = '/media/'
 
 # login
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 # Heroku
 GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
