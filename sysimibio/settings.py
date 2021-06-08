@@ -135,6 +135,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pics')
 MEDIA_URL = '/media/'
 
+# login
+LOGIN_REDIRECT_URL = '/'
+
 # Heroku
 GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
 GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')

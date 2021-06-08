@@ -13,21 +13,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 
-import sysimibio.core.views
-from sysimibio.imibio_tree_ecological_data import views as v
-
+from sysimibio.core.views import home
 
 urlpatterns = [
-    path('', sysimibio.core.views.home, name='home'), # todo melhorar esse import
     path('admin/', admin.site.urls),
-    path('registro_ocurrencias/', include('sysimibio.imibio_occurrences.urls')), # todo cambiar a ingles
-    path('registro_ecologico_arboreas/', include('sysimibio.imibio_tree_ecological_data.urls')), # todo cambiar a ingles
+    path('accounts/', include('django.contrib.auth.urls')),
+
+    path('', home, name='home'),
+    path('imibio_occurrences/', include('sysimibio.imibio_occurrences.urls')), # todo cambiar a ingles
+    path('imibio_tree_ecological_data/', include('sysimibio.imibio_tree_ecological_data.urls')), # todo cambiar a ingles
     path('bioblitz/', include('sysimibio.bioblitz.urls')),
-    path('publications/', include('sysimibio.bibliography.urls')),
+    path('bibliography/', include('sysimibio.bibliography.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
