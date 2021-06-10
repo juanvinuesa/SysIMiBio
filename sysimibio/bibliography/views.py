@@ -28,14 +28,16 @@ def cross_isbn(publication):
     publication.author = book_data_result.get('Authors')[0]
 
 
+@login_required
 def publication_list(request):
     publications = Publication.objects.all().order_by('-publication_year')
     return render(request, 'publication_list.html', {'publications': publications})
 
 
+@login_required
 def publication_detail(request, pk):
-        publication = get_object_or_404(Publication, pk=pk)
-        return render(request, 'publication_detail.html', {'publication': publication})
+    publication = get_object_or_404(Publication, pk=pk)
+    return render(request, 'publication_detail.html', {'publication': publication})
 
 
 @login_required
@@ -66,9 +68,6 @@ def publication_edit(request, pk): #todo confirmar si se puede mejorar la view
     if request.method == "POST":
         form = PublicationForm(request.POST, instance=publication)
         if form.is_valid():
-            publication = form.save(commit=False)
-
-
             publication.save()
             return redirect('bibliography:publication_detail', pk=publication.pk)
     else:

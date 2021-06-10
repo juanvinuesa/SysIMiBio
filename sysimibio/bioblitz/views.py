@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
@@ -10,6 +11,7 @@ from sysimibio.bioblitz.forms import BioblitzModelForm
 from sysimibio.bioblitz.models import BioblitzProject, BioblitzOccurrence
 
 
+@login_required
 def register_bioblitz_project(request):
     if request.method == 'POST':
         form = BioblitzModelForm(request.POST)
@@ -18,7 +20,9 @@ def register_bioblitz_project(request):
             messages.error(request, 'Formulário con error: revise todos los campos')
             return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
-        bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810) # todo crear view especifica con validacion = refactorar
+        bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
+
+        # todo crear view especifica con validacion = refactorar
 
         if bioblitz_project_data.get("total_results") == 0:
             messages.error(request, 'Proyecto no encontrado. confirmar nombre o id')
@@ -26,17 +30,17 @@ def register_bioblitz_project(request):
                           {'form': form})
 
         project = BioblitzProject.objects.create(
-            iconURL= bioblitz_project_data.get("results")[0].get('icon'),
-            description = bioblitz_project_data.get("results")[0].get('description'),
-            created_at = bioblitz_project_data.get("results")[0].get('created_at'),
-            title = bioblitz_project_data.get("results")[0].get('title'),
-            project_id = bioblitz_project_data.get("results")[0].get('id'),
-            project_slug = bioblitz_project_data.get("results")[0].get('slug'),
-            place_id = bioblitz_project_data.get("results")[0].get('place_id'),
-            project_type = bioblitz_project_data.get("results")[0].get('project_type'),
-            manager_id = bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("id"),
-            manager_login = bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("login"),
-            manager_name = bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("name")
+            iconURL=bioblitz_project_data.get("results")[0].get('icon'),
+            description=bioblitz_project_data.get("results")[0].get('description'),
+            created_at=bioblitz_project_data.get("results")[0].get('created_at'),
+            title=bioblitz_project_data.get("results")[0].get('title'),
+            project_id=bioblitz_project_data.get("results")[0].get('id'),
+            project_slug=bioblitz_project_data.get("results")[0].get('slug'),
+            place_id=bioblitz_project_data.get("results")[0].get('place_id'),
+            project_type=bioblitz_project_data.get("results")[0].get('project_type'),
+            manager_id=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("id"),
+            manager_login=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("login"),
+            manager_name=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("name")
         )
         messages.success(request, "Proyecto registrado con exito")
 
@@ -44,10 +48,14 @@ def register_bioblitz_project(request):
 
     return render(request, 'bioblitz/project_registration_form.html', {'form': BioblitzModelForm()})
 
+
+@login_required
 def list_bioblitz_project(request):
     ptojects = BioblitzProject.objects.all()
     return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
 
+
+@login_required
 def project_detail(request, pk):
     try:
         project = BioblitzProject.objects.get(pk=pk)
@@ -59,10 +67,12 @@ def project_detail(request, pk):
 
     return render(request, 'bioblitz/project_detail.html', context)
 
+
+@login_required
 def register_bioblitz_occurrences(request, project_id):
     try:
         project = BioblitzProject.objects.get(project_id=project_id)
-        observations = get_observations(project_id=project_id, page = 'all') # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
+        observations = get_observations(project_id=project_id, page='all') # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"): # todo get a better way to map dict variables
             # print(obs.get("id"))
@@ -96,7 +106,7 @@ def register_bioblitz_occurrences(request, project_id):
             user_id = obs.get('user').get("id")
 
             BioblitzOccurrence.objects.create(
-                project_id = project_id,
+                project_id=project_id,
                 obs_id=obs_id,
                 quality_grade=quality_grade,
                 created_at=created_at,
@@ -108,10 +118,10 @@ def register_bioblitz_occurrences(request, project_id):
                 threatened=threatened,
                 introduced=introduced,
                 native=native,
-                geom = geom,
-                user_id = user_id,
-                user_name = user_name,
-                user_login = user_login
+                geom=geom,
+                user_id=user_id,
+                user_name=user_name,
+                user_login=user_login
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
@@ -120,12 +130,16 @@ def register_bioblitz_occurrences(request, project_id):
     except BioblitzProject.DoesNotExist:
         raise Http404
 
+
+@login_required
 def list_bioblitz_occurrences(request, pk):
     observations = BioblitzOccurrence.objects.filter(project_id__pk=pk)
     context = {'observations': observations,
                'project_pk': pk}
     return render(request, 'bioblitz/occurrences_list.html', context)
 
+
+@login_required
 def bioblitz_occurrence_detail(request, pk):
     try:
         observation = BioblitzOccurrence.objects.get(pk=pk)
@@ -133,6 +147,8 @@ def bioblitz_occurrence_detail(request, pk):
         raise Http404
     return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
 
+
+@login_required
 def project_stats(request, pk):
     # Observations
     labelsObsQGrade = []
@@ -238,13 +254,15 @@ def project_stats(request, pk):
         'project_pk': pk
     })
 
-class INatObsGeoJson(GeoJSONLayerView): # todo regatar por project_id
+
+class INatObsGeoJson(GeoJSONLayerView):
     model = BioblitzOccurrence
     properties = ('popup_content',)
 
     def get_queryset(self):
         context = BioblitzOccurrence.objects.all()
         return context
+
 
 class INatObservationGeoJson(GeoJSONLayerView):
     model = BioblitzOccurrence
@@ -258,4 +276,3 @@ class INatObservationGeoJson(GeoJSONLayerView):
 
 inatobs_geojson = INatObsGeoJson.as_view()
 occ_geojson = INatObservationGeoJson.as_view()
-

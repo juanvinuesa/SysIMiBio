@@ -14,8 +14,8 @@ class Publication(models.Model):
     DOI = models.CharField('DOI', max_length=30, blank=True)
     ISBN = models.CharField('ISBN', help_text='Ingresar ISBN sin guion ni puntos', max_length=13, blank=True, validators=[validate_isbn]) #todo crear un metodo clean para sacar puntos guiones
     subject = models.CharField("Palabras clave o tema", max_length=200, blank=True)
-    ORCID = models.URLField("Orcid (opcional)", max_length=200, blank=True)
-    URL = models.URLField("Url (opcional)", max_length=200, blank=True)
+    ORCID = models.URLField("ORCID (opcional)", max_length=200, blank=True)
+    URL = models.URLField("URL (opcional)", max_length=200, blank=True)
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True) # todo si queres, podriamos tener un campo "create_by" como foreign key del usuario que hace el registro
     #created_by = models.ForeignKey() # todo finalizar adicionando relacion con usuario logado
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)

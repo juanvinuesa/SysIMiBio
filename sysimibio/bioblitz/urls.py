@@ -14,7 +14,7 @@ urlpatterns = [
     path('project_detail/geojson/', inatobs_geojson, name='project_geojson'), # todo restringir a project_id
     path('get_occurrences/<int:project_id>/', register_bioblitz_occurrences, name='get_occurrences'),
     path('get_occurrence_geojson/<int:pk>/', occ_geojson, name='occurrence_geojson'),
-    path('list_occurrences/<int:pk>/', list_bioblitz_occurrences, name='list_occurrences'), # todo cambiar nombre
+    path('list_occurrences/<int:pk>/', list_bioblitz_occurrences, name='list_occurrences'),
     path('occurrence_detail/<int:pk>/', bioblitz_occurrence_detail, name='occurrence_detail'),
     path('project_stats/<int:pk>/', project_stats, name='project_stats'),
 ]
