@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.db.models import Count
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
+from djgeojson.views import GeoJSONLayerView
 from pyinaturalist.node_api import get_projects, get_observations
 
 # Create your views here.
@@ -50,15 +51,18 @@ def list_bioblitz_project(request):
 def project_detail(request, pk):
     try:
         project = BioblitzProject.objects.get(pk=pk)
+        project_occurrences = BioblitzOccurrence.objects.filter(project_id__pk=pk)
+        context = {'project': project,
+                   'occurences': project_occurrences}
     except BioblitzProject.DoesNotExist:
         raise Http404
 
-    return render(request, 'bioblitz/project_detail.html', {'project': project})
+    return render(request, 'bioblitz/project_detail.html', context)
 
-def register_bioblitz_occurrences(request, pk):
+def register_bioblitz_occurrences(request, project_id):
     try:
-        project = BioblitzProject.objects.get(project_id=pk)
-        observations = get_observations(project_id=project.project_id, page = 'all') # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
+        project = BioblitzProject.objects.get(project_id=project_id)
+        observations = get_observations(project_id=project_id, page = 'all') # todo consider user_agent https://pyinaturalist.readthedocs.io/en/v0.13.0/general_usage.html#user-agent
         total_obs = len(observations.get("results"))
         for obs in observations.get("results"): # todo get a better way to map dict variables
             # print(obs.get("id"))
@@ -111,14 +115,16 @@ def register_bioblitz_occurrences(request, pk):
             )
 
         messages.success(request, f"{total_obs} observaciones cargadas con exito")
-        return HttpResponseRedirect(r('bioblitz:list_occurrences'))
+        return HttpResponseRedirect(r('bioblitz:list_occurrences', project.pk))
 
     except BioblitzProject.DoesNotExist:
         raise Http404
 
-def list_bioblitz_occurrences(request):
-    observations = BioblitzOccurrence.objects.all()
-    return render(request, 'bioblitz/occurrences_list.html', {'observations': observations})
+def list_bioblitz_occurrences(request, pk):
+    observations = BioblitzOccurrence.objects.filter(project_id__pk=pk)
+    context = {'observations': observations,
+               'project_pk': pk}
+    return render(request, 'bioblitz/occurrences_list.html', context)
 
 def bioblitz_occurrence_detail(request, pk):
     try:
@@ -127,7 +133,7 @@ def bioblitz_occurrence_detail(request, pk):
         raise Http404
     return render(request, 'bioblitz/occurrence_detail.html', {'observation': observation})
 
-def project_stats(request):
+def project_stats(request, pk):
     # Observations
     labelsObsQGrade = []
     dataObsQGrade = []
@@ -154,7 +160,7 @@ def project_stats(request):
 
     # Observation
     # quality grade
-    querysetGrade = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
+    querysetGrade = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('quality_grade').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
     for QGrade in querysetGrade:
         labelsObsQGrade.append(QGrade.get('quality_grade'))
         dataObsQGrade.append(QGrade.get('obs_id__count'))
@@ -163,7 +169,7 @@ def project_stats(request):
     labels["ObsQGrade"] = labelsObsQGrade
 
     # Rank
-    querysetRank = BioblitzOccurrence.objects.values('taxon_rank').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
+    querysetRank = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('taxon_rank').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
     for rank in querysetRank:
         labelsObsRank.append(rank.get('taxon_rank'))
         dataObsRank.append(rank.get('obs_id__count'))
@@ -172,7 +178,7 @@ def project_stats(request):
     labels["ObsRank"] = labelsObsRank
 
     # ITName
-    querysetITName = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
+    querysetITName = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('iconic_taxon_name').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
     for ITName in querysetITName:
         labelsObsITName.append(ITName.get('iconic_taxon_name'))
         dataObsITName.append(ITName.get('obs_id__count'))
@@ -181,7 +187,7 @@ def project_stats(request):
     labels["ObsITName"] = labelsObsITName
 
     # User_id
-    querysetUser = BioblitzOccurrence.objects.values('user_login').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
+    querysetUser = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('user_login').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
     for user in querysetUser:
         labelsObsUser.append(user.get('user_login'))
         dataObsUser.append(user.get('obs_id__count'))
@@ -191,7 +197,7 @@ def project_stats(request):
 
     # species
     # quality grade
-    querysetGradeSpp = BioblitzOccurrence.objects.values('quality_grade').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
+    querysetGradeSpp = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('quality_grade').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
     for QGradeSpp in querysetGradeSpp:
         labelsSppQGrade.append(QGradeSpp.get('quality_grade'))
         dataSppQGrade.append(QGradeSpp.get('taxon_name__count'))
@@ -200,7 +206,7 @@ def project_stats(request):
     labels["SppQGrade"] = labelsSppQGrade
 
     # Rank
-    querysetRankSpp = BioblitzOccurrence.objects.values('taxon_rank').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
+    querysetRankSpp = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('taxon_rank').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
     for rankSpp in querysetRankSpp:
         labelsSppRank.append(rankSpp.get('taxon_rank'))
         dataSppRank.append(rankSpp.get('taxon_name__count'))
@@ -209,7 +215,7 @@ def project_stats(request):
     labels["SppRank"] = labelsSppRank
 
     # ITName
-    querysetITNameSpp = BioblitzOccurrence.objects.values('iconic_taxon_name').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:9]
+    querysetITNameSpp = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('iconic_taxon_name').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:9]
     for ITNameSpp in querysetITNameSpp:
         labelsSppITName.append(ITNameSpp.get('iconic_taxon_name'))
         dataSppITName.append(ITNameSpp.get('taxon_name__count'))
@@ -218,7 +224,7 @@ def project_stats(request):
     labels["SppITName"] = labelsSppITName
 
     # User_id
-    querysetUserSpp = BioblitzOccurrence.objects.values('user_login').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
+    querysetUserSpp = BioblitzOccurrence.objects.filter(project_id__pk=pk).values('user_login').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
     for userSpp in querysetUserSpp:
         labelsSppUser.append(userSpp.get('user_login'))
         dataSppUser.append(userSpp.get('taxon_name__count'))
@@ -229,5 +235,16 @@ def project_stats(request):
     return render(request, 'bioblitz/project_stats.html', {
         'labels': labels,
         'data': data,
+        'project_pk': pk
     })
+
+class INatObsGeoJson(GeoJSONLayerView): # todo testar geojson view
+    model = BioblitzOccurrence
+
+    def get_queryset(self):
+        context = BioblitzOccurrence.objects.all()
+        return context
+
+
+inatobs_geojson = INatObsGeoJson.as_view()
 

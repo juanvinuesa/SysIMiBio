@@ -51,7 +51,7 @@ class BioblitzOccurrence(models.Model): # todo work with sounds?
     user_name = models.CharField("Nombre del observador", max_length=100, null=True)
 
     def __str__(self):
-        return f'{self.name} - {self.project_id}'
+        return f'{self.taxon_name} - {self.project_id}'
 
     def get_absolute_url(self):
         return reverse_lazy('bioblitz:occurrence_detail', kwargs={'pk': self.pk})

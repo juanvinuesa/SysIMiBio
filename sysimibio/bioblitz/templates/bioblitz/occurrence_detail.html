@@ -11,7 +11,7 @@
 {% endif %}
 
 <br>
-<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' %}">Voltar</a>
+<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' pk=observation.project_id.pk %}">Volver</a>
 <br>
 
 <h1>Detalles de la observación: {{ observation.name }}</h1>
@@ -60,10 +60,10 @@
             <th class="text-right">native</th>
             <td>{{ observation.native|yesno:'Sí,No' }}</td>
         </tr>
-<!--todo add geo (mapa) -->
         </tbody>
     </table>
 </div>
+    <!--todo add geo (mapa) -->
 </div>
-
+<a  role="button" class="btn navbar-btn btn-warning" href="{{ observation.uri }}">Ir a INaturalist</a>
 {% endblock content %}
