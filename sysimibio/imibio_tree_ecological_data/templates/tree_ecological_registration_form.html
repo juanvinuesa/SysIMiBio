@@ -38,13 +38,14 @@
               <div class="card-body">
                   <h5>Obligatórios</h5>
                   <p>
-                      <label for="{{ form.date.id_for_label }}"> {{ form.date.label }} </label>
-                      {% for error in form.date.errors %}
+                      <label for="{{ fieldForm.date.id_for_label }}"> {{ fieldForm.date.label }} </label>
+                      {% for error in fieldForm.date.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.field.date }} {{ form.field.date.help_text }}
+                      {{ fieldForm.date }} {{ fieldForm.date.help_text }}
+<!--                  todo fechar isso-->
                   </p>
                   <p>
                       <label for="{{ form.start_time.id_for_label }}"> {{ form.start_time.label }} </label>

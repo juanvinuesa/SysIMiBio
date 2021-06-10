@@ -238,13 +238,24 @@ def project_stats(request, pk):
         'project_pk': pk
     })
 
-class INatObsGeoJson(GeoJSONLayerView): # todo testar geojson view
+class INatObsGeoJson(GeoJSONLayerView): # todo regatar por project_id
     model = BioblitzOccurrence
+    properties = ('popup_content',)
 
     def get_queryset(self):
         context = BioblitzOccurrence.objects.all()
         return context
 
+class INatObservationGeoJson(GeoJSONLayerView):
+    model = BioblitzOccurrence
+    properties = ('popup_content',)
+
+    def get_context_data(self, **kwargs):
+        context = super(INatObservationGeoJson, self).get_context_data(**kwargs)
+        context = BioblitzOccurrence.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
 
 inatobs_geojson = INatObsGeoJson.as_view()
+occ_geojson = INatObservationGeoJson.as_view()
 
