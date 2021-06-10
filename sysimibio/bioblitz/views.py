@@ -248,7 +248,7 @@ class INatObsGeoJson(GeoJSONLayerView): # todo regatar por project_id
 
 class INatObservationGeoJson(GeoJSONLayerView):
     model = BioblitzOccurrence
-    properties = ('popup_content',)
+    # properties = ('popup_content',)
 
     def get_context_data(self, **kwargs):
         context = super(INatObservationGeoJson, self).get_context_data(**kwargs)

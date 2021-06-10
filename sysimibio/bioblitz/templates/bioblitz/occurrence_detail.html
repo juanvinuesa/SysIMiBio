@@ -1,17 +1,5 @@
 {% extends "base.html" %}
 
-{% load leaflet_tags %}
-{% load static %}
-{% block js %}
-    {% leaflet_js %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>
-
-{% endblock %}
-{% block css %}
-    {% leaflet_css %}
-{% endblock %}
-
 {% block content %}
 
 {% if messages %}
@@ -75,34 +63,6 @@
         </tbody>
     </table>
 </div>
-
-<div class="col-sm-8">
-    <div id="map-detail">
-        {% leaflet_map "map-detail" %}
-    </div>
-</div>
 </div>
 <a  role="button" class="btn navbar-btn btn-warning" href="{{ observation.uri }}">Ir a INaturalist</a>
 {% endblock content %}
-<script>
-<!--MAP-->
-      var dataurl = '{% url "bioblitz:occurrence_geojson" pk=observation.pk %}';
-
-      window.addEventListener("map:init", function (event) {
-        var map = event.detail.map;
-        // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, {
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties.popup_content;
-                layer.bindPopup(props);
-            }}).addTo(map);
-          });
-      });
-
-
-</script>
