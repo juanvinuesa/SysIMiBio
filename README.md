@@ -1,5 +1,13 @@
 # SysIMiBio
-Sistema de gestión de datos ecológicos y de biodiversidad del [IMiBio](www.imibio.misiones.gob.ar)
+
+Sistema de gestión de conocimiento, datos ecológicos y de biodiversidad del [IMiBio](www.imibio.misiones.gob.ar).
+
+Items:
+* [como desarrollar](#como-desarrollar)
+* [Deploy en Heroku](Deploy-en-Heroku)
+* [APPs](APPs)
+* [Base de datos](Base-de-datos)
+* [Proceso de desarrollo](Proceso-de-desarrollo)
 
 ## como desarrollar
 1. Haga un Clone del repositorio
@@ -34,6 +42,12 @@ heroku config:set DEBUG=False
 gut push heroku master --force
 ```
 
+## APPs
+
+* [Bibliography](./README_bibliography.md)
+* [Bioblitz]()
+* [SNDB]()
+* [PPI]()
 
 ## Base de datos
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from sysimibio.bibliography.validators import validate_isbn
@@ -16,8 +17,8 @@ class Publication(models.Model):
     subject = models.CharField("Palabras clave o tema", max_length=200, blank=True)
     ORCID = models.URLField("ORCID (opcional)", max_length=200, blank=True)
     URL = models.URLField("URL (opcional)", max_length=200, blank=True)
-    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True) # todo si queres, podriamos tener un campo "create_by" como foreign key del usuario que hace el registro
-    #created_by = models.ForeignKey() # todo finalizar adicionando relacion con usuario logado
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, default='')
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
     observations = models.TextField(verbose_name='Observaciones', blank=True)
     imibio = models.BooleanField(verbose_name='Participación IMIBIO ?', default=False)
