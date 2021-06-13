@@ -149,25 +149,6 @@
 
 <script>
 
-<!--MAP-->
-      var dataurl = '{% url "bioblitz:project_geojson" %}';
-
-      window.addEventListener("map:init", function (event) {
-        var map = event.detail.map;
-        // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, {
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties.popup_content;
-                layer.bindPopup(props);
-            }}).addTo(map);
-          });
-      });
-
 <!--Charts-->
     var configObsQGrade = {
       type: 'pie',
