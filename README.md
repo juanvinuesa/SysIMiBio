@@ -44,12 +44,13 @@ gut push heroku master --force
 
 ## APPs
 
-Gestión del conocimiento:  
-    * [Bibliography](./README_bibliography.md)  
-Gestión de datos de biodiversidad:  
-    * [Bioblitz](./README_bioblitz.md)  
-    * [SNDB]()  
-    * [PPI]()  
+#### Gestión del conocimiento:  
+* [Bibliography](./README_bibliography.md)  
+
+#### Gestión de datos de biodiversidad:  
+* [Bioblitz](./README_bioblitz.md)  
+* [SNDB]()  
+* [PPI]()  
 
 ## Base de datos
 
