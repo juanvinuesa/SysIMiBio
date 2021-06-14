@@ -8,14 +8,15 @@ Trás el registro de la publicación el usuário podrá editar los campos, cuand
 ## APIs
 La app usa API´S de [Crossrefapi](https://www.crossref.org/blog/python-and-ruby-libraries-for-accessing-the-crossref-api/) y [isbnlib](https://pypi.org/project/isbnlib/), para rescatar los metadatos de `DOI` y `ISBN`, respectivamente.
  
-### Validadores y limpieza 
-* [`validate_isbn`](sysimibio/bibliography/validators.py): Es usado para validar el campo `ISBN`, confirmando que el valor ingresado tenga 10 o 13 dígitos. Caso contrário retorna un `ValidationError`
+### Validadores y limpieza  
+* [`validate_isbn`](sysimibio/bibliography/validators.py): Es usado para validar el campo `ISBN`, confirmando que el valor ingresado tenga 10 o 13 dígitos. Caso contrário retorna un `ValidationError`  
+* En el método [`clean()`](sysimibio/bibliography/forms.py) de `PublicationForm`:  
+    *  se hace la confirmación de la existencia de un valor de `DOI`, `ISBN` y `crossref` habilitado (`True`). Caso contrário, retorna `ValidationError`.  
+    * se hace la confirmar ción de la existéncia de valores para `título`, `autor` y `año de publicación` para cuando el `crossref` estes deshabilitado (`False`). Caso contrário, retorna `ValidationError`.  
+* En el método [`clean_ISBN`](sysimibio/bibliography/forms.py) de `PublicationForm`:  
+    * Se hace un proceso de limpieza de los valores ingresados de `ISBN`:  
+        * se excluyen los guiones y puntos;  
+        * se convirte `ISBN` de 10 caracteres para 13, usando `isblib`    
 
-* En el método [`clean()`](sysimibio/bibliography/forms.py) de `PublicationForm`:
-    *  se hace la confirmación de la existencia de un valor de `DOI`, `ISBN` y `crossref` habilitado (`True`). Caso contrário, retorna `ValidationError`.
-    * se hace la confirmar ción de la existéncia de valores para `título`, `autor` y `año de publicación` para cuando el `crossref` estes deshabilitado (`False`). Caso contrário, retorna `ValidationError`.
-    
-* En el método [`clean_ISBN`](sysimibio/bibliography/forms.py) de `PublicationForm`:
-    * Se hace un proceso de limpieza de los valores ingresados de `ISBN`:
-        * se excluyen los guiones y puntos;
-        * se convirte `ISBN` de 10 caracteres para 13, usando `isblib`;
+## Base de datos  
+![](extras/img/modeldb_app_bibliography.png)  

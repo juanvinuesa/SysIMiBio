@@ -14,3 +14,6 @@ La app usa API [pyinaturalist](https://pypi.org/project/pyinaturalist/) que nos 
 ### Validadores y limpieza 
 * En el método [`clean()`](sysimibio/bioblitz/forms.py) de `BioblitzModelForm`:
     *  se hace la confirmación de la existencia de un valor de `slug` o `project_id` del proyecto. Caso contrário, retorna `ValidationError`.
+
+## Base de datos  
+![](extras/img/modeldb_app_bioblitz.png)  

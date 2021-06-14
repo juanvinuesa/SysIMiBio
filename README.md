@@ -4,10 +4,10 @@ Sistema de gestión de conocimiento, datos ecológicos y de biodiversidad del [I
 
 Items:
 * [como desarrollar](#como-desarrollar)
-* [Deploy en Heroku](Deploy-en-Heroku)
-* [APPs](APPs)
-* [Base de datos](Base-de-datos)
-* [Proceso de desarrollo](Proceso-de-desarrollo)
+* [Deploy en Heroku](#Deploy-en-Heroku)
+* [APPs](#APPs)
+* [Base de datos](#Base-de-datos)
+* [Proceso de desarrollo](#Proceso-de-desarrollo)
 
 ## como desarrollar
 1. Haga un Clone del repositorio
@@ -44,10 +44,12 @@ gut push heroku master --force
 
 ## APPs
 
-* [Bibliography](./README_bibliography.md)
-* [Bioblitz]()
-* [SNDB]()
-* [PPI]()
+Gestión del conocimiento:  
+    * [Bibliography](./README_bibliography.md)  
+Gestión de datos de biodiversidad:  
+    * [Bioblitz](./README_bioblitz.md)  
+    * [SNDB]()  
+    * [PPI]()  
 
 ## Base de datos
 
