@@ -17,7 +17,7 @@ def cross_doi(publication):
     publication.publication_year = str(paper_data_result.get('created').get('date-parts')[0][0])
     publication.title = paper_data_result.get('title')[0]
     publication.author = f"{paper_data_result.get('author')[0].get('given')},{paper_data_result.get('author')[0].get('family')}"
-    publication.subject = str(paper_data_result.get("subject", ''))
+    publication.subject = paper_data_result.get("subject", [publication.subject])[0]
     publication.URL = paper_data_result.get('URL')
 
 
@@ -46,6 +46,7 @@ def publication_new(request):  # todo mejorar quebrando la view en defs distinta
         form = PublicationForm(request.POST)
         if form.is_valid():
             publication = form.save(commit=False)
+            publication.created_by = request.user
             works = Works()
             if publication.DOI != "" and works.doi_exists(publication.DOI):
                 cross_doi(publication)
