@@ -248,10 +248,14 @@ def project_stats(request, pk):
     data["SppUser"] = dataSppUser
     labels["SppUser"] = labelsSppUser
 
+    project_slug = BioblitzOccurrence.objects.filter(project_id__pk=pk)[0].project_id.project_slug
+    project_id = BioblitzOccurrence.objects.filter(project_id__pk=pk)[0].project_id.project_id
     return render(request, 'bioblitz/project_stats.html', {
         'labels': labels,
         'data': data,
-        'project_pk': pk
+        'project_pk': pk,
+        'project_name': project_slug,
+        'project_id': project_id
     })
 
 

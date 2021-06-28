@@ -147,5 +147,5 @@ GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
 # leaflet settings
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (-26.5, -55),
-    'DEFAULT_ZOOM': 7,
+    'DEFAULT_ZOOM': 8,
 }

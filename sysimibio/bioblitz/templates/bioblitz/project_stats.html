@@ -1,38 +1,47 @@
 {% extends 'base.html' %}
 
 {% load leaflet_tags %}
+
 {% load static %}
+
 {% block js %}
     {% leaflet_js %}
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-<!--    <script type="application/javascript" src="{% static 'js/map.js' %}"></script>-->
-
 {% endblock %}
+
 {% block css %}
     {% leaflet_css %}
 {% endblock %}
 
 {% block content %}
-
-<br>
-<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:project_detail' pk=project_pk %}">Volver</a>
-<br>
+<style>
+    #map-detail {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div class="row">
+        <a  role="button" class="btn navbar-btn btn-success btn-lg" href="{% url 'bioblitz:project_detail' pk=project_pk %}">
+            <span class="align-middle">Volver</span></a>
+        &nbsp; <h1>Detalles del Bioblitz: {{ project_name|safe }}</h1>
+</div>
 <div class = "jumbotron">
+
     <div class = "container-fluid">
         <div class="accordion" id="accordionExample">
             <div class="card ">
-                <div class="card-header" id="map">
+                <div class="card-header" id="collapseThree">
+<!--                    todo solucionar problema com collapse-->
                     <h3 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#map" aria-expanded="true" aria-controls="map">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                             Distribución observaciones
                         </button>
                     </h3>
                 </div>
-                    <div id="map" class="collapse show" aria-labelledby="map" data-parent="#accordionExample">
-                        <div class="card-body">
+                    <div id="collapseThree" class="collapse show" aria-labelledby="collapseThree" data-parent="#accordionExample">
+                        <div class="card-body" style="height: 30rem;">
                             <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe id="embed-responsive-item" height=50% width="50%" frameborder = 0 target="_blank" src="https://www.inaturalist.org/observations/map?project_id=105820#8/-26.545/-55.028">
-
+                                        <iframe id="embed-responsive-item" frameborder = 0 target="_blank" src="https://www.inaturalist.org/observations/map?project_id={{ project_id }}#8/-27.8/-55">
                                         </iframe>
                             </div>
                         </div>
