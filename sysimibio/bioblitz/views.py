@@ -274,9 +274,7 @@ class INatObservationGeoJson(GeoJSONLayerView):
     # properties = ('popup_content',)
 
     def get_context_data(self, **kwargs):
-        context = super(INatObservationGeoJson, self).get_context_data(**kwargs)
-        # context = BioblitzOccurrence.objects.get(pk=self.kwargs.get('pk')) # todo confirmar se está bem
-        return context
+        return super().get_queryset().filter(pk=self.kwargs.get('pk'))
 
 
 inatobs_geojson = INatObsGeoJson.as_view()
