@@ -10,7 +10,7 @@ class BioblitzProject(models.Model):
     created_at = models.DateTimeField(verbose_name="Fecha de creacción")
     title = models.CharField(verbose_name="Título del proyecto", max_length=200)
     project_id = models.IntegerField(verbose_name="Id del proyecto", unique=True)
-    project_slug = models.CharField(verbose_name="Slug del proyecto", max_length=250)
+    project_slug = models.CharField(verbose_name="Nombre del proyecto", max_length=250, help_text="(Nombre sin espacio. Con guión)")
     place_id = models.IntegerField(verbose_name="Id del local", unique=True)
     project_type = models.CharField(verbose_name="Tipo de proyecto", max_length=100)
     manager_id = models.IntegerField(verbose_name="Id del administrador", unique=True)

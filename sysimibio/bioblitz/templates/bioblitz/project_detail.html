@@ -31,18 +31,15 @@
 
 <br>
 <div class="row">
-    <a  role="button" class="btn btn-success btn-lg" href="{% url 'bioblitz:list_bioblitz' %}">
+    <a  role="button" class="btn btn-success btn-lg" href="{% url 'bioblitz:list_bioblitz_projects' %}">
         <span class="align-middle">Volver</span>
     </a>
-    &nbsp; <h1>Detalles del Bioblitz: {{ project.title }}</h1>
+    &nbsp; <h2>Detalles del Bioblitz: {{ project.title }}</h2>
 </div>
 <div class="row">
 <div class="col-sm-4">
     <table class = "table table-user-information">
         <tbody>
-        <tr>
-            <th class="text-right"><strong>id:</strong></th>
-            <td> {{ project.pk }}</td>
         <tr>
             <th class="text-right">Nombre del proyecto</th>
             <td>{{ project.title }}</td>
@@ -71,11 +68,13 @@
 
         </tbody>
     </table>
-    {% if project.project_occurrences %}
+    {% if not occurences %}
         <a  role="button" class="btn navbar-btn btn-warning" href="{% url 'bioblitz:get_occurrences' project_id=project.project_id %}">Descargar observaciones</a>
     {% endif %}
-    <a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' pk=project.pk %}">Listar observaciones</a>
-    <a  role="button" class="btn navbar-btn btn-dark" href="{% url 'bioblitz:project_stats' pk=project.pk %}">Estadísticas</a>
+    {% if occurences %}
+        <a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' pk=project.pk %}">Listar observaciones</a>
+        <a  role="button" class="btn navbar-btn btn-dark" href="{% url 'bioblitz:project_stats' pk=project.pk %}">Estadísticas</a>
+    {% endif %}
     </div>
 
 <div class="col-sm-8">
@@ -85,7 +84,7 @@
 </div>
 <!--todo limitar ocorrencias por projeto-->
     <script>
-      var dataurl = '{% url "bioblitz:project_geojson" %}';
+      var dataurl = '{% url "bioblitz:project_occurrence_geojson" pk=project.pk %}';
 
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;

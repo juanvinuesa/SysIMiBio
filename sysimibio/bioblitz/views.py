@@ -23,9 +23,8 @@ def register_bioblitz_project(request):
         bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
 
         # todo crear view especifica con validacion = refactorar
-
         if bioblitz_project_data.get("total_results") == 0:
-            messages.error(request, 'Proyecto no encontrado. confirmar nombre o id')
+            messages.error(request, 'Proyecto no encontrado. confirmar nombre del proyecto')
             return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
 
@@ -50,7 +49,7 @@ def register_bioblitz_project(request):
 
 
 @login_required
-def list_bioblitz_project(request):
+def list_bioblitz_projects(request):
     ptojects = BioblitzProject.objects.all()
     return render(request, 'bioblitz/projects_list.html', {'projects': ptojects})
 
@@ -60,6 +59,8 @@ def project_detail(request, pk):
     try:
         project = BioblitzProject.objects.get(pk=pk)
         project_occurrences = BioblitzOccurrence.objects.filter(project_id__pk=pk)
+        if not project_occurrences:
+            messages.info(request, 'Proyecto sin occurrencias')
         context = {'project': project,
                    'occurences': project_occurrences}
     except BioblitzProject.DoesNotExist:
@@ -274,9 +275,9 @@ class INatObservationGeoJson(GeoJSONLayerView):
 
     def get_context_data(self, **kwargs):
         context = super(INatObservationGeoJson, self).get_context_data(**kwargs)
-        context = BioblitzOccurrence.objects.get(pk=self.kwargs.get('pk'))
+        # context = BioblitzOccurrence.objects.get(pk=self.kwargs.get('pk')) # todo confirmar se está bem
         return context
 
 
 inatobs_geojson = INatObsGeoJson.as_view()
-occ_geojson = INatObservationGeoJson.as_view()
+proj_occs_geojson = INatObservationGeoJson.as_view()
