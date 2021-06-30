@@ -11,10 +11,9 @@
         {% endfor %}
     {% endif %}
 
-    <h2>
-        <!--<i class ="fa-pagelines"></i> -->
-        Lista proyectos
-    </h2>
+<div class="row">
+        <h2>Lista proyectos</h2>
+</div>
     {% if projects %}
         <table class = 'table table-striped'>
                 <thead>
@@ -46,6 +45,9 @@
     <div class="alert alert-danger" role="alert">
         Acceso negado. Logar o crear usuário.
     </div>
-{% endif %}
 
+{% endif %}
+<a  role="button" class="btn navbar-btn btn-dark" href="{% url 'bioblitz:bioblitz_events_stats' %}">
+    <span class="align-middle">Estadísticas</span>
+</a>
 {% endblock content %}
