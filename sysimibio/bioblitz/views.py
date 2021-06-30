@@ -260,6 +260,44 @@ def project_stats(request, pk):
     })
 
 
+@login_required
+def bioblitz_events_stats(request):
+    # Observations
+    labelsObsAmount = []
+    dataObsAmount = []
+
+    # Species
+    labelsSppAmount = []
+    dataSppAmount = []
+
+    # return object
+    data = dict()
+    labels = dict()
+
+    # Observation
+    querysetObsAmount = BioblitzOccurrence.objects.values('project_id__title').annotate(Count('obs_id')).order_by('-obs_id__count')[:10]
+    for proj in querysetObsAmount:
+        labelsObsAmount.append(proj.get('project_id__title'))
+        dataObsAmount.append(proj.get('obs_id__count'))
+
+    data["ObsAmount"] = dataObsAmount
+    labels["ObsAmount"] = labelsObsAmount
+
+    # species
+    querysetSppAmount = BioblitzOccurrence.objects.values('project_id__title').annotate(Count('taxon_name', distinct=True)).order_by('-taxon_name__count')[:10]
+    for proj in querysetSppAmount:
+        labelsSppAmount.append(proj.get('project_id__title'))
+        dataSppAmount.append(proj.get('taxon_name__count'))
+
+    data["SppAmount"] = dataSppAmount
+    labels["SppAmount"] = labelsSppAmount
+
+    return render(request, 'bioblitz/bioblitz_events_stats.html', {
+        'labels': labels,
+        'data': data
+    })
+
+
 class INatObsGeoJson(GeoJSONLayerView):
     model = BioblitzOccurrence
     properties = ('popup_content',)
