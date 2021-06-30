@@ -298,7 +298,7 @@ def bioblitz_events_stats(request):
     })
 
 
-class INatObsGeoJson(GeoJSONLayerView):
+class BioblitzEventsObsGeoJson(GeoJSONLayerView):
     model = BioblitzOccurrence
     properties = ('popup_content',)
 
@@ -315,5 +315,5 @@ class INatObservationGeoJson(GeoJSONLayerView):
         return super().get_queryset().filter(pk=self.kwargs.get('pk'))
 
 
-inatobs_geojson = INatObsGeoJson.as_view()
+bioblitz_events_geojson = BioblitzEventsObsGeoJson.as_view()
 proj_occs_geojson = INatObservationGeoJson.as_view()

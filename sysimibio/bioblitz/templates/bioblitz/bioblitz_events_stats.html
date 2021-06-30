@@ -40,9 +40,8 @@
                 </div>
                     <div id="collapseThree" class="collapse show" aria-labelledby="collapseThree" data-parent="#accordionExample">
                         <div class="card-body" style="height: 30rem;">
-                            <div class="embed-responsive embed-responsive-16by9">
-                                        <iframe id="embed-responsive-item" frameborder = 0 target="_blank" src="https://www.inaturalist.org/observations/map?project_id={{ project_id }}#8/-27.8/-55">
-                                        </iframe>
+                            <div id="map-detail">
+                                {% leaflet_map "map-detail" %}
                             </div>
                         </div>
                     </div>
@@ -131,6 +130,25 @@
       var ctxSppAmount = document.getElementById('SppAmount').getContext('2d');
       window.SppAmount = new Chart(ctxSppAmount, configSppAmount);
     };
+
+<!--MAP-->
+      var dataurl = '{% url "bioblitz:bioblitz_events_geojson" %}';
+
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
+            }}).addTo(map);
+          });
+      });
 
   </script>
 
