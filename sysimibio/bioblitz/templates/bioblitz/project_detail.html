@@ -21,11 +21,11 @@
 </style>
 
 {% if messages %}
-            {% for message in messages %}
-                    <div class="alert alert-success" role="alert">
-                        <p>{{ message }}</p>
-                    </div>
-            {% endfor %}
+    {% for message in messages %}
+        <div class="alert alert-success" role="alert">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
 {% endif %}
 
 
@@ -82,7 +82,6 @@
         {% leaflet_map "map-detail" %}
     </div>
 </div>
-<!--todo limitar ocorrencias por projeto-->
     <script>
       var dataurl = '{% url "bioblitz:project_occurrence_geojson" pk=project.pk %}';
 

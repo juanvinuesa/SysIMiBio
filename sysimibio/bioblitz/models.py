@@ -56,6 +56,9 @@ class BioblitzOccurrence(models.Model): # todo work with sounds?
     def get_absolute_url(self):
         return reverse_lazy('bioblitz:occurrence_detail', kwargs={'pk': self.pk})
 
+    def get_project_absolute_url(self):
+        return reverse_lazy('bioblitz:project_detail', kwargs={'pk': self.project_id.pk})
+
     @property
     def popup_content(self):  # todo Me parece que lo importante es poner alguna foto
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
@@ -64,6 +67,7 @@ class BioblitzOccurrence(models.Model): # todo work with sounds?
             self.quality_grade)
         popup += "<span>Altura: </span>{}<br>".format(
             self.iconic_taxon_name)
+        popup += f"<span><a href={self.get_project_absolute_url()}>Detalles del proyecto</a></strong><br>"
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
         return popup
 
