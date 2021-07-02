@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, resolve_url as r, get_object_or_404
+from django.shortcuts import render, resolve_url as r
 from djgeojson.views import GeoJSONLayerView
 from pyinaturalist.node_api import get_projects, get_observations
 
@@ -311,8 +311,9 @@ class BioblitzProjectObservationsGeoJSON(GeoJSONLayerView):
     model = BioblitzOccurrence
     properties = ('popup_content',)
 
-    def get_context_data(self, **kwargs):
-        return super().get_queryset().filter(pk=self.kwargs.get('pk'))
+    def get_queryset(self, **kwargs):
+        self.obs = super().get_queryset()
+        return self.obs.filter(project_id=self.kwargs['pk'])
 
 class BioblitzObservationGeoJSON(GeoJSONLayerView):
     model = BioblitzOccurrence
@@ -321,6 +322,7 @@ class BioblitzObservationGeoJSON(GeoJSONLayerView):
     def get_queryset(self, **kwargs):
         self.obs = super().get_queryset()
         return self.obs.filter(pk=self.kwargs['pk'])
+
 
 bioblitz_events_geojson = BioblitzEventsObservationsGeoJSON.as_view()
 proj_occs_geojson = BioblitzProjectObservationsGeoJSON.as_view()

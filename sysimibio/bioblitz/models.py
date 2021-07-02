@@ -38,7 +38,7 @@ class BioblitzOccurrence(models.Model): # todo work with sounds?
     # taxon
     taxon_name = models.CharField("Nombre cientifico de la especie", max_length=300, blank=True, default='')
     taxon_rank = models.CharField("Ranking taxonomico", max_length=50, blank=True, default='')
-    iconic_taxon_name = models.CharField("Ranking taxonomico", max_length=50, blank=True, default='')
+    iconic_taxon_name = models.CharField("Grupo", max_length=50, blank=True, default='')
     endemic = models.BooleanField("Especie endémica?", default=False)
     threatened = models.BooleanField("Especie amenazada?", default=False)
     introduced = models.BooleanField("Especie introducida?", default=False)
