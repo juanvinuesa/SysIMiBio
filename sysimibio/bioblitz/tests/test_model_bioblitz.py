@@ -6,7 +6,7 @@ from dateutil.tz import tzoffset
 
 from sysimibio.bioblitz.models import BioblitzProjects
 
-class BioblitzProjectTest(TestCase): # todo fazer andar esse teste
+class BioblitzProjectTest(TestCase):
     def setUp(self):
         self.bioblitz = BioblitzProjects.objects.create(
             iconURL= 'https://static.inaturalist.org/projects/69644-icon-span2.jpg?1584740458',
