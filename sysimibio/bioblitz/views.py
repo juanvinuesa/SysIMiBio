@@ -20,30 +20,35 @@ def register_bioblitz_project(request):
             messages.error(request, 'Formulário con error: revise todos los campos')
             return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
-        bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
 
-        # todo crear view especifica con validacion = refactorar
-        if bioblitz_project_data.get("total_results") == 0:
-            messages.error(request, 'Proyecto no encontrado. confirmar nombre del proyecto')
+        elif form.cleaned_data.get("project_slug") in [val['project_slug'] for val in list(BioblitzProject.objects.all().values('project_slug'))]:
+            messages.error(request, 'Proyecto ya cargado al sistema')
             return render(request, 'bioblitz/project_registration_form.html',
                           {'form': form})
 
-        project = BioblitzProject.objects.create(
-            iconURL=bioblitz_project_data.get("results")[0].get('icon'),
-            description=bioblitz_project_data.get("results")[0].get('description'),
-            created_at=bioblitz_project_data.get("results")[0].get('created_at'),
-            title=bioblitz_project_data.get("results")[0].get('title'),
-            project_id=bioblitz_project_data.get("results")[0].get('id'),
-            project_slug=bioblitz_project_data.get("results")[0].get('slug'),
-            place_id=bioblitz_project_data.get("results")[0].get('place_id'),
-            project_type=bioblitz_project_data.get("results")[0].get('project_type'),
-            manager_id=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("id"),
-            manager_login=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("login"),
-            manager_name=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("name")
-        )
-        messages.success(request, "Proyecto registrado con exito")
+        else:
+            bioblitz_project_data = get_projects(q=form.cleaned_data.get("project_slug"), member_id=1626810)
+            if bioblitz_project_data.get("total_results") == 0:
+                messages.error(request, 'Proyecto no encontrado. confirmar nombre del proyecto')
+                return render(request, 'bioblitz/project_registration_form.html',
+                              {'form': form})
 
-        return HttpResponseRedirect(r('bioblitz:project_detail', project.pk))
+            project = BioblitzProject.objects.create(
+                iconURL=bioblitz_project_data.get("results")[0].get('icon'),
+                description=bioblitz_project_data.get("results")[0].get('description'),
+                created_at=bioblitz_project_data.get("results")[0].get('created_at'),
+                title=bioblitz_project_data.get("results")[0].get('title'),
+                project_id=bioblitz_project_data.get("results")[0].get('id'),
+                project_slug=bioblitz_project_data.get("results")[0].get('slug'),
+                place_id=bioblitz_project_data.get("results")[0].get('place_id'),
+                project_type=bioblitz_project_data.get("results")[0].get('project_type'),
+                manager_id=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("id"),
+                manager_login=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("login"),
+                manager_name=bioblitz_project_data.get("results")[0].get('admins')[0].get("user").get("name")
+            )
+            messages.success(request, "Proyecto registrado con exito")
+
+            return HttpResponseRedirect(r('bioblitz:project_detail', project.pk))
 
     return render(request, 'bioblitz/project_registration_form.html', {'form': BioblitzModelForm()})
 
