@@ -168,4 +168,4 @@ class TreeModelPopupTest(TestCase):
 
     def test_popup(self):
         self.assertEqual(self.tree.popup_content,
-                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>Condición fitosanitario: </span>Bueno<br><span>Altura: </span>60<br><span><a href=/registro_ecologico_arboreas/1/>Detalles de la occurrencia</a></strong><br>")
+                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>Condición fitosanitario: </span>Bueno<br><span>Altura: </span>60<br><span><a href=/imibio_tree_ecological_data/1/>Detalles de la occurrencia</a></strong><br>")

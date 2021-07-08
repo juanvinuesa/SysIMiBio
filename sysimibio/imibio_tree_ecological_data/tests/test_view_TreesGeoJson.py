@@ -38,7 +38,7 @@ class TreesGeoJsonView(TestCase):
         })
         self.tree.save()
         self.occurrence = Tree.objects.all()[0]
-        self.resp = self.client.get(r('data'))
+        self.resp = self.client.get(r('imibio_tree_ecological_data:data'))
 
     def test_get(self):
         """GET /geojson/ must get status code 200"""
