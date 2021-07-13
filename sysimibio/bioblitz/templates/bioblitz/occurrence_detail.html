@@ -32,7 +32,7 @@
 <a  role="button" class="btn navbar-btn btn-success" href="{% url 'bioblitz:list_occurrences' pk=observation.project_id.pk %}">Volver</a>
 <br>
 
-<h1>Detalles de la observación: {{ observation.name }}</h1>
+<h1>Detalles de la observación: {{ observation.taxon_name }}</h1>
 <strong>id: {{ observation.pk }}</strong>
 <div class="row">
 <div class="col-sm-4">
@@ -43,8 +43,8 @@
             <td>{{ observation.project_id }}</td>
         </tr>
         <tr>
-            <th class="text-right">name</th>
-            <td><a href="{{ observation.uri }}">{{ observation.name }}</a></td>
+            <th class="text-right">Nombre de la especie</th>
+            <td><a href="{{ observation.uri }}">{{ observation.taxon_name }}</a></td>
         </tr>
         <tr>
             <th class="text-right">Calidad</th>

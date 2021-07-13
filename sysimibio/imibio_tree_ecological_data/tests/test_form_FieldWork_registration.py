@@ -10,17 +10,19 @@ class FieldRegistrationFormTest(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Fieldform = FieldForm()
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones', municipality='Puerto Iguazu',
-                                                           locality='600 ha', obs='Observacion', latitude=-26, longitude=-56, geom='')
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      municipality='Puerto Iguazu',
+                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      geom='')
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field1 = FieldWork.objects.create(date='2020-12-30',
-            start_time='0:0',
-            end_time='0:30',
-            temperature=35.9,
-            humidity=80,
-            coordinator=self.coordinator1,
-            parcel_id=self.parcel1)
+                                               start_time='0:0',
+                                               end_time='0:30',
+                                               temperature=35.9,
+                                               humidity=80,
+                                               coordinator=self.coordinator1,
+                                               parcel_id=self.parcel1)
 
     def test_Fieldform_has_fields(self):
         """Field form must have models fields"""
@@ -30,11 +32,11 @@ class FieldRegistrationFormTest(TestCase):
 
     def make_FieldForm_validated(self, **kwargs):
         valid = dict(date='2020-12-01',
-            start_time='0:0',
-            end_time='0:30', temperature=35.9,
-            humidity=80, coordinator=self.coordinator1,
-            staff=[self.staff1],
-            parcel_id=self.parcel1)
+                     start_time='0:0',
+                     end_time='0:30', temperature=35.9,
+                     humidity=80, coordinator=self.coordinator1,
+                     staff=[self.staff1],
+                     parcel_id=self.parcel1)
 
         data = dict(valid, **kwargs)
         form = FieldForm(data)
