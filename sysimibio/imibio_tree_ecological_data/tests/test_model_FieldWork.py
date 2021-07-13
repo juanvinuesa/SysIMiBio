@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentParcel
 
+
 # todo confirmar que estou testando e atualizar nomes
 class FieldWorkRegistrationTest(TestCase):
     def setUp(self):

@@ -6,10 +6,10 @@ from django.test import TestCase
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentParcel
 
-
+# todo add validator DAP >10
 class TreeRegistrationFormTest(TestCase):
     def setUp(self):
-        self.resp = self.client.get(r('imibio_tree_ecological_data:new')) # todo refatorar forms usando urls. ver linha 12
+        self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Treeform = TreeForm()
         self.Fieldform = FieldForm()
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
@@ -19,12 +19,12 @@ class TreeRegistrationFormTest(TestCase):
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field1 = FieldWork.objects.create(date='2020-12-30',
-            start_time='0:0',
-            end_time='0:30',
-            temperature=35.9,
-            humidity=80,
-            coordinator=self.coordinator1,
-            parcel_id=self.parcel1)
+                                               start_time='0:0',
+                                               end_time='0:30',
+                                               temperature=35.9,
+                                               humidity=80,
+                                               coordinator=self.coordinator1,
+                                               parcel_id=self.parcel1)
 
     def test_Treeform_has_fields(self):
         """Tree form must have models fields"""
@@ -35,10 +35,10 @@ class TreeRegistrationFormTest(TestCase):
 
     def make_TreeForm_validated(self, **kwargs):
         valid = dict(field=self.field1,
-            tree_id=1, specie='Solanaceae',
-            dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
-            obs='Teste 1',
-            phytosanitary_status='Muerto', sociological_classification='Emergente')
+                     tree_id=1, specie='Solanaceae',
+                     dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
+                     obs='Teste 1',
+                     phytosanitary_status='Muerto', sociological_classification='Emergente')
         data = dict(valid, **kwargs)
         form = TreeForm(data)
         form.is_valid()

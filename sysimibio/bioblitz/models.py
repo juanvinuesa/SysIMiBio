@@ -61,12 +61,12 @@ class BioblitzOccurrence(models.Model): # todo work with sounds?
 
     @property
     def popup_content(self):  # todo Me parece que lo importante es poner alguna foto
-        popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
+        popup = "<strong><span>Nombre científico: </span>{}</strong><br>".format(
             self.taxon_name)
-        popup += "<span>Condición fitosanitario: </span>{}<br>".format(
-            self.quality_grade)
         popup += "<span>Altura: </span>{}<br>".format(
             self.iconic_taxon_name)
+        popup += "<span>Especie amenazada: </span>{ameacado}<br>".format(ameacado="Sí" if self.threatened is True else "No")
+        popup += f"<span>Usuário: </span>{self.user_login}<br>"
         popup += f"<span><a href={self.get_project_absolute_url()}>Detalles del proyecto</a></strong><br>"
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
         return popup

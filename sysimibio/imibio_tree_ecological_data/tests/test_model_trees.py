@@ -7,7 +7,7 @@ from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictur
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
-
+# todo pregunta fotos asociada al arbol o a la medición?
 @override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeModelSociologicalTest(TestCase):
     def setUp(self):
@@ -168,4 +168,4 @@ class TreeModelPopupTest(TestCase):
 
     def test_popup(self):
         self.assertEqual(self.tree.popup_content,
-                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>Condición fitosanitario: </span>Bueno<br><span>Altura: </span>60<br><span><a href=/imibio_tree_ecological_data/1/>Detalles de la occurrencia</a></strong><br>")
+                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>DAP: </span>40<br><span>Altura: </span>60<br><span><a href=/imibio_tree_ecological_data/1/>Detalles de la occurrencia</a></strong><br>")

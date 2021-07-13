@@ -1,5 +1,6 @@
 from django.test import TestCase
 from geojson import Polygon
+
 from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
 
 
@@ -18,7 +19,7 @@ class PermanentParcelModelTest(TestCase):
     def test_permanentparcel_model(self):
         self.assertTrue(PermanentParcel.objects.exists())
 
-    def test_print(self):
+    def test_str(self):
         self.assertEqual(str(self.pp1), "Reserva Yrya Pu, Puerto Iguazú - reserva 600 ha")
 
     def test_property_geom_point(self):
@@ -27,8 +28,10 @@ class PermanentParcelModelTest(TestCase):
     def test_property_geom_point_Valid(self):
         self.assertTrue(self.pp1.geom_point.is_valid)
 
-    def test_geom_Valid(self):
-        self.assertTrue(self.pp1.geom.is_valid)
+    def test_geom_polygon(self):
+        self.assertEqual(self.pp1.geom, {"coordinates":
+                                             [[[-54.6,-27.0], [-54.0, -27.07], [-54.07,-26.62], [-54.6,-27.0]]],
+                                         "type": "Polygon"})
 
     def test_geom_point_is_valid(self):
         self.assertTrue(self.pp1.geom_point.is_valid)

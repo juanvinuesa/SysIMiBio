@@ -9,14 +9,16 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 
 
 class PermanentParcel(models.Model):
-    name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
+    name = models.CharField(verbose_name="Nombre de la parcela", max_length=50) # todo parcel_name?
+    # todo add responsable relaciona a User
+    # todo add institución relaciona a User
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
     municipality = models.CharField(verbose_name="Municipio", max_length=50) # TODO add 75 municipio como choices
     locality = models.CharField(verbose_name="Localidad", max_length=50)
-    obs = models.TextField(verbose_name="Obervaciones")
+    obs = models.TextField(verbose_name="Obervaciones") # todo blank=True
     latitude = models.FloatField(verbose_name='latitud',
-                                 validators=[validate_lat], blank=True, help_text="informar en formato graus decimais WGS84")
-    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True, help_text="informar en formato graus decimais WGS84")
+                                 validators=[validate_lat], blank=True, help_text="informar en formato en grados decimales WGS84 - epsg4326")
+    longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon], blank=True, help_text="informar en formato en grados decimales WGS84 - epsg4326")
     geom = PolygonField(blank=True)
 
     @property
@@ -91,17 +93,17 @@ class Tree(models.Model):
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
     tree_id = models.IntegerField(verbose_name='ID Árbol') # todo ID Árbol: N colecta nombre subparcela (SY) o 2 numeros y cuatro letras o tres numeros y cuatro letras
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(verbose_name='DAP', help_text='cm')
-    dab = models.FloatField(verbose_name='DAB', help_text='cm')
-    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation])
+    dap = models.FloatField(verbose_name='DAP', help_text='cm') # todo add validator >10 cm
+    dab = models.FloatField(verbose_name='DAB', help_text='cm') # hace parte de la medición?
+    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation]) # hace parte de la medición?
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat], help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
-    phytosanitary_status = models.CharField(max_length=100,
+    phytosanitary_status = models.CharField(max_length=100, # hace parte de la medición?
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
-    sociological_classification = models.CharField(verbose_name='clasificación sociologica',
+    sociological_classification = models.CharField(verbose_name='clasificación sociologica', # hace parte de la medición?
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
@@ -121,8 +123,8 @@ class Tree(models.Model):
     def popup_content(self): # todo Me parece que lo importante es poner alguna foto
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
-        popup += "<span>Condición fitosanitario: </span>{}<br>".format(
-            self.phytosanitary_status)
+        popup += "<span>DAP: </span>{}<br>".format(
+            self.dap)
         popup += "<span>Altura: </span>{}<br>".format(
             self.tree_height)
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
