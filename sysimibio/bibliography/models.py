@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.shortcuts import resolve_url as r
 
-from sysimibio.bibliography.validators import validate_isbn
-
-
-#todo una publicacion puede tener ocurrencias o lista de especies
+from sysimibio.bibliography.validators import validate_isbn, validate_doi_prefix, validate_doi_slash
 
 
 class Publication(models.Model):
@@ -12,8 +10,8 @@ class Publication(models.Model):
     publication_year = models.CharField("Año de publicación", max_length=4, blank=True, help_text="YYYY")
     title = models.CharField('Título', max_length=255, blank=True)
     author = models.CharField('Autor', max_length=255, blank=True)
-    DOI = models.CharField('DOI', max_length=30, blank=True)
-    ISBN = models.CharField('ISBN', help_text='Ingresar ISBN sin guion ni puntos', max_length=13, blank=True, validators=[validate_isbn]) #todo crear un metodo clean para sacar puntos guiones
+    DOI = models.CharField('DOI', max_length=30, blank=True, validators=[validate_doi_prefix, validate_doi_slash])
+    ISBN = models.CharField('ISBN', help_text='Ingresar ISBN sin guion ni puntos', max_length=13, blank=True, validators=[validate_isbn])
     subject = models.CharField("Palabras clave o tema", max_length=200, blank=True)
     ORCID = models.URLField("ORCID (opcional)", max_length=200, blank=True)
     URL = models.URLField("URL (opcional)", max_length=200, blank=True)
@@ -26,3 +24,6 @@ class Publication(models.Model):
 
     def __str__(self):
         return f'{self.author}, {self.publication_year} - {self.title}'
+
+    def get_absolute_url(self):
+        return r('bibliography:publication_detail', kwargs={'pk': self.pk})

@@ -1,76 +1,67 @@
 from crossref.restful import Works
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from isbnlib import is_isbn13, meta
 
 from sysimibio.bibliography.forms import PublicationForm
 from sysimibio.bibliography.models import Publication
 
 
-# todo mejorar funciones....
-# Podria sacarse los if de dentro.... o hacer q retornen algun valor cuando no exista.
-def cross_doi(publication):
-    works = Works()
-    paper_data_result = works.doi(publication.DOI)
-    publication.publication_year = str(paper_data_result.get('created').get('date-parts')[0][0])
-    publication.title = paper_data_result.get('title')[0]
-    publication.author = f"{paper_data_result.get('author')[0].get('given')},{paper_data_result.get('author')[0].get('family')}"
-    publication.subject = paper_data_result.get("subject", [publication.subject])[0]
-    publication.URL = paper_data_result.get('URL')
+class Publication_UpdateClass(LoginRequiredMixin, UpdateView):
+    model = Publication
 
 
-def cross_isbn(publication):
-    book_data_result = meta(publication.ISBN)
-    publication.publication_year = book_data_result.get('Year')
-    publication.title = book_data_result.get('Title')
-    publication.author = book_data_result.get('Authors')[0]
+Publication_UpdateView = Publication_UpdateClass.as_view()
 
 
-@login_required
-def publication_list(request):
-    publications = Publication.objects.all().order_by('-publication_year')
-    return render(request, 'publication_list.html', {'publications': publications})
+class PublicationListClass(LoginRequiredMixin, ListView):  # vista basada en clase generica
+    model = Publication
+    context_object_name = 'publications'
+    ordering = ['-publication_year']
 
 
-@login_required
-def publication_detail(request, pk):
-    publication = get_object_or_404(Publication, pk=pk)
-    return render(request, 'publication_detail.html', {'publication': publication})
+PublicationList = PublicationListClass.as_view()  # todo add login required
 
 
-@login_required
-def publication_new(request):  # todo mejorar quebrando la view en defs distintas
-    if request.method == "POST":
-        form = PublicationForm(request.POST)
-        if form.is_valid():
-            publication = form.save(commit=False)
-            publication.created_by = request.user
-            works = Works()
-            if publication.DOI != "" and works.doi_exists(publication.DOI):
-                cross_doi(publication)
-            elif publication.ISBN != "" and is_isbn13(publication.ISBN):
-                cross_isbn(publication)
-            publication.save()
-            messages.success(request, "Registro realizado con exito")
-
-            return redirect('bibliography:publication_detail', pk=publication.pk)
-        messages.error(request, 'Formulario con error: revise todos los campos')
-        return render(request, 'publication_form.html', {'form': form})
-    else:
-        form = PublicationForm()
-        return render(request, 'publication_form.html', {'form': form})
+class PublicationDetailClass(LoginRequiredMixin, DetailView):
+    model = Publication
 
 
-@login_required
-def publication_edit(request, pk): #todo confirmar si se puede mejorar la view
-    publication = get_object_or_404(Publication, pk=pk)
-    if request.method == "POST":
-        form = PublicationForm(request.POST, instance=publication)
-        if form.is_valid():
-            publication.save()
-            return redirect('bibliography:publication_detail', pk=publication.pk)
-    else:
-        form = PublicationForm(instance=publication)
-    return render(request, 'publication_form.html', {'form': form})
+PublicationDetail = PublicationDetailClass.as_view()
+
+
+class PublicationCreateClass(LoginRequiredMixin, CreateView):  # vista basada en clase generica
+    model = Publication
+    form_class = PublicationForm
+
+    def form_valid(self, form):
+        self.publication = form.save(commit=False)
+        self.publication.created_by = self.request.user
+        works = Works()
+        if self.publication.DOI != "" and works.doi_exists(self.publication.DOI):
+            paper_data_result = works.doi(self.publication.DOI)
+            self.publication.publication_year = str(paper_data_result.get('created').get('date-parts')[0][0])
+            self.publication.title = paper_data_result.get('title')[0]
+            self.publication.author = f"{paper_data_result.get('author')[0].get('given')},{paper_data_result.get('author')[0].get('family')}"
+            self.publication.subject = paper_data_result.get("subject", [self.publication.subject])[0]
+            self.publication.URL = paper_data_result.get('URL')
+
+        elif self.publication.ISBN != "" and is_isbn13(self.publication.ISBN):
+            book_data_result = meta(self.publication.ISBN)
+            self.publication.publication_year = book_data_result.get('Year')
+            self.publication.title = book_data_result.get('Title')
+            self.publication.author = book_data_result.get('Authors')[0]
+
+        elif self.publication.crossref and (self.publication.DOI or self.publication.ISBN):
+            messages.error(self.request, 'DOI/ISBN no encontrado. Cargar datos y desmarcar el campo "tiene DOI/ISBN"')
+            return render(self.request, 'bibliography/publication_form.html', {'form': form})
+        self.publication.save()
+        messages.success(self.request, "Registro realizado con exito")
+
+        return redirect('bibliography:publication_detail', pk=self.publication.pk)
+
+
+PublicationCreateView = PublicationCreateClass.as_view()

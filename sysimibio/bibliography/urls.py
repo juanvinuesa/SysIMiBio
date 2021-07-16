@@ -1,12 +1,13 @@
 from django.urls import path
 
-from sysimibio.bibliography.views import publication_new, publication_detail, publication_list, publication_edit
+from sysimibio.bibliography.views import PublicationList, \
+    PublicationDetail, Publication_UpdateView, PublicationCreateView
 
 app_name = 'bibliography'
 
 urlpatterns = [
-    path('new/', publication_new, name='publication_new'),
-    path('detail/<int:pk>/', publication_detail, name='publication_detail'),
-    path('list/', publication_list, name='publication_list'),
-    path('edit/<int:pk>/', publication_edit, name='publication_edit'),
+    path('new/', PublicationCreateView, name='publication_new'),
+    path('detail/<int:pk>/', PublicationDetail, name='publication_detail'),
+    path('list/', PublicationList, name='publication_list'),
+    path('edit/<int:pk>/', Publication_UpdateView, name='publication_edit'),
 ]
