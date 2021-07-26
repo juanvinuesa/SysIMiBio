@@ -5,7 +5,7 @@ from djgeojson.fields import PointField, PolygonField
 from geojson import Point
 
 from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, \
-    validate_lat, validate_lon, tree_height_validation
+    validate_lat, validate_lon, tree_height_validation, tree_dap_validation
 
 
 class PermanentParcel(models.Model):
@@ -93,7 +93,7 @@ class Tree(models.Model):
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
     tree_id = models.IntegerField(verbose_name='ID Árbol') # todo ID Árbol: N colecta nombre subparcela (SY) o 2 numeros y cuatro letras o tres numeros y cuatro letras
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(verbose_name='DAP', help_text='cm') # todo add validator >10 cm
+    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation])
     dab = models.FloatField(verbose_name='DAB', help_text='cm') # hace parte de la medición?
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation]) # hace parte de la medición?
     latitude = models.FloatField(verbose_name='latitud', validators=[validate_lat], help_text="informar en formato graus decimais WGS84")

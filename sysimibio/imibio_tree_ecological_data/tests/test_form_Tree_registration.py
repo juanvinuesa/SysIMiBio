@@ -70,6 +70,10 @@ class TreeRegistrationFormTest(TestCase):
         form = self.make_TreeForm_validated(tree_height=1.29)
         self.assertFormCode(form, 'tree_height', 'Tree height too small')
 
+    def test_min_tree_dap(self):
+        form = self.make_TreeForm_validated(dap=10)
+        self.assertFormCode(form, 'dap', 'Tree DAP too small')
+
     def test_form_is_valid(self):
         form = self.make_TreeForm_validated()
         form = form.is_valid()
