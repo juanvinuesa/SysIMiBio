@@ -3,21 +3,25 @@ from django.db import models
 from django.urls import reverse_lazy
 from djgeojson.fields import PointField, PolygonField
 from geojson import Point
-from sysimibio.toolbox import create_subplot_name_choices
+
 from sysimibio.imibio_tree_ecological_data.validators import validate_date, validate_temperature, validate_humidity, \
     validate_lat, validate_lon, tree_height_validation, tree_dap_validation
+from sysimibio.toolbox import create_subplot_name_choices
 
 
 class PermanentParcel(models.Model):
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
-    coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE, blank=True, default='')
+    coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
+                                    blank=True, default='')
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
-    municipality = models.CharField(verbose_name="Municipio", max_length=50) # TODO add 75 municipio como choices
+    municipality = models.CharField(verbose_name="Municipio", max_length=50)  # TODO add 75 municipio como choices
     locality = models.CharField(verbose_name="Localidad", max_length=50)
     obs = models.TextField(verbose_name="Obervaciones", blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
-                                 validators=[validate_lat], blank=True, help_text="informar en formato en grados decimales WGS84 - epsg4326")
-    longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon], blank=True, help_text="informar en formato en grados decimales WGS84 - epsg4326")
+                                 validators=[validate_lat], blank=True,
+                                 help_text="informar en formato en grados decimales WGS84 - epsg4326")
+    longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon], blank=True,
+                                  help_text="informar en formato en grados decimales WGS84 - epsg4326")
     geom = PolygonField(blank=True)
 
     @property
@@ -52,7 +56,7 @@ class FieldWork(models.Model):
     class Meta:
         verbose_name_plural = 'Registros de campo'
         verbose_name = 'Campo'
-        ordering = ('-date', )
+        ordering = ('-date',)
 
     def __str__(self):
         return f'{self.date} {self.coordinator}'
@@ -93,22 +97,27 @@ class Tree(models.Model):
         (MUERTO, 'Muerto')
     ]
 
-    SUBPLOTS_CHOICES = create_subplot_name_choices(2,2)
+    SUBPLOTS_CHOICES = create_subplot_name_choices(10, 10)
 
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
-    subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=4)
+    subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=5, default='A1')
+    tree_number = models.PositiveIntegerField(verbose_name="Numero del árbol", default=1)
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation], default=SUBPLOTS_CHOICES[0][0])
-    dab = models.FloatField(verbose_name='DAB', help_text='cm') # hace parte de la medición?
-    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m', validators = [tree_height_validation]) # hace parte de la medición?
-    latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat], help_text="informar en formato graus decimais WGS84")
+    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation],
+                            default=SUBPLOTS_CHOICES[0][0])
+    dab = models.FloatField(verbose_name='DAB', help_text='cm')  # hace parte de la medición?
+    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
+                                    validators=[tree_height_validation])  # hace parte de la medición?
+    latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
+                                 help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon])
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null = True)
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
-    phytosanitary_status = models.CharField(max_length=100, # hace parte de la medición?
+    phytosanitary_status = models.CharField(max_length=100,  # hace parte de la medición?
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
-    sociological_classification = models.CharField(verbose_name='Clasificación sociologica', # hace parte de la medición?
+    sociological_classification = models.CharField(verbose_name='Clasificación sociologica',
+                                                   # hace parte de la medición?
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
@@ -116,7 +125,7 @@ class Tree(models.Model):
 
     @property
     def tree_id(self):
-        return ''.join(x[0].upper() for x in self.field.parcel_id.name.split(' ')) # todo add subparcela
+        return f"{''.join(x[0].upper() for x in self.field.parcel_id.name.split(' '))}{self.subplot}{self.tree_number}"
 
     class Meta:
         verbose_name = 'Árbol'
@@ -129,7 +138,7 @@ class Tree(models.Model):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
     @property
-    def popup_content(self): # todo Me parece que lo importante es poner alguna foto
+    def popup_content(self):  # todo Me parece que lo importante es poner alguna foto
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
         popup += "<span>DAP: </span>{}<br>".format(

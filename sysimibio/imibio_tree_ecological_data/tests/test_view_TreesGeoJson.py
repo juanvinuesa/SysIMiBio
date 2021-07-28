@@ -26,7 +26,8 @@ class TreesGeoJsonView(TestCase):
 
         self.tree = TreeForm({
             'field':self.field,
-            'tree_id':1,
+            'subplot':'A1',
+            'tree_number':1,
             'specie':'Solanaceae',
             'dap':40.0,
             'dab':60.0,

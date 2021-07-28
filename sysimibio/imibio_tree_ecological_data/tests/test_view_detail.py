@@ -33,6 +33,8 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
 
         self.tree = Tree.objects.create(
             field=self.obj,
+            subplot='A1',
+            tree_number=1,
             specie='Solanaceae',
             dap=40,
             dab=60,

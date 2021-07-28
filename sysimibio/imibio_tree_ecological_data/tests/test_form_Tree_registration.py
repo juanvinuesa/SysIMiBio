@@ -31,13 +31,14 @@ class TreeRegistrationFormTest(TestCase):
     def test_Treeform_has_fields(self):
         """Tree form must have models fields"""
         self.assertSequenceEqual(
-            ['field', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
+            ['field', 'subplot', 'tree_number', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
              'longitude', 'picture', 'obs',
              'phytosanitary_status', 'sociological_classification', 'geom'], list(self.Treeform.fields))
 
     def make_TreeForm_validated(self, **kwargs):
         valid = dict(field=self.field1,
-                     tree_id=1,
+                     subplot='A1',
+                     tree_number=1,
                      specie='Solanaceae',
                      dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
                      obs='Teste 1',

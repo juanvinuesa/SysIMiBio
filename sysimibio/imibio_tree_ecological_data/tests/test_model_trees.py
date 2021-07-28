@@ -157,6 +157,8 @@ class TreeModelPropertiesTest(TestCase):
 
         self.tree = Tree.objects.create(
                 field=self.field,
+                subplot='A1',
+                tree_number=1,
                 specie='Solanaceae',
                 dap=40,
                 dab=60,
@@ -175,4 +177,4 @@ class TreeModelPropertiesTest(TestCase):
 
     def test_tree_id(self):
         self.assertEqual(self.tree.tree_id,
-                         "NT")
+                         "NTA11")
