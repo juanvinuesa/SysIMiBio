@@ -12,11 +12,13 @@ class TreeRegistrationFormTest(TestCase):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Treeform = TreeForm()
         self.Fieldform = FieldForm()
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=self.coordinator1,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field1 = FieldWork.objects.create(date='2020-12-30',
                                                start_time='0:0',
@@ -29,13 +31,14 @@ class TreeRegistrationFormTest(TestCase):
     def test_Treeform_has_fields(self):
         """Tree form must have models fields"""
         self.assertSequenceEqual(
-            ['field', 'tree_id', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
+            ['field', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
              'longitude', 'picture', 'obs',
              'phytosanitary_status', 'sociological_classification', 'geom'], list(self.Treeform.fields))
 
     def make_TreeForm_validated(self, **kwargs):
         valid = dict(field=self.field1,
-                     tree_id=1, specie='Solanaceae',
+                     tree_id=1,
+                     specie='Solanaceae',
                      dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
                      obs='Teste 1',
                      phytosanitary_status='Muerto', sociological_classification='Emergente')

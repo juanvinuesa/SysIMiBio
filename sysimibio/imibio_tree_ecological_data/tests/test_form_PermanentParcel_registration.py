@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from geojson import Polygon, Point
 
@@ -7,11 +8,13 @@ from sysimibio.imibio_tree_ecological_data.forms import PermanentParcelForm
 class PermanenParcelFormTest(TestCase):
     def setUp(self):
         self.pp = PermanentParcelForm()
+        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
 
-    @staticmethod
-    def create_PermanentParcelForm(**kwargs):
+
+    def create_PermanentParcelForm(self, **kwargs):
         valid_form = dict(
             name="YryaPu",
+            coordinator=self.coordinator1,
             province='Misiones', municipality='Capital',
             locality='600Ha', obs='Parcela de prueba', latitude=-26,
             longitude=-54,
@@ -23,7 +26,7 @@ class PermanenParcelFormTest(TestCase):
     def test_permanent_parcel_has_fields(self):
         """Permanent Parcel form must have models fields"""
         self.assertSequenceEqual(
-            ['name', 'province', 'municipality', 'locality', 'obs', 'latitude', 'longitude',
+            ['name', 'coordinator', 'province', 'municipality', 'locality', 'obs', 'latitude', 'longitude',
              'geom'], list(self.pp.fields))
 
     def test_form_is_valid(self):

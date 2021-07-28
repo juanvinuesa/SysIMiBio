@@ -10,11 +10,13 @@ class FieldRegistrationFormTest(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
         self.Fieldform = FieldForm()
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=self.coordinator1,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
-        self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
         self.field1 = FieldWork.objects.create(date='2020-12-30',
                                                start_time='0:0',

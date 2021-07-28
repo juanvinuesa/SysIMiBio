@@ -13,7 +13,9 @@ class TreeModelSociologicalTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=coordinator,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
@@ -28,7 +30,6 @@ class TreeModelSociologicalTest(TestCase):
         )
 
         self.valid = Tree(field=self.field,
-                     tree_id=1,
                      specie='Solanaceae',
                      dap=40,
                      dab=60,
@@ -79,7 +80,9 @@ class TreeModelPhytosanitaryTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=coordinator,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
@@ -94,7 +97,6 @@ class TreeModelPhytosanitaryTest(TestCase):
         )
 
         self.valid = Tree(field=self.field,
-                          tree_id=1,
                           specie='Solanaceae',
                           dap=40,
                           dab=60,
@@ -126,18 +128,20 @@ class TreeModelPhytosanitaryTest(TestCase):
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
-    def test_phytosanitary_CHOICES(self): # todo should ths be in form test?
+    def test_phytosanitary_CHOICES(self): # todo should this be in form test?
         """"Sociological classification mus be limited by choices"""
         self.valid.phytosanitary_status = 'BAD phytosanitary'
         self.valid.save()
         self.assertRaises(ValidationError, self.valid.full_clean)
 
 
-class TreeModelPopupTest(TestCase):
+class TreeModelPropertiesTest(TestCase):
     def setUp(self):
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=coordinator,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
@@ -153,7 +157,6 @@ class TreeModelPopupTest(TestCase):
 
         self.tree = Tree.objects.create(
                 field=self.field,
-                tree_id=1,
                 specie='Solanaceae',
                 dap=40,
                 dab=60,
@@ -169,3 +172,7 @@ class TreeModelPopupTest(TestCase):
     def test_popup(self):
         self.assertEqual(self.tree.popup_content,
                          "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span>DAP: </span>40<br><span>Altura: </span>60<br><span><a href=/imibio_tree_ecological_data/1/>Detalles de la occurrencia</a></strong><br>")
+
+    def test_tree_id(self):
+        self.assertEqual(self.tree.tree_id,
+                         "NT")

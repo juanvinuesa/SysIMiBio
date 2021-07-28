@@ -11,7 +11,9 @@ class FieldWorkRegistrationTest(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
-        self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+        self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
+                                                      coordinator=coordinator,
+                                                      province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')

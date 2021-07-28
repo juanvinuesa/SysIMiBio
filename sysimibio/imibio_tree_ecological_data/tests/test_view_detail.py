@@ -15,6 +15,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         staff1 = User.objects.create_user('Juan', 'Juan@imibio.com', 'Juanpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      coordinator=coordinator,
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
@@ -32,7 +33,6 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
 
         self.tree = Tree.objects.create(
             field=self.obj,
-            tree_id=1,
             specie='Solanaceae',
             dap=40,
             dab=60,
@@ -62,7 +62,6 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
     def test_html(self):
         content = (
             'Solanaceae',
-            1,
             '31 de Diciembre de 2020',
             '12:22',
             '13:23',

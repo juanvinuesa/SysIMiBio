@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase
 from geojson import Polygon
 
@@ -6,8 +7,10 @@ from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
 
 class PermanentParcelModelTest(TestCase):
     def setUp(self):
+        coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.pp1 = PermanentParcel.objects.create(
             name = "Reserva Yrya Pu",
+            coordinator=coordinator,
             province = "Misiones",
             municipality = "Puerto Iguazú",
             locality = 'reserva 600 ha',

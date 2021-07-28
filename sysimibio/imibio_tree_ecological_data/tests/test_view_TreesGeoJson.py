@@ -10,6 +10,7 @@ class TreesGeoJsonView(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test', province='Misiones',
+                                                      coordinator=coordinator,
                                                       municipality='Puerto Iguazu',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
