@@ -2,7 +2,7 @@ from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
 
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, PicturesForm, TreeForm, PermanentParcelForm
-from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel, TreeMeasurement
 
 
 class PermanentParcelModelAdmin(admin.ModelAdmin):
@@ -42,7 +42,9 @@ class FieldWorkModelAdmin(admin.ModelAdmin):
     list_filter = ('date', 'coordinator', 'parcel_id')
 
 
+admin.site.register(PermanentParcel,LeafletGeoAdmin)
 admin.site.register(FieldWork, FieldWorkModelAdmin)
 admin.site.register(Pictures)
 admin.site.register(Tree, TreeModelAdmin)
-admin.site.register(PermanentParcel,LeafletGeoAdmin)
+admin.site.register(TreeMeasurement)
+

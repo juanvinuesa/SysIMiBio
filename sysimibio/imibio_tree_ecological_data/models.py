@@ -9,7 +9,7 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 from sysimibio.toolbox import create_subplot_name_choices
 
 
-class PermanentParcel(models.Model):
+class PermanentParcel(models.Model): # todo change to Permanent Plot?
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
                                     blank=True, default='')
@@ -105,19 +105,18 @@ class Tree(models.Model):
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
     dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation],
                             default=SUBPLOTS_CHOICES[0][0])
-    dab = models.FloatField(verbose_name='DAB', help_text='cm')  # hace parte de la medición?
+    dab = models.FloatField(verbose_name='DAB', help_text='cm')
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
-                                    validators=[tree_height_validation])  # hace parte de la medición?
+                                    validators=[tree_height_validation])
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
                                  help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
-    phytosanitary_status = models.CharField(max_length=100,  # hace parte de la medición?
+    phytosanitary_status = models.CharField(max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
     sociological_classification = models.CharField(verbose_name='Clasificación sociologica',
-                                                   # hace parte de la medición?
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
@@ -142,8 +141,65 @@ class Tree(models.Model):
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
         popup += "<span>DAP: </span>{}<br>".format(
-            self.dap)
+            self.dap) # todo sacaremos eso de popup ya que la info de dap y altura son de mediciones
         popup += "<span>Altura: </span>{}<br>".format(
-            self.tree_height)
+            self.tree_height) # todo sacaremos eso de popup ya que la info de dap y altura son de mediciones
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
         return popup
+
+
+class TreeMeasurement(models.Model):
+    EMERGENTE = 'Emergente'
+    DOMINANTE = 'Dominante'
+    CODOMINANTE = 'Codominante'
+    INTERMEDIA = 'Intermedia'
+    INFERIOR_SUPRIMIDO = 'Inferior suprimido'
+    INFERIOR_SUMERGIDO = 'Inferior sumergido'
+    SOCIOLOGICAL_CLASSIFICATION_CHOICES = [
+        (EMERGENTE, 'Emergente'),
+        (DOMINANTE, 'Dominante'),
+        (CODOMINANTE, 'Codominante'),
+        (INTERMEDIA, 'Intermedia'),
+        (INFERIOR_SUPRIMIDO, 'Inferior Suprimido'),
+        (INFERIOR_SUMERGIDO, 'Supeior Sumergido'),
+    ]
+
+    BUENO = 'Bueno'
+    REGULAR = 'Regular'
+    MALO = 'Malo'
+    MUERTO = 'Muerto'
+    PHYTOSANITARY_STATUS_CHOICES = [
+        (BUENO, 'Bueno'),
+        (REGULAR, 'Regular'),
+        (MALO, 'Malo'),
+        (MUERTO, 'Muerto')
+    ]
+
+    SUBPLOTS_CHOICES = create_subplot_name_choices(10, 10)
+
+    field = models.ForeignKey("FieldWork", on_delete=models.CASCADE)
+    tree = models.ForeignKey("Tree", on_delete=models.CASCADE)
+    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation],
+                            default=SUBPLOTS_CHOICES[0][0])
+    dab = models.FloatField(verbose_name='DAB', help_text='cm')
+    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
+                                    validators=[tree_height_validation])
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
+    phytosanitary_status = models.CharField(max_length=100,
+                                            choices=PHYTOSANITARY_STATUS_CHOICES,
+                                            default=BUENO)
+    sociological_classification = models.CharField(verbose_name='Clasificación sociologica',
+                                                   max_length=100,
+                                                   choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
+                                                   default=EMERGENTE)
+    obs = models.TextField(verbose_name="Observaciones", blank=True)
+
+    class Meta:
+        verbose_name = 'Medición de árbol'
+        verbose_name_plural = 'Mediciones de árboles'
+
+    def __str__(self):
+        return f'{self.tree.tree_id}; {self.field.date}'
+
+    def get_absolute_url(self):
+        return reverse_lazy('imibio_tree_ecological_data:measurement_detail', kwargs={'pk': self.pk})

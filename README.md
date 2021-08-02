@@ -50,13 +50,12 @@ gut push heroku master --force
 #### Gestión de datos de biodiversidad:  
 * [Bioblitz](./README_bioblitz.md)  
 * [SNDB]()  
-* [PPI]()  
+* [PPI](./README_imibio_tree_ecological_data.md)  
 
 ## Base de datos
 
-![](extras/img/modeldb.png)
+> crea vision general de las bases
 
 ## Proceso de desarrollo
 
 Más al respecto del [proceso de desarrolo](./Creation_process.md)
-

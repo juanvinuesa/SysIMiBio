@@ -7,6 +7,7 @@ from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictur
 
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
+
 # todo pregunta fotos asociada al arbol o a la medición?
 @override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeModelSociologicalTest(TestCase):
@@ -30,16 +31,16 @@ class TreeModelSociologicalTest(TestCase):
         )
 
         self.valid = Tree(field=self.field,
-                     specie='Solanaceae',
-                     dap=40,
-                     dab=60,
-                     tree_height=60,
-                     latitude=-26,
-                     longitude=-54,
-                     picture=self.tempPicture,
-                     obs='Teste 1',
-                     phytosanitary_status='Bueno',
-                     sociological_classification='Emergente')
+                          specie='Solanaceae',
+                          dap=40,
+                          dab=60,
+                          tree_height=60,
+                          latitude=-26,
+                          longitude=-54,
+                          picture=self.tempPicture,
+                          obs='Teste 1',
+                          phytosanitary_status='Bueno',
+                          sociological_classification='Emergente')
 
     def test_sociologicalclassification_Emergente(self):
         self.valid.save()
@@ -70,10 +71,10 @@ class TreeModelSociologicalTest(TestCase):
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
-    def test_sociologicalclassification_CHOICES(self): # todo change to form test?
+    def test_sociologicalclassification_CHOICES(self):
         self.valid.sociological_classification = 'Bad sociological classification'
         self.valid.save()
-        self.assertRaises(ValidationError, self.valid.full_clean)
+        self.assertRaises(ValidationError, self.valid.full_clean)  # todo debería ser full_clean()
 
 
 class TreeModelPhytosanitaryTest(TestCase):
@@ -109,7 +110,7 @@ class TreeModelPhytosanitaryTest(TestCase):
                           sociological_classification='Emergente')
 
     def test_phytosanitary_Bueno(self):
-        self.valid.phytosanitary_status='Bueno'
+        self.valid.phytosanitary_status = 'Bueno'
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
@@ -128,7 +129,7 @@ class TreeModelPhytosanitaryTest(TestCase):
         self.valid.save()
         self.assertTrue(Tree.objects.exists())
 
-    def test_phytosanitary_CHOICES(self): # todo should this be in form test?
+    def test_phytosanitary_CHOICES(self):
         """"Sociological classification mus be limited by choices"""
         self.valid.phytosanitary_status = 'BAD phytosanitary'
         self.valid.save()
@@ -156,20 +157,20 @@ class TreeModelPropertiesTest(TestCase):
         )
 
         self.tree = Tree.objects.create(
-                field=self.field,
-                subplot='A1',
-                tree_number=1,
-                specie='Solanaceae',
-                dap=40,
-                dab=60,
-                tree_height=60,
-                latitude=-26,
-                longitude=-54,
-                picture=self.tempPicture,
-                obs='Teste 1',
-                phytosanitary_status='Bueno',
-                sociological_classification='Emergente'
-            )
+            field=self.field,
+            subplot='A1',
+            tree_number=1,
+            specie='Solanaceae',
+            dap=40,
+            dab=60,
+            tree_height=60,
+            latitude=-26,
+            longitude=-54,
+            picture=self.tempPicture,
+            obs='Teste 1',
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente'
+        )
 
     def test_popup(self):
         self.assertEqual(self.tree.popup_content,
