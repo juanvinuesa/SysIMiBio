@@ -50,3 +50,8 @@ class PermanentParcelForm(forms.ModelForm):
         widgets = {
             'geom': HiddenInput(),
         }
+
+class TreeMeasurementForm(forms.ModelForm):
+    class Meta:
+        model = PermanentParcel
+        fields = '__all__'

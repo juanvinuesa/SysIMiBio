@@ -36,9 +36,6 @@ class TreeMeasurementTest(TestCase):
             subplot='A1',
             tree_number=3,
             specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
             latitude=-26,
             longitude=-54,
             picture=self.tempPicture,
@@ -92,7 +89,7 @@ class TreeMeasurementTest(TestCase):
     def test_sociologicalclassification_CHOICES(self):
         self.valid_measurement.sociological_classification = 'Bad sociological classification'
         # self.valid_measurement.save()
-        self.assertRaises(ValidationError, self.valid_measurement.full_clean) # todo debería ser full_clean()
+        self.assertRaises(ValidationError, self.valid_measurement.full_clean)  # todo debería ser full_clean()
 
     def test_phytosanitary_Regular(self):
         self.valid_measurement.phytosanitary_status = 'Regular'
@@ -118,7 +115,7 @@ class TreeMeasurementTest(TestCase):
         # self.valid.save()
         self.assertRaises(ValidationError, self.valid_measurement.full_clean)  # todo debería ser full_clean()
 
-# todo testar fotografia
+    # todo testar fotografia
     def test_str(self):
         """measurement string must be tree_id + field work date"""
         self.assertEqual('NTA13; 2020-12-30', str(self.valid_measurement))

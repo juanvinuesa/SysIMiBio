@@ -36,16 +36,10 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             subplot='A1',
             tree_number=1,
             specie='Solanaceae',
-            dap=40,
-            dab=60,
-            tree_height=60,
             latitude=-26,
             longitude=-54,
             picture = tempPicture,
-            obs='Teste 1',
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente'
-        )
+            obs='Teste 1')
 
         self.resp = self.client.get(r('imibio_tree_ecological_data:detail', self.tree.pk))
 
@@ -72,16 +66,10 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             'Florencia',
             'Juan',
             1,
-            1,
             'Solanaceae',
-            40,
-            60,
-            60,
             -26,
             -54,
             'Teste 1',
-            'Bueno',
-            'Emergente'
             )
         for expected in content:
             with self.subTest():

@@ -9,7 +9,7 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 from sysimibio.toolbox import create_subplot_name_choices
 
 
-class PermanentParcel(models.Model): # todo change to Permanent Plot?
+class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
                                     blank=True, default='')
@@ -103,23 +103,11 @@ class Tree(models.Model):
     subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=5, default='A1')
     tree_number = models.PositiveIntegerField(verbose_name="Numero del árbol", default=1)
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
-    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation],
-                            default=SUBPLOTS_CHOICES[0][0])
-    dab = models.FloatField(verbose_name='DAB', help_text='cm')
-    tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
-                                    validators=[tree_height_validation])
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
                                  help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
-    phytosanitary_status = models.CharField(max_length=100,
-                                            choices=PHYTOSANITARY_STATUS_CHOICES,
-                                            default=BUENO)
-    sociological_classification = models.CharField(verbose_name='Clasificación sociologica',
-                                                   max_length=100,
-                                                   choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
-                                                   default=EMERGENTE)
     geom = PointField(blank=True)
 
     @property
@@ -140,10 +128,6 @@ class Tree(models.Model):
     def popup_content(self):  # todo Me parece que lo importante es poner alguna foto
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
-        popup += "<span>DAP: </span>{}<br>".format(
-            self.dap) # todo sacaremos eso de popup ya que la info de dap y altura son de mediciones
-        popup += "<span>Altura: </span>{}<br>".format(
-            self.tree_height) # todo sacaremos eso de popup ya que la info de dap y altura son de mediciones
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
         return popup
 
@@ -192,7 +176,8 @@ class TreeMeasurement(models.Model):
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
-    obs = models.TextField(verbose_name="Observaciones", blank=True)
+
+    # obs = models.TextField(verbose_name="Observaciones", blank=True) # todo solucionar isso
 
     class Meta:
         verbose_name = 'Medición de árbol'

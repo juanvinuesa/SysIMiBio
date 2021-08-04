@@ -31,18 +31,16 @@ class TreeRegistrationFormTest(TestCase):
     def test_Treeform_has_fields(self):
         """Tree form must have models fields"""
         self.assertSequenceEqual(
-            ['field', 'subplot', 'tree_number', 'specie', 'dap', 'dab', 'tree_height', 'latitude',
-             'longitude', 'picture', 'obs',
-             'phytosanitary_status', 'sociological_classification', 'geom'], list(self.Treeform.fields))
+            ['field', 'subplot', 'tree_number', 'specie', 'latitude',
+             'longitude', 'picture', 'obs', 'geom'], list(self.Treeform.fields))
 
     def make_TreeForm_validated(self, **kwargs):
         valid = dict(field=self.field1,
                      subplot='A1',
                      tree_number=1,
                      specie='Solanaceae',
-                     dap=40, dab=60, tree_height=60, latitude=-26, longitude=-54,
-                     obs='Teste 1',
-                     phytosanitary_status='Muerto', sociological_classification='Emergente')
+                     latitude=-26, longitude=-54,
+                     obs='Teste 1')
         data = dict(valid, **kwargs)
         form = TreeForm(data)
         form.is_valid()
@@ -70,13 +68,13 @@ class TreeRegistrationFormTest(TestCase):
         form = self.make_TreeForm_validated(longitude='-53.61')
         self.assertFormCode(form, 'longitude', 'Longitude out of the range')
 
-    def test_min_tree_height(self):
-        form = self.make_TreeForm_validated(tree_height=1.29)
-        self.assertFormCode(form, 'tree_height', 'Tree height too small')
+    # def test_min_tree_height(self): # todo add test to TreeMeasurement
+    #     form = self.make_TreeForm_validated(tree_height=1.29)
+    #     self.assertFormCode(form, 'tree_height', 'Tree height too small')
 
-    def test_min_tree_dap(self):
-        form = self.make_TreeForm_validated(dap=10)
-        self.assertFormCode(form, 'dap', 'Tree DAP too small')
+    # def test_min_tree_dap(self): # todo add test to TreeMeasurement
+    #     form = self.make_TreeForm_validated(dap=10)
+    #     self.assertFormCode(form, 'dap', 'Tree DAP too small')
 
     def test_form_is_valid(self):
         form = self.make_TreeForm_validated()
