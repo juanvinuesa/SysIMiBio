@@ -27,3 +27,5 @@ class Publication(models.Model):
 
     def get_absolute_url(self):
         return r('bibliography:publication_detail', kwargs={'pk': self.pk})
+
+

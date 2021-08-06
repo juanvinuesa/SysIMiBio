@@ -98,6 +98,7 @@ class PublicationNewValid(TestCase):
             imibio=False,
             crossref=False)
         self.resp_manual = self.client.post(r('bibliography:publication_new'), self.data_manual, follow=True)
+
     def test_post_doi(self):
         self.assertEqual(200, self.resp_doi.status_code)
 
@@ -125,4 +126,3 @@ class PublicationNewValid(TestCase):
     def test_exists_manual(self):
         self.assertTrue(Publication.objects.exists())
 
-#todo hacer test de publication update-edit

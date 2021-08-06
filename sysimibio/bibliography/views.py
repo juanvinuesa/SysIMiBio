@@ -5,25 +5,32 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from isbnlib import is_isbn13, meta
+from django.urls import reverse
+
 
 from sysimibio.bibliography.forms import PublicationForm
 from sysimibio.bibliography.models import Publication
 
 
-class Publication_UpdateClass(LoginRequiredMixin, UpdateView):
+class PublicationUpdateClass(LoginRequiredMixin, UpdateView):
     model = Publication
+    form_class = PublicationForm
+
+    def get_success_url(self):
+        objectid = self.kwargs['pk']
+        return reverse('bibliography:publication_detail', kwargs={'pk': objectid})
 
 
-Publication_UpdateView = Publication_UpdateClass.as_view()
+PublicationUpdateView = PublicationUpdateClass.as_view()
 
 
-class PublicationListClass(LoginRequiredMixin, ListView):  # vista basada en clase generica
+class PublicationListClass(LoginRequiredMixin, ListView):
     model = Publication
     context_object_name = 'publications'
     ordering = ['-publication_year']
 
 
-PublicationList = PublicationListClass.as_view()  # todo add login required
+PublicationList = PublicationListClass.as_view()
 
 
 class PublicationDetailClass(LoginRequiredMixin, DetailView):
@@ -33,7 +40,7 @@ class PublicationDetailClass(LoginRequiredMixin, DetailView):
 PublicationDetail = PublicationDetailClass.as_view()
 
 
-class PublicationCreateClass(LoginRequiredMixin, CreateView):  # vista basada en clase generica
+class PublicationCreateClass(LoginRequiredMixin, CreateView):
     model = Publication
     form_class = PublicationForm
 
@@ -46,7 +53,8 @@ class PublicationCreateClass(LoginRequiredMixin, CreateView):  # vista basada en
             self.publication.publication_year = str(paper_data_result.get('created').get('date-parts')[0][0])
             self.publication.title = paper_data_result.get('title')[0]
             self.publication.author = f"{paper_data_result.get('author')[0].get('given')},{paper_data_result.get('author')[0].get('family')}"
-            self.publication.subject = paper_data_result.get("subject", [self.publication.subject])[0]
+            sub = paper_data_result.get("subject", [self.publication.subject]) #todo ver si puede mejorar en una linea
+            self.publication.subject = ', '.join([str(elem) for elem in sub])
             self.publication.URL = paper_data_result.get('URL')
 
         elif self.publication.ISBN != "" and is_isbn13(self.publication.ISBN):
