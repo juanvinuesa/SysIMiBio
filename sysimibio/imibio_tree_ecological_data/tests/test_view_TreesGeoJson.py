@@ -25,18 +25,18 @@ class TreesGeoJsonView(TestCase):
         )
 
         self.tree = TreeForm({
-            'field':self.field,
-            'subplot':'A1',
-            'tree_number':1,
-            'specie':'Solanaceae',
-            'dap':40.0,
-            'dab':60.0,
-            'tree_height':60.0,
-            'latitude':-26.0,
-            'longitude':-54.0,
-            'obs':'Teste 1',
-            'phytosanitary_status':'Bueno',
-            'sociological_classification':'Emergente'
+            'field': self.field,
+            'subplot': 'A1',
+            'tree_number': 1,
+            'specie': 'Solanaceae',
+            'dap': 40.0,
+            'dab': 60.0,
+            'tree_height': 60.0,
+            'latitude': -26.0,
+            'longitude': -54.0,
+            'obs': 'Teste 1',
+            'phytosanitary_status': 'Bueno',
+            'sociological_classification': 'Emergente'
         })
         self.tree.save()
         self.occurrence = Tree.objects.all()[0]

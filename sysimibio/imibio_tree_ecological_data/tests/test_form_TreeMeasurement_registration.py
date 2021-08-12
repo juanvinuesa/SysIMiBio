@@ -1,14 +1,21 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase, override_settings
 from geojson import Polygon
 
-from sysimibio.imibio_tree_ecological_data.models import PermanentParcel, Tree
 from sysimibio.imibio_tree_ecological_data.forms import TreeMeasurementForm
+from sysimibio.imibio_tree_ecological_data.models import PermanentParcel, Tree, FieldWork, Pictures
 
-# todo test validators. ver test_form_fieldRegistration
-class PermanenParcelFormTest(TestCase):
+TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
+
+
+@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
+class TreeMeasurementFormTest(TestCase):
     def setUp(self):
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
+
         self.pemanent_plot1 = PermanentParcel.objects.create(
             name="Reserva Yriapu",
             coordinator=self.coordinator1,
@@ -20,47 +27,46 @@ class PermanenParcelFormTest(TestCase):
             longitude=-54,
             geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]]))
 
+        self.field1 = FieldWork.objects.create(
+            date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator=self.coordinator1,
+            parcel_id=self.pemanent_plot1)
+
         self.tree = Tree.objects.create(
-            field=self.pemanent_plot1,
+            field=self.field1,
             subplot='A1',
             tree_number=1,
             specie='Solanaceae',
             latitude=-26,
             longitude=-54,
             obs='Teste 1')
+
         self.tree_measurement_form = TreeMeasurementForm()
 
-
-
-    def create_PermanentParcelForm(self, **kwargs):
+    def create_TreeMeasurementForm(self, **kwargs):
         valid_form = dict(
-            name="YryaPu",
-            coordinator=self.coordinator1,
-            province='Misiones', municipality='Capital',
-            locality='600Ha', obs='Parcela de prueba', latitude=-26,
-            longitude=-54,
-            geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]]))
+            field=self.field1,
+            tree=self.tree,
+            dap=11, dab=20, tree_height=10,
+            picture=self.tempPicture,
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente'
+        )
         valid_form.update(**kwargs)
-        form = PermanentParcelForm(valid_form)
+        form = TreeMeasurementForm(valid_form)
         return form
 
-    def test_permanent_parcel_has_fields(self):
-        """Permanent Parcel form must have models fields"""
+    def test_tree_measurement_has_fields(self):
+        """Tree Measurement form must have models fields"""
         self.assertSequenceEqual(
-            ['name', 'coordinator', 'province', 'municipality', 'locality', 'obs', 'latitude', 'longitude',
-             'geom'], list(self.pp.fields))
+            ['field', 'tree', 'dap', 'dab', 'tree_height',
+             'picture', 'phytosanitary_status', 'sociological_classification'],
+            list(self.tree_measurement_form.fields))
 
     def test_form_is_valid(self):
-        form = self.create_PermanentParcelForm()
+        form = self.create_TreeMeasurementForm()
         self.assertTrue(form.is_valid())
-
-    def test_province_restriction(self):
-        """"province different from Misiones must return error"""
-        form = self.create_PermanentParcelForm(province="OtraProvincia")
-        self.assertFalse(form.is_valid())
-
-    def test_geom_is_invalid(self):
-        """"geom must be polygon geojson"""
-        form = self.create_PermanentParcelForm(geom=Point((-54.6, -27.0)))
-        self.assertFalse(form.is_valid())
-        self.assertEquals(form.errors["geom"][0], "Point does not match geometry type")

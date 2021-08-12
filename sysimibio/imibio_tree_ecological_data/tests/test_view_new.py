@@ -87,7 +87,8 @@ class FieldWorkRegistrationPostInvalid(TestCase):
         self.assertTemplateUsed(self.resp, 'tree_ecological_registration_form.html')
 
     def test_template_has_form(self):
-        self.assertIsInstance(self.form, TreeEcologicalForm)  # todo resolver esse teste quando tiver usando form e template
+        self.assertIsInstance(self.form,
+                              TreeEcologicalForm)  # todo resolver esse teste quando tiver usando form e template
 
     def test_form_has_errors(self):
         self.assertTrue(self.form.errors)
@@ -99,13 +100,13 @@ class FieldWorkRegistrationPostInvalid(TestCase):
 class TemplateRegressionTest(TestCase):
     def tes_template_has_non_field_errors(self):
         invalid_data = dict(date='2020-12-30', start_time='0:40',
-            end_time='0:00', temperature=35.9,
-            humidity=80, coordinator="Florencia",
-            staff='Felipe', parcel_id=1,
-            tree_id=1, specie='Solanaceae',
-            dap=40, dab=60, tree_height=60, latitude=-43, longitude=-56,
-            photo=True, obs='Teste 1', tree_status='Teste estado del arbol',
-            life_form='Estado de vida', sociological_classification='Clasificacion sociologica')
+                            end_time='0:00', temperature=35.9,
+                            humidity=80, coordinator="Florencia",
+                            staff='Felipe', parcel_id=1,
+                            tree_id=1, specie='Solanaceae',
+                            dap=40, dab=60, tree_height=60, latitude=-43, longitude=-56,
+                            photo=True, obs='Teste 1', tree_status='Teste estado del arbol',
+                            life_form='Estado de vida', sociological_classification='Clasificacion sociologica')
         response = self.client.post(r('imibio_tree_ecological_data:new', invalid_data))
 
         self.assertContais(response, '<ul class="errorlist nonfield">')

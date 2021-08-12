@@ -7,7 +7,7 @@ from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictur
 TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
 
 
-# todo pregunta fotos asociada al arbol o a la medición?
+# todo pregunta fotos asociada al arbol, a la medición o al campo?
 @override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeModelSociologicalTest(TestCase):
     def setUp(self):

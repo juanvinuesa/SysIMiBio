@@ -14,7 +14,7 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
                                     blank=True, default='')
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
-    municipality = models.CharField(verbose_name="Municipio", max_length=50)  # TODO add 75 municipio como choices
+    municipality = models.CharField(verbose_name="Municipio", max_length=50)  # TODO add 75 municipio como choices o como geojson FK
     locality = models.CharField(verbose_name="Localidad", max_length=50)
     obs = models.TextField(verbose_name="Obervaciones", blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
@@ -163,8 +163,7 @@ class TreeMeasurement(models.Model):
 
     field = models.ForeignKey("FieldWork", on_delete=models.CASCADE)
     tree = models.ForeignKey("Tree", on_delete=models.CASCADE)
-    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation],
-                            default=SUBPLOTS_CHOICES[0][0])
+    dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation])
     dab = models.FloatField(verbose_name='DAB', help_text='cm')
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
                                     validators=[tree_height_validation])

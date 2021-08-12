@@ -38,14 +38,13 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             specie='Solanaceae',
             latitude=-26,
             longitude=-54,
-            picture = tempPicture,
+            picture=tempPicture,
             obs='Teste 1')
 
         self.resp = self.client.get(r('imibio_tree_ecological_data:detail', self.tree.pk))
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
-
 
     def test_template(self):
         self.assertTemplateUsed(self.resp,
@@ -61,7 +60,7 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             '31 de Diciembre de 2020',
             '12:22',
             '13:23',
-            35,9,
+            35, 9,
             80,
             'Florencia',
             'Juan',
@@ -70,10 +69,11 @@ class TreeEcologicalRegistrationDetailGet(TestCase):
             -26,
             -54,
             'Teste 1',
-            )
+        )
         for expected in content:
             with self.subTest():
                 self.assertContains(self.resp, expected)
+
 
 class TreeEcologicalRegistrationDetailNotFound(TestCase):
     def test_not_found(self):

@@ -4,12 +4,11 @@ from geojson import Polygon, Point
 
 from sysimibio.imibio_tree_ecological_data.forms import PermanentParcelForm
 
-# todo test validators. ver test_form_fieldRegistration
+
 class PermanenParcelFormTest(TestCase):
     def setUp(self):
         self.pp = PermanentParcelForm()
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-
 
     def create_PermanentParcelForm(self, **kwargs):
         valid_form = dict(

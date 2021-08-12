@@ -3,9 +3,14 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r
 from djgeojson.views import GeoJSONLayerView
 
+# from django.utils.decorators import method_decorator # todo usar @method_decorator(login_required)
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm, FieldForm
-from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel
+from django.views.generic import ListView
 
+class PlotListView(ListView):
+    model = PermanentParcel
+PlotListView = PlotListView.as_view()
 
 def new(request):
     if request.method == 'POST':

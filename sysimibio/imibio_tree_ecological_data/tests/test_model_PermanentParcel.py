@@ -9,16 +9,17 @@ class PermanentParcelModelTest(TestCase):
     def setUp(self):
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.pp1 = PermanentParcel.objects.create(
-            name = "Reserva Yrya Pu",
+            name="Reserva Yrya Pu",
             coordinator=coordinator,
-            province = "Misiones",
-            municipality = "Puerto Iguazú",
-            locality = 'reserva 600 ha',
-            obs = "Prueba de registro",
+            province="Misiones",
+            municipality="Puerto Iguazú",
+            locality='reserva 600 ha',
+            obs="Prueba de registro",
             latitude=-26,
             longitude=-54,
-            geom=Polygon([[(-54.6,-27.0), (-54.0, -27.07), (-54.07,-26.62), (-54.6,-27.0)]])
+            geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]])
         )
+
     def test_permanentparcel_model(self):
         self.assertTrue(PermanentParcel.objects.exists())
 
@@ -33,7 +34,7 @@ class PermanentParcelModelTest(TestCase):
 
     def test_geom_polygon(self):
         self.assertEqual(self.pp1.geom, {"coordinates":
-                                             [[[-54.6,-27.0], [-54.0, -27.07], [-54.07,-26.62], [-54.6,-27.0]]],
+                                             [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]],
                                          "type": "Polygon"})
 
     def test_geom_point_is_valid(self):

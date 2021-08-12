@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.forms import HiddenInput
 from geojson import Point
 
-from sysimibio.imibio_tree_ecological_data.models import Tree, FieldWork, Pictures, PermanentParcel
+from sysimibio.imibio_tree_ecological_data.models import Tree, FieldWork, Pictures, PermanentParcel, TreeMeasurement
 
 
 class TreeForm(forms.ModelForm):
@@ -22,6 +22,7 @@ class TreeForm(forms.ModelForm):
         if not cleaned_data["geom"].is_valid:
             raise ValidationError("Geometria inválida")
         return cleaned_data
+
 
 class FieldForm(forms.ModelForm):
     class Meta:
@@ -51,7 +52,8 @@ class PermanentParcelForm(forms.ModelForm):
             'geom': HiddenInput(),
         }
 
+
 class TreeMeasurementForm(forms.ModelForm):
     class Meta:
-        model = PermanentParcel
+        model = TreeMeasurement
         fields = '__all__'

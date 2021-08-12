@@ -58,64 +58,61 @@ class TreeMeasurementTest(TestCase):
 
     def test_sociologicalclassification_Dominante(self):
         self.valid_measurement.sociological_classification = 'Dominante'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.sociological_classification, "Dominante")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_sociologicalclassification_Codominante(self):
         self.valid_measurement.sociological_classification = 'Codominante'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.sociological_classification, "Codominante")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_sociologicalclassification_Intermedia(self):
         self.valid_measurement.sociological_classification = 'Intermedia'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.sociological_classification, "Intermedia")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_sociologicalclassification_Inferior_suprimido(self):
         self.valid_measurement.sociological_classification = 'Inferior suprimido'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.sociological_classification, "Inferior suprimido")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_sociologicalclassification_Inferior_sumergido(self):
         self.valid_measurement.sociological_classification = 'Inferior sumergido'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.sociological_classification, "Inferior sumergido")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_sociologicalclassification_CHOICES(self):
-        self.valid_measurement.sociological_classification = 'Bad sociological classification'
-        # self.valid_measurement.save()
-        self.assertRaises(ValidationError, self.valid_measurement.full_clean)  # todo debería ser full_clean()
+        self.valid_measurement.phytosanitary_status = 'Bad sociological classification'
+        msg = "Valor 'Bad sociological classification' no es una opción válida"
+        with self.assertRaisesMessage(ValidationError, msg):
+            self.valid_measurement.full_clean()
 
     def test_phytosanitary_Regular(self):
         self.valid_measurement.phytosanitary_status = 'Regular'
-        # self.valid_measurement.save()
-        # self.assertEqual(self.valid_measurement.phytosanitary_status, "Regular")
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_phytosanitary_Malo(self):
         self.valid_measurement.phytosanitary_status = 'Malo'
-        # self.valid.save()
-        # self.assertTrue(Tree.objects.exists())
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_phytosanitary_Muerto(self):
         self.valid_measurement.phytosanitary_status = 'Muerto'
-        # self.valid.save()
-        # self.assertTrue(Tree.objects.exists())
         self.assertEqual(None, self.valid_measurement.clean_fields())
 
     def test_phytosanitary_CHOICES(self):
         """"Sociological classification mus be limited by choices"""
-        self.valid_measurement.phytosanitary_status = 'BAD phytosanitary'
-        # self.valid.save()
-        self.assertRaises(ValidationError, self.valid_measurement.full_clean)  # todo debería ser full_clean()
+        self.valid_measurement.phytosanitary_status = 'BAD phytosanitary classification'
+        msg = "Valor 'BAD phytosanitary classification' no es una opción válida"
+        with self.assertRaisesMessage(ValidationError, msg):
+            self.valid_measurement.full_clean()
 
-    # todo testar fotografia
+    def test_min_tree_height(self):
+        self.valid_measurement.tree_height = 1.29
+        msg = "Altura del árbol no puede ser menor a 1.3 metros"
+        with self.assertRaisesMessage(ValidationError, msg):
+            self.valid_measurement.full_clean()
+
+    def test_min_tree_dap(self):
+        self.valid_measurement.dap = 9
+        msg = "DAP del árbol debe ser mayor a 10 cm"
+        with self.assertRaisesMessage(ValidationError, msg):
+            self.valid_measurement.full_clean()
+
     def test_str(self):
         """measurement string must be tree_id + field work date"""
         self.assertEqual('NTA13; 2020-12-30', str(self.valid_measurement))

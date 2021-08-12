@@ -6,7 +6,7 @@ from django.test import TestCase
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, TreeForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentParcel
 
-# todo add validator DAP >10
+
 class TreeRegistrationFormTest(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
@@ -68,19 +68,11 @@ class TreeRegistrationFormTest(TestCase):
         form = self.make_TreeForm_validated(longitude='-53.61')
         self.assertFormCode(form, 'longitude', 'Longitude out of the range')
 
-    # def test_min_tree_height(self): # todo add test to TreeMeasurement
-    #     form = self.make_TreeForm_validated(tree_height=1.29)
-    #     self.assertFormCode(form, 'tree_height', 'Tree height too small')
-
-    # def test_min_tree_dap(self): # todo add test to TreeMeasurement
-    #     form = self.make_TreeForm_validated(dap=10)
-    #     self.assertFormCode(form, 'dap', 'Tree DAP too small')
-
     def test_form_is_valid(self):
         form = self.make_TreeForm_validated()
         form = form.is_valid()
         self.assertTrue(form)
 
-    def test_geom_is_istance(self):
+    def test_geom_is_geojson_istance(self):
         form = self.make_TreeForm_validated()
         self.assertIsInstance(form.cleaned_data.get('geom'), (geojson.geometry.Point,))
