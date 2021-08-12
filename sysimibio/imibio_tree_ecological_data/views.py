@@ -6,11 +6,16 @@ from djgeojson.views import GeoJSONLayerView
 # from django.utils.decorators import method_decorator # todo usar @method_decorator(login_required)
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm, FieldForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
+
 
 class PlotListView(ListView):
     model = PermanentParcel
 PlotListView = PlotListView.as_view()
+
+class PlotDetailView(DetailView):
+    model = PermanentParcel
+PlotDetailView = PlotDetailView.as_view()
 
 def new(request):
     if request.method == 'POST':

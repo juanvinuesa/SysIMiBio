@@ -9,7 +9,7 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 from sysimibio.toolbox import create_subplot_name_choices
 
 
-class PermanentParcel(models.Model):  # todo change to Permanent Plot?
+class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo add created_at?
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
                                     blank=True, default='')
@@ -38,6 +38,9 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     class Meta:
         verbose_name_plural = 'Parcelas Permanentes'
         verbose_name = 'Parcela Permanente'
+
+    def get_absolute_url(self):
+        return reverse_lazy('imibio_tree_ecological_data:plot_detail', kwargs={'pk': self.pk})
 
 
 class FieldWork(models.Model):
