@@ -47,3 +47,47 @@ class PermanentParcelListView(TestCase):
         all_entries = PermanentParcel.objects.all()
         self.assertQuerysetEqual(self.resp.context['permanentparcel_list'],
                          all_entries, ordered=False)
+
+
+class PermanentParcelDetailView(TestCase):
+    def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.pp1 = PermanentParcel.objects.create(
+            name="Reserva Yrya Pu",
+            coordinator=self.coordinator,
+            province="Misiones",
+            municipality="Puerto Iguazú",
+            locality='reserva 600 ha',
+            obs="Prueba de registro",
+            latitude=-26,
+            longitude=-54,
+            geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]])
+        )
+        self.resp = self.client.get(r('imibio_tree_ecological_data:plot_detail', 1))
+
+    def test_get(self):
+        """GET /plot_detail/1 must get status code 200"""
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_detail_use_template(self):
+        """GET /plot_detail/1 must use permanentparcel_detail.html template"""
+        self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/permanentparcel_detail.html')
+
+    def test_detail_html(self): # todo add mapa
+        content = [
+            "Reserva Yrya Pu",
+            "Reserva Yrya Pu",
+            "Florencia",
+            "Misiones",
+            "Puerto Iguazú",
+            'reserva 600 ha',
+            "Prueba de registro"]
+        with self.subTest():
+            for expected in content:
+                self.assertContains(self.resp, expected)
+
+class OccurrenceDetailNotFound(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(r('imibio_tree_ecological_data:plot_detail', 0))
+    def test_not_found(self):
+        self.assertEqual(404, self.resp.status_code)

@@ -17,6 +17,15 @@ class PlotDetailView(DetailView):
     model = PermanentParcel
 PlotDetailView = PlotDetailView.as_view()
 
+class PlotDetailGeoJson(GeoJSONLayerView):
+    model = PermanentParcel
+    # properties = ('popup_content',)
+
+    def get_queryset(self, **kwargs):
+        self.plot = super().get_queryset()
+        return self.plot.filter(pk=self.kwargs['pk'])
+PlotDetailGeoJson = PlotDetailGeoJson.as_view()
+
 def new(request):
     if request.method == 'POST':
         return create(request)
