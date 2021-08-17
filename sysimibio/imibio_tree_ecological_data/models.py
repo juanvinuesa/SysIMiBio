@@ -14,7 +14,8 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo ad
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
                                     blank=True, default='')
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
-    municipality = models.CharField(verbose_name="Municipio", max_length=50)  # TODO add 75 municipio como choices o como geojson FK
+    municipality = models.CharField(verbose_name="Municipio",
+                                    max_length=50)  # TODO add 75 municipio como choices o como geojson FK
     locality = models.CharField(verbose_name="Localidad", max_length=50)
     obs = models.TextField(verbose_name="Obervaciones", blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
@@ -74,32 +75,6 @@ class Pictures(models.Model):
 
 
 class Tree(models.Model):
-    EMERGENTE = 'Emergente'
-    DOMINANTE = 'Dominante'
-    CODOMINANTE = 'Codominante'
-    INTERMEDIA = 'Intermedia'
-    INFERIOR_SUPRIMIDO = 'Inferior suprimido'
-    INFERIOR_SUMERGIDO = 'Inferior sumergido'
-    SOCIOLOGICAL_CLASSIFICATION_CHOICES = [
-        (EMERGENTE, 'Emergente'),
-        (DOMINANTE, 'Dominante'),
-        (CODOMINANTE, 'Codominante'),
-        (INTERMEDIA, 'Intermedia'),
-        (INFERIOR_SUPRIMIDO, 'Inferior Suprimido'),
-        (INFERIOR_SUMERGIDO, 'Supeior Sumergido'),
-    ]
-
-    BUENO = 'Bueno'
-    REGULAR = 'Regular'
-    MALO = 'Malo'
-    MUERTO = 'Muerto'
-    PHYTOSANITARY_STATUS_CHOICES = [
-        (BUENO, 'Bueno'),
-        (REGULAR, 'Regular'),
-        (MALO, 'Malo'),
-        (MUERTO, 'Muerto')
-    ]
-
     SUBPLOTS_CHOICES = create_subplot_name_choices(10, 10)
 
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
@@ -109,7 +84,7 @@ class Tree(models.Model):
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
                                  help_text="informar en formato graus decimais WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon])
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True) # todo dejar en medicion?
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     geom = PointField(blank=True)
 
@@ -128,7 +103,7 @@ class Tree(models.Model):
         return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
 
     @property
-    def popup_content(self):  # todo Me parece que lo importante es poner alguna foto
+    def popup_content(self):
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
         popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"

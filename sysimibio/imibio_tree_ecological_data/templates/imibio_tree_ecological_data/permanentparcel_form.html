@@ -2,26 +2,32 @@
 {% load crispy_forms_tags %}
 
 {% load leaflet_tags %}
+
+{% block content %}
 {% leaflet_js plugins="forms" %}
 {% leaflet_css plugins="forms" %}
 
-{% block content %}
 <div class="jumbotron">
     <div class="container">
         <h2>Agregar datos ecológicos de species arbóreas</h2>
         {% if messages %}
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        {% for message in messages %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
         <div class="alert alert-danger" role="alert">
             <p>{{ message }}</p>
         </div>
-                {% else %}
+        {% else %}
         <div class="alert alert-success" role="alert">
             <p>{{ message }}</p>
         </div>
-                {% endif %}
-            {% endfor %}
         {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% for error in form.geom.errors %}
+        <div class="alert alert-warning" role="alert">
+            {{ error }}
+        </div>
+        {% endfor %}
         <div class="accordion" id="accordionExample">
             <form method="POST" action="." class="post-form">
                 {% csrf_token %}
