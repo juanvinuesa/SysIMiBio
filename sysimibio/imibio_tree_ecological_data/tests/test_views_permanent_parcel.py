@@ -3,6 +3,7 @@ from django.shortcuts import resolve_url as r
 from django.test import TestCase
 from geojson import Polygon
 
+from sysimibio.imibio_tree_ecological_data.forms import PermanentParcelForm
 from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
 
 
@@ -73,7 +74,7 @@ class PermanentParcelDetailView(TestCase):
         """GET /plot_detail/1 must use permanentparcel_detail.html template"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/permanentparcel_detail.html')
 
-    def test_detail_html(self): # todo add mapa
+    def test_detail_html(self): # todo testar mapa
         content = [
             "Reserva Yrya Pu",
             "Reserva Yrya Pu",
@@ -86,8 +87,37 @@ class PermanentParcelDetailView(TestCase):
             for expected in content:
                 self.assertContains(self.resp, expected)
 
-class OccurrenceDetailNotFound(TestCase):
+
+class PermanentParcelDetailNotFound(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_detail', 0))
     def test_not_found(self):
         self.assertEqual(404, self.resp.status_code)
+
+class PermanentPacelCreate(TestCase):
+    def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.pp_form = PermanentParcelForm
+        self.resp = self.client.get(r('imibio_tree_ecological_data:plot_create'))
+
+    def test_get(self):
+        """GET /plot_create must get status code 200"""
+        self.assertEqual(200, self.resp.status_code)
+    #
+    # def test_detail_use_template(self):
+    #     """GET /plot_detail/1 must use permanentparcel_detail.html template"""
+    #     self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/permanentparcel_detail.html')
+    #
+    # def test_detail_html(self): # todo testar mapa
+    #     content = [
+    #         "Reserva Yrya Pu",
+    #         "Reserva Yrya Pu",
+    #         "Florencia",
+    #         "Misiones",
+    #         "Puerto Iguazú",
+    #         'reserva 600 ha',
+    #         "Prueba de registro"]
+    #     with self.subTest():
+    #         for expected in content:
+    #             self.assertContains(self.resp, expected)
+    #

@@ -81,7 +81,6 @@
             {% leaflet_map "map-detail" %}
         </div>
     </div>
-    <!-- todo crear serializador geojson para plot mapa-->
     <script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.pk %}';
 
@@ -97,7 +96,7 @@
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties.popup_content;
                 layer.bindPopup(props);
-                 map.fitBounds(layer.getBounds());
+                 map.fitBounds(layer.getBounds(), { padding: [200, 200] });
             }}).addTo(map);
           });
       });

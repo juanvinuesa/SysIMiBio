@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import HiddenInput
 from geojson import Point
+from leaflet.forms.widgets import LeafletWidget
 
 from sysimibio.imibio_tree_ecological_data.models import Tree, FieldWork, Pictures, PermanentParcel, TreeMeasurement
 
@@ -49,7 +50,8 @@ class PermanentParcelForm(forms.ModelForm):
         model = PermanentParcel
         fields = '__all__'
         widgets = {
-            'geom': HiddenInput(),
+            # 'geom': HiddenInput(),
+            'geom': LeafletWidget(),
         }
 
 

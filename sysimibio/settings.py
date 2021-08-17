@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'test_without_migrations',
 
+    #extensions
     'django_extensions',
     'djgeojson',
     'leaflet',
+    'crispy_forms',
 
     # apps
     'sysimibio.core',
@@ -149,3 +151,6 @@ LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (-26.5, -55),
     'DEFAULT_ZOOM': 8,
 }
+
+#crispy
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
