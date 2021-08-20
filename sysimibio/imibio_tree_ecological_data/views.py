@@ -36,6 +36,25 @@ class PlotDetailGeoJson(GeoJSONLayerView):
         return self.plot.filter(pk=self.kwargs['pk'])
 PlotDetailGeoJson = PlotDetailGeoJson.as_view()
 
+class FieldWorkCreateView(CreateView):
+    model = FieldWork
+    form_class = FieldForm
+FieldWorkCreateView = FieldWorkCreateView.as_view()
+
+class FieldWorkEditView(UpdateView):
+    model = FieldWork
+    form_class = FieldForm
+FieldWorkEditView = FieldWorkEditView.as_view()
+
+class FieldWorkListView(ListView):
+    model = FieldWork
+FieldWorkListView = FieldWorkListView.as_view()
+
+class FieldWorkDetailView(DetailView):
+    model = FieldWork
+FieldWorkDetailView = FieldWorkDetailView.as_view()
+
+
 def new(request):
     if request.method == 'POST':
         return create(request)

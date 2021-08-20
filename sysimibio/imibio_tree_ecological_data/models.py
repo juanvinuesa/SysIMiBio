@@ -65,6 +65,9 @@ class FieldWork(models.Model):
     def __str__(self):
         return f'{self.date} {self.coordinator}'
 
+    def get_absolute_url(self):
+        return reverse_lazy('imibio_tree_ecological_data:field_detail', kwargs={'pk': self.pk})
+
 
 class Pictures(models.Model):
     picture = models.ImageField(verbose_name="Fotografía", null=True, blank=True, help_text='Choose foto')

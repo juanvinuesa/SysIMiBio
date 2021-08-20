@@ -56,6 +56,17 @@
                         <i class="fa fa-book"></i> Lista Bibliografías</a>
                 </div>
             </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown_ppi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Parcelas permanentes</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown_ppi">
+                    <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:plot_create' %}">
+                        <i class="fa fa-pagelines"></i> Registrar nueva parcela</a>
+                    <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:plot_list' %}">
+                        <i class="fa fa-globe"></i> Lista de parcelas</a>
+
+                </div>
+            </li>
         </ul>
         <!--<form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
