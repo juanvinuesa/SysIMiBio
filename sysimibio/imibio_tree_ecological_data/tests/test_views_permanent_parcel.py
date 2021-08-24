@@ -96,10 +96,9 @@ class PermanentParcelDetailNotFound(TestCase):
         self.assertEqual(404, self.resp.status_code)
 
 
-class PermanentParcelCreate(TestCase):
+class PermanentParcelCreateView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-        self.pp_form = PermanentParcelForm
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_create'))
 
     def test_get(self):
@@ -164,7 +163,7 @@ class PermanentParcelCreate(TestCase):
         self.assertTrue(post_response.status_code, 200)
 
 
-class PermanentParcelEdit(TestCase):
+class PermanentParcelEditView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.pp1 = PermanentParcel.objects.create(
@@ -181,7 +180,7 @@ class PermanentParcelEdit(TestCase):
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_edit', self.pp1.pk))
 
     def test_get(self):
-        """GET /plot_create must get status code 200"""
+        """GET plot/create must get status code 200"""
         self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):

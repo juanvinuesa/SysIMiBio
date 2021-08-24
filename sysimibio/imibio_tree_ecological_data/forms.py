@@ -34,7 +34,7 @@ class FieldForm(forms.ModelForm):
         cleaned_data = super().clean()
         start_time = cleaned_data.get('start_time')
         end_time = cleaned_data.get('end_time')
-        if start_time > end_time:
+        if (start_time and end_time) and start_time > end_time:
             raise ValidationError("Hora de inicio debe ser menor que hora final")
         return cleaned_data
 
