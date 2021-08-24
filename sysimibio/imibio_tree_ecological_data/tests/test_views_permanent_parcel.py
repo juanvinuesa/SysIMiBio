@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
-from geojson import Polygon, Point
+from geojson import Polygon
 
 from sysimibio.imibio_tree_ecological_data.forms import PermanentParcelForm
 from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
@@ -47,7 +47,7 @@ class PermanentParcelListView(TestCase):
         """GET /plot_list/ must have the same queryset from database"""
         all_entries = PermanentParcel.objects.all()
         self.assertQuerysetEqual(self.resp.context['permanentparcel_list'],
-                         all_entries, ordered=False)
+                                 all_entries, ordered=False)
 
 
 class PermanentParcelDetailView(TestCase):
@@ -74,7 +74,7 @@ class PermanentParcelDetailView(TestCase):
         """GET /plot_detail/1 must use permanentparcel_detail.html template"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/permanentparcel_detail.html')
 
-    def test_detail_html(self): # todo testar mapa
+    def test_detail_html(self):  # todo testar mapa
         content = [
             "Reserva Yrya Pu",
             "Reserva Yrya Pu",
@@ -101,7 +101,6 @@ class PermanentParcelCreate(TestCase):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.pp_form = PermanentParcelForm
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_create'))
-        # todo testar post
 
     def test_get(self):
         """GET /plot_create must get status code 200"""
@@ -113,12 +112,12 @@ class PermanentParcelCreate(TestCase):
 
     def test_html(self):
         """HTML must contais input tags"""
-        tags = ( # todo confirmar las tags a seren testadas
+        tags = (  # todo confirmar las tags a seren testadas
             ('<form'),
             ('<input'),
             ('type="text"'),
             ('type="submit"')
-            )
+        )
         # for text in tags:
         #     with self.subTest():
         #         self.assertContains(self.resp, text)
@@ -131,6 +130,38 @@ class PermanentParcelCreate(TestCase):
         """"Context must have permanentparcel create form"""
         form = self.resp.context['form']
         self.assertIsInstance(form, PermanentParcelForm)
+
+    def test_valid_post(self):
+        data = {
+            'name': "Reserva Yrya Pu",
+            'coordinator': self.coordinator.pk,
+            'province': "Misiones",
+            'municipality': "Puerto Iguazú",
+            'locality': "reserva 600 ha",
+            'obs': "Prueba de registro",
+            'latitude': -26,
+            'longitude': -56,
+            'geom': '{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}'
+        }
+        post_response = self.client.post(r('imibio_tree_ecological_data:plot_create'), data)
+        self.assertTrue(PermanentParcel.objects.exists())
+        self.assertRedirects(post_response, r('imibio_tree_ecological_data:plot_detail', 1))
+
+    def test_invalid_post(self):
+        data = {
+            'name': "",
+            'coordinator': 1,
+            'province': "",
+            'municipality': "",
+            'locality': "",
+            'obs': "Prueba de registro",
+            'latitude': "",
+            'longitude': "",
+            'geom': ""
+        }
+        post_response = self.client.post(r('imibio_tree_ecological_data:plot_create'), data)
+        self.assertFalse(PermanentParcel.objects.exists())
+        self.assertTrue(post_response.status_code, 200)
 
 
 class PermanentParcelEdit(TestCase):
@@ -179,22 +210,21 @@ class PermanentParcelEdit(TestCase):
         self.assertIsInstance(form, PermanentParcelForm)
 
     def test_update(self):
-        update = {'name': 'Campo San Juan',
-                  'coordinator': self.coordinator,
-                  'province': 'Misiones',
-                  'municipality': 'Campo San Juan',
-                  'locality': 'Campo San Juan',
-                  'obs': 'observacion update',
-                  'latitude': -26,
-                  'longitude': -56,
-                  'geom': self.pp1.geom,
-                  'geom_point': self.pp1.geom_point}
+        update = {
+            'name': "Campo San Juan",
+            'coordinator': self.coordinator.pk,
+            'province': "Misiones",
+            'municipality': "Puerto Iguazú",
+            'locality': "reserva 600 ha",
+            'obs': "Prueba de registro",
+            'latitude': -26,
+            'longitude': -56,
+            'geom': '{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}'
+        }
 
-        # response = self.client.post(
-        #     r('imibio_tree_ecological_data:plot_edit', self.pp1.pk),
-        #     update)
+        post_response = self.client.post(r('imibio_tree_ecological_data:plot_edit', self.pp1.pk), update)
 
-        # self.assertEqual(response.status_code, 302) # todo arreglar
+        self.assertRedirects(post_response, r('imibio_tree_ecological_data:plot_detail', self.pp1.pk))
 
-        # self.pp1.refresh_from_db()
-        # self.assertEqual(self.pp1.name, "Campo San Juan") # todo no anda. Fran tendrá que arreglar :)
+        self.pp1.refresh_from_db()
+        self.assertEqual(self.pp1.name, "Campo San Juan")
