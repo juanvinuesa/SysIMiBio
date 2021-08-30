@@ -58,7 +58,7 @@
             </tr>
 
             <th class="text-right">Staff</th>
-            <td>{{ object.staff }}</td> <!-- todo add list comprehension -->
+            <td>{{ object.staff.all|join:", " }}</td> <!-- todo add list comprehension -->
             </tr>
 
             <th class="text-right">Fecha</th>

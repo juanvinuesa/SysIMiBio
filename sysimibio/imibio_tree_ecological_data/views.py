@@ -93,9 +93,9 @@ class TreesGeoJson(GeoJSONLayerView):
     model = Tree
     properties = ('popup_content',)
 
-    def get_queryset(self):
-        context = Tree.objects.all()
-        return context
+    # def get_queryset(self):
+    #     context = Tree.objects.all()
+    #     return context
 
 
 trees_geojson = TreesGeoJson.as_view()

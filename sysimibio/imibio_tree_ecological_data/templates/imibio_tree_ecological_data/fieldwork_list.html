@@ -36,7 +36,7 @@
             <td>{{ object.date }}</td>
             <td>{{ object.start_time }}</td>
             <td>{{ object.coordinator }}</td>
-            <td>{{ object.staff }}</td> <!-- todo User.none -->
+            <td>{{ object.staff.all|join:", " }}</td>
         </tr>
         {% endfor %}
     </table>
