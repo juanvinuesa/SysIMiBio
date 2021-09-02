@@ -9,10 +9,9 @@ from sysimibio.imibio_tree_ecological_data.validators import validate_date, vali
 from sysimibio.toolbox import create_subplot_name_choices
 
 
-class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo add created_at?
+class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
-    coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE,
-                                    blank=True, default='')
+    coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE)
     province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
     municipality = models.CharField(verbose_name="Municipio",
                                     max_length=50)  # TODO add 75 municipio como choices o como geojson FK
@@ -24,6 +23,7 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo ad
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon], blank=True,
                                   help_text="informar en formato en grados decimales WGS84 - epsg4326")
     geom = PolygonField(blank=True)
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
 
     @property
     def geom_point(self):
@@ -34,7 +34,7 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo ad
         return ''.join([x[0].upper() for x in self.name.split(' ')])
 
     def __str__(self):
-        return f'{self.name}, {self.municipality} - {self.locality}'
+        return f'{self.name}, {self.municipality} - {self.coordinator}'
 
     class Meta:
         verbose_name_plural = 'Parcelas Permanentes'
@@ -42,6 +42,13 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot? # todo ad
 
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:plot_detail', kwargs={'pk': self.pk})
+
+    @property
+    def popup_content(self):
+        popup = f"<strong><span>Parcela: </span>{self.name}</strong></p>"
+        popup += f"<strong><span>Coordinador: </span>{self.coordinator}</strong></p>"
+        popup += f"<span><a href={self.get_absolute_url()}>Detalles de la parcela</a></strong><br>"
+        return popup
 
 
 class FieldWork(models.Model):
@@ -156,8 +163,7 @@ class TreeMeasurement(models.Model):
                                                    max_length=100,
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
-
-    # obs = models.TextField(verbose_name="Observaciones", blank=True) # todo solucionar isso
+    obs = models.TextField(verbose_name="Observaciones", blank=True)
 
     class Meta:
         verbose_name = 'Medición de árbol'

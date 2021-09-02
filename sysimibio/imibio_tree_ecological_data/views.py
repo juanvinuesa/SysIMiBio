@@ -29,10 +29,11 @@ PlotDetailView = PlotDetailView.as_view()
 
 class PlotDetailGeoJson(GeoJSONLayerView):
     model = PermanentParcel
-    # properties = ('popup_content',)
+    properties = ('popup_content',)
 
-    def get_queryset(self, **kwargs):
+    def get_queryset(self):
         self.plot = super().get_queryset()
+        # self.plot = get_object_or_404(PermanentParcel, pk=self.kwargs['pk'])
         return self.plot.filter(pk=self.kwargs['pk'])
 PlotDetailGeoJson = PlotDetailGeoJson.as_view()
 
@@ -92,10 +93,4 @@ def create(request):
 class TreesGeoJson(GeoJSONLayerView):
     model = Tree
     properties = ('popup_content',)
-
-    # def get_queryset(self):
-    #     context = Tree.objects.all()
-    #     return context
-
-
 trees_geojson = TreesGeoJson.as_view()

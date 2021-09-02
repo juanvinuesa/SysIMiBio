@@ -48,9 +48,8 @@ class PicturesForm(forms.ModelForm):
 class PermanentParcelForm(forms.ModelForm):
     class Meta:
         model = PermanentParcel
-        fields = '__all__'
+        exclude = ('created_at',)
         widgets = {
-            # 'geom': HiddenInput(),
             'geom': LeafletWidget(),
         }
 

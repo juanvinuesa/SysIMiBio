@@ -18,9 +18,6 @@
         width: 100%;
         height: 100%;
     }
-
-
-
 </style>
 
 {% if messages %}
@@ -35,42 +32,48 @@
 <br>
 <div class="row">
     <a role="button" class="btn btn-success btn-lg" href="{% url 'imibio_tree_ecological_data:plot_list' %}">
-        <span class="align-middle">Volver</span>
+        <span class="align-middle">Lista de Parcelas</span>
     </a>
     <a role="button" class="btn btn-warning btn-lg"
        href="{% url 'imibio_tree_ecological_data:plot_edit' pk=object.pk %}">
-        <span class="align-middle">Editar</span>
+        <span class="align-middle">Editar Parcela</span>
     </a>
-    &nbsp; <h2>Detalles de la parcela: {{ object.name }}</h2>
 </div>
+<h2>Detalles de la parcela: {{ object.name }}</h2>
 <div class="row">
     <div class="col-sm-4">
         <table class="table table-user-information">
             <tbody>
+
             <tr>
                 <th class="text-right">Nombre de la parcela permanente</th>
                 <td>{{ object.name }}</td>
             </tr>
-            <tr>
 
+            <tr>
                 <th class="text-right">Coordinador(a)</th>
                 <td>{{ object.coordinator }}</td>
             </tr>
 
+            <tr>
             <th class="text-right">Provincia</th>
             <td>{{ object.province }}</td>
             </tr>
 
+            <tr>
             <th class="text-right">Municipio</th>
             <td>{{ object.municipality }}</td>
             </tr>
 
+            <tr>
             <th class="text-right">Localidad</th>
             <td>{{ object.locality }}</td>
             </tr>
 
+            <tr>
             <th class="text-right">Observaciones</th>
             <td>{{ object.obs|linebreaks }}</td>
+
             </tr>
 
             </tbody>
@@ -85,7 +88,6 @@
     </div>
     <script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.pk %}';
-
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         // Download GeoJSON data with Ajax
@@ -98,12 +100,10 @@
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties.popup_content;
                 layer.bindPopup(props);
-                 map.fitBounds(layer.getBounds(), { padding: [200, 200] });
+                 map.fitBounds(layer.getBounds(), { maxZoom: 13 });
             }}).addTo(map);
           });
       });
-
-
     </script>
 
 
