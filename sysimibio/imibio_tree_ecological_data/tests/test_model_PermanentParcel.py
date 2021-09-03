@@ -24,7 +24,7 @@ class PermanentParcelModelTest(TestCase):
         self.assertTrue(PermanentParcel.objects.exists())
 
     def test_str(self):
-        self.assertEqual(str(self.pp1), "Reserva Yrya Pu, Puerto Iguazú - reserva 600 ha")
+        self.assertEqual(str(self.pp1), "Reserva Yrya Pu, Puerto Iguazú - Florencia")
 
     def test_property_geom_point(self):
         self.assertEqual(self.pp1.geom_point, {"coordinates": [-54, -26], "type": "Point"})

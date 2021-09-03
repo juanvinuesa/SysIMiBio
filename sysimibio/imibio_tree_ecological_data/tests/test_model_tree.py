@@ -69,7 +69,7 @@ class TreeModelPropertiesTest(TestCase):
 
     def test_popup(self):
         self.assertEqual(self.tree.popup_content,
-                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span><a href=/imibio_tree_ecological_data/1/>Detalles de la occurrencia</a></strong><br>")
+                         "<strong><span>Nombre científico: </span>Solanaceae</strong></p><span><a href=/imibio_tree_ecological_data/detail/tree/1/>Detalles del árbol</a></strong><br>")
 
     def test_tree_id(self):
         self.assertEqual(self.tree.tree_id,

@@ -97,7 +97,7 @@ class FieldWorkDetailView(TestCase):
 
     def test_detail_html(self):  # todo testar mapa
         content = [
-            'Reserva Yrya Pu, Puerto Iguazu - 600 ha',
+            'Reserva Yrya Pu, Puerto Iguazu - Florencia',
             'Florencia',
             '30 de Diciembre de 2020',
             '0:0',

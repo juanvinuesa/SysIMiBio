@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 
 from sysimibio.imibio_tree_ecological_data.views import new, detail, trees_geojson, PlotListView, PlotDetailView, \
     PlotDetailGeoJson, PlotCreateView, PlotEditView, FieldWorkListView, FieldWorkDetailView, FieldWorkEditView, \
-    FieldWorkCreateView
+    FieldWorkCreateView, TreeCreateView, TreeDetailView, TreeDetailGeoJson
 
 app_name = 'imibio_tree_ecological_data'
 
@@ -20,8 +20,14 @@ urlpatterns = [
     path('edit/field/<int:pk>/', FieldWorkEditView, name='field_edit'),
     path('list/field/', FieldWorkListView, name='field_list'),
     path('detail/field/<int:pk>/', FieldWorkDetailView, name='field_detail'),
+    # tree
+    path('create/tree/', TreeCreateView, name='tree_create'),
+    # path('edit/field/<int:pk>/', FieldWorkEditView, name='field_edit'),
+    # path('list/field/', FieldWorkListView, name='field_list'),
+    path('detail/tree/<int:pk>/', TreeDetailView, name='tree_detail'),
+    path('geojson/tree/<int:pk>/', TreeDetailGeoJson, name='Tree_detail_geojson'),
 
-    path('<int:pk>/', detail, name='detail'),
-    path('geojson/', trees_geojson, name='data'),
-    path('map/', TemplateView.as_view(template_name='tree_map.html'), name='map'),
+    path('<int:pk>/', detail, name='detail'), # todo remove from test
+    path('geojson/', trees_geojson, name='data'), # todo remove from test
+    path('map/', TemplateView.as_view(template_name='tree_map.html'), name='map'), # todo remove from test
 ]

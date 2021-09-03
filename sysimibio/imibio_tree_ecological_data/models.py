@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
@@ -23,7 +25,7 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon], blank=True,
                                   help_text="informar en formato en grados decimales WGS84 - epsg4326")
     geom = PolygonField(blank=True)
-    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True, null=True)
 
     @property
     def geom_point(self):
@@ -88,12 +90,14 @@ class Tree(models.Model):
     SUBPLOTS_CHOICES = create_subplot_name_choices(10, 10)
 
     field = models.ForeignKey('FieldWork', on_delete=models.CASCADE)
+    # todo por que no tiene relación con parcela permannente?
     subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=5, default='A1')
     tree_number = models.PositiveIntegerField(verbose_name="Numero del árbol", default=1)
     specie = models.CharField(verbose_name='Nombre especie', max_length=100)
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
-                                 help_text="informar en formato graus decimais WGS84")
-    longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon])
+                                 help_text="informar en grados decimales - WGS84")
+    longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon],
+                                  help_text="informar en grados decimales - WGS84")
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True) # todo dejar en medicion?
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     geom = PointField(blank=True)
@@ -110,13 +114,13 @@ class Tree(models.Model):
         return f'{self.specie} {self.field.date}'
 
     def get_absolute_url(self):
-        return reverse_lazy('imibio_tree_ecological_data:detail', kwargs={'pk': self.pk})
+        return reverse_lazy('imibio_tree_ecological_data:tree_detail', kwargs={'pk': self.pk})
 
     @property
     def popup_content(self):
         popup = "<strong><span>Nombre científico: </span>{}</strong></p>".format(
             self.specie)
-        popup += f"<span><a href={self.get_absolute_url()}>Detalles de la occurrencia</a></strong><br>"
+        popup += f"<span><a href={self.get_absolute_url()}>Detalles del árbol</a></strong><br>"
         return popup
 
 

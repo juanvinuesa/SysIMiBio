@@ -64,7 +64,7 @@ class TreeMeasurementFormTest(TestCase):
         """Tree Measurement form must have models fields"""
         self.assertSequenceEqual(
             ['field', 'tree', 'dap', 'dab', 'tree_height',
-             'picture', 'phytosanitary_status', 'sociological_classification'],
+             'picture', 'phytosanitary_status', 'sociological_classification', 'obs'],
             list(self.tree_measurement_form.fields))
 
     def test_form_is_valid(self):

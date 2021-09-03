@@ -55,6 +55,34 @@ class FieldWorkDetailView(DetailView):
     model = FieldWork
 FieldWorkDetailView = FieldWorkDetailView.as_view()
 
+#
+class TreeCreateView(CreateView):
+    model = Tree
+    form_class = TreeForm
+TreeCreateView = TreeCreateView.as_view()
+
+# class PlotEditView(UpdateView):
+#     model = PermanentParcel
+#     form_class = PermanentParcelForm
+# PlotEditView = PlotEditView.as_view()
+#
+# class PlotListView(ListView):
+#     model = PermanentParcel
+# PlotListView = PlotListView.as_view()
+
+class TreeDetailView(DetailView):
+    model = Tree
+TreeDetailView = TreeDetailView.as_view()
+
+class TreeDetailGeoJson(GeoJSONLayerView):
+    model = Tree
+    properties = ('popup_content',)
+
+    def get_queryset(self):
+        self.tree = super().get_queryset()
+        return self.tree.filter(pk=self.kwargs['pk'])
+TreeDetailGeoJson = TreeDetailGeoJson.as_view()
+
 
 def new(request):
     if request.method == 'POST':
