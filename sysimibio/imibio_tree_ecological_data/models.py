@@ -62,7 +62,7 @@ class FieldWork(models.Model):
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='Acompanantes',
                                    max_length=100)
-    parcel_id = models.ForeignKey("PermanentParcel", verbose_name='Parcela Permanente', on_delete=models.CASCADE)
+    parcel_id = models.ForeignKey("PermanentParcel", verbose_name='Parcela Permanente', on_delete=models.CASCADE) # todo mudar nombre?
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
 
@@ -93,7 +93,7 @@ class Tree(models.Model):
     # todo por que no tiene relación con parcela permannente?
     subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=5, default='A1')
     tree_number = models.PositiveIntegerField(verbose_name="Numero del árbol", default=1)
-    specie = models.CharField(verbose_name='Nombre especie', max_length=100)
+    specie = models.CharField(verbose_name='Nombre especie', max_length=100) # todo cambiar nombre del campo manteniendo consistente con otros models
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
                                  help_text="informar en grados decimales - WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon],

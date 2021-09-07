@@ -61,14 +61,14 @@ class TreeCreateView(CreateView):
     form_class = TreeForm
 TreeCreateView = TreeCreateView.as_view()
 
-# class PlotEditView(UpdateView):
-#     model = PermanentParcel
-#     form_class = PermanentParcelForm
-# PlotEditView = PlotEditView.as_view()
-#
-# class PlotListView(ListView):
-#     model = PermanentParcel
-# PlotListView = PlotListView.as_view()
+class TreeEditView(UpdateView):
+    model = Tree
+    form_class = TreeForm
+TreeEditView = TreeEditView.as_view()
+
+class TreeListView(ListView):
+    model = Tree
+TreeListView = TreeListView.as_view()
 
 class TreeDetailView(DetailView):
     model = Tree
