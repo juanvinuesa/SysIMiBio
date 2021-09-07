@@ -3,7 +3,8 @@
         <img src="http://imibio.misiones.gob.ar/logoblancochico.png" style="height: 40px; width: auto;" alt="">
     </span>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -14,7 +15,8 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Datos SNDB</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">Datos SNDB</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
                     <a class="dropdown-item disabled" href="">
                         <i class="fa fa-pagelines"></i> Lista ocurrencias</a>
@@ -38,7 +40,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="" id="bioblitz" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Datos Bioblitz</a>
+                   aria-haspopup="true" aria-expanded="false">Datos Bioblitz</a>
                 <div class="dropdown-menu" aria-labelledby="bioblitz">
                     <a class="dropdown-item" href="{% url 'bioblitz:register_bioblitz_project' %}">
                         <i class="fa fa-plus"></i> Registrar proyecto</a>
@@ -48,7 +50,8 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="bibliografia" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Bibliografía</a>
+                <a class="nav-link dropdown-toggle" href="#" id="bibliografia" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false"> Bibliografía</a>
                 <div class="dropdown-menu" aria-labelledby="bibliografia">
                     <a class="dropdown-item " href="{% url 'bibliography:publication_new' %}">
                         <i class="fa fa-plus"></i> Agregar Bibliografía</a>
@@ -58,7 +61,8 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown_ppi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Parcelas permanentes</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown_ppi" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">Parcelas permanentes</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown_ppi">
                     <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:plot_create' %}">
                         <i class="fa fa"></i> Registrar nueva parcela</a>
@@ -68,8 +72,10 @@
                         <i class="fa fa"></i> Registrar nuevo campo</a>
                     <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:field_list' %}">
                         <i class="fa fa"></i> Lista de campos</a>
-
-                </div>
+                    <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:tree_create' %}">
+                        <i class="fa fa"></i> Registrar nuevo árbol</a>
+                    <a class="dropdown-item" href="{% url 'imibio_tree_ecological_data:tree_list' %}">
+                        <i class="fa fa"></i> Lista de arboles</a>
             </li>
         </ul>
         <!--<form class="form-inline my-2 my-lg-0">
@@ -80,12 +86,12 @@
             {% if user.is_authenticated %}
 
             {% if user.is_superuser %}
-                  <li class="nav-item">
-                    <a role="button" class="btn btn-warning" href="{% url 'signup' %}"> Crear usuario </a>
-                  </li>
-                  <li class="nav-item">' '</li>
+            <li class="nav-item">
+                <a role="button" class="btn btn-warning" href="{% url 'signup' %}"> Crear usuario </a>
+            </li>
+            <li class="nav-item">' '</li>
 
-                {% endif %}
+            {% endif %}
 
             <li class="nav-item">
                 <a role="button" class="btn btn-danger" href="{% url 'logout' %}">
@@ -93,13 +99,12 @@
             </li>
 
 
-
             {% else %}
             <li class="nav-item">
-                <a  role="button" class="btn navbar-btn btn-success" href="{% url 'login' %}">
+                <a role="button" class="btn navbar-btn btn-success" href="{% url 'login' %}">
                     <span class="fa fa-user"></span> Login </a>
             </li>
             {% endif %}
         </ul>
-    </div>
+        </div>
 </nav>

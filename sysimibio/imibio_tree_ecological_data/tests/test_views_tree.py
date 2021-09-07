@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
-from geojson import Polygon, Point
 
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm
 from sysimibio.imibio_tree_ecological_data.models import Tree, PermanentParcel, FieldWork
@@ -13,15 +12,15 @@ class TreeCreateView(TestCase):
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
         self.permanent_parcel = PermanentParcel.objects.create(
-                name="Reserva Yrya Pu",
-                coordinator=self.coordinator,
-                province="Misiones",
-                municipality="Puerto Iguazú",
-                locality="reserva 600 ha",
-                obs="Prueba de registro",
-                latitude=-26,
-                longitude=-56,
-                geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
+            name="Reserva Yrya Pu",
+            coordinator=self.coordinator,
+            province="Misiones",
+            municipality="Puerto Iguazú",
+            locality="reserva 600 ha",
+            obs="Prueba de registro",
+            latitude=-26,
+            longitude=-56,
+            geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
         self.field = FieldWork(
             date='2020-12-30',
             start_time='0:0',
@@ -94,7 +93,7 @@ class TreeCreateView(TestCase):
         self.assertTrue(post_response.status_code, 200)
 
 
-class PermanentParcelEditView(TestCase):
+class TreeEditView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
@@ -141,21 +140,21 @@ class PermanentParcelEditView(TestCase):
         """must use imibio_tree_ecological_data/tree_form.html"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/tree_form.html')
 
-#     def test_html(self):
-#         """HTML must contais input tags"""
-#         tags = (  # todo confirmar las tags a seren testadas
-#             ('<form'),
-#             ('<input'),
-#             ('type="text"'),
-#             ('type="submit"')
-#         )
-#         # for text in tags:
-#         #     with self.subTest():
-#         #         self.assertContains(self.resp, text)
-#
-#     def test_csrf(self):
-#         """html must contains CSRF"""
-#         self.assertContains(self.resp, 'csrfmiddlewaretoken')
+    #     def test_html(self):
+    #         """HTML must contais input tags"""
+    #         tags = (  # todo confirmar las tags a seren testadas
+    #             ('<form'),
+    #             ('<input'),
+    #             ('type="text"'),
+    #             ('type="submit"')
+    #         )
+    #         # for text in tags:
+    #         #     with self.subTest():
+    #         #         self.assertContains(self.resp, text)
+    #
+    #     def test_csrf(self):
+    #         """html must contains CSRF"""
+    #         self.assertContains(self.resp, 'csrfmiddlewaretoken')
 
     def test_has_form(self):
         """"Context must have tree create form"""
@@ -173,7 +172,6 @@ class PermanentParcelEditView(TestCase):
             'obs': 'observación update'
         }
 
-
         post_response = self.client.post(r('imibio_tree_ecological_data:tree_edit', self.tree1.pk), update)
 
         self.assertRedirects(post_response, r('imibio_tree_ecological_data:tree_detail', self.tree1.pk))
@@ -182,7 +180,7 @@ class PermanentParcelEditView(TestCase):
         self.assertEqual(self.tree1.tree_number, 2)
 
 
-class PermanentParcelListView(TestCase):
+class TreeListView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
@@ -302,6 +300,7 @@ class TreeDetailView(TestCase):
     def test_detail_use_template(self):
         """GET /tree_detail/1 must use tree_detail.html template"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/tree_detail.html')
+
 
 #     def test_detail_html(self):  # todo testar mapa
 #         content = [
