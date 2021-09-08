@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import HiddenInput
 from geojson import Point
+from django.forms.widgets import FileInput
 from leaflet.forms.widgets import LeafletWidget
 
 from sysimibio.imibio_tree_ecological_data.models import Tree, FieldWork, Pictures, PermanentParcel, TreeMeasurement
@@ -59,3 +60,6 @@ class TreeMeasurementForm(forms.ModelForm):
     class Meta:
         model = TreeMeasurement
         fields = '__all__'
+        widgets = {
+            'picture': FileInput(),
+        }

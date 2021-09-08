@@ -62,7 +62,8 @@ class FieldWork(models.Model):
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE)
     staff = models.ManyToManyField(User, related_name='staff', verbose_name='Acompanantes',
                                    max_length=100)
-    parcel_id = models.ForeignKey("PermanentParcel", verbose_name='Parcela Permanente', on_delete=models.CASCADE) # todo mudar nombre?
+    parcel_id = models.ForeignKey("PermanentParcel", verbose_name='Parcela Permanente',
+                                  on_delete=models.CASCADE)  # todo mudar nombre?
     created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True)
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
 
@@ -93,12 +94,13 @@ class Tree(models.Model):
     # todo por que no tiene relación con parcela permannente?
     subplot = models.CharField(verbose_name="Sub parcela", choices=SUBPLOTS_CHOICES, max_length=5, default='A1')
     tree_number = models.PositiveIntegerField(verbose_name="Numero del árbol", default=1)
-    specie = models.CharField(verbose_name='Nombre especie', max_length=100) # todo cambiar nombre del campo manteniendo consistente con otros models
+    specie = models.CharField(verbose_name='Nombre especie',
+                              max_length=100)  # todo cambiar nombre del campo manteniendo consistente con otros models
     latitude = models.FloatField(verbose_name='Latitud', validators=[validate_lat],
                                  help_text="informar en grados decimales - WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon],
                                   help_text="informar en grados decimales - WGS84")
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True) # todo dejar en medicion?
+    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)  # todo dejar en medicion?
     obs = models.TextField(verbose_name="Observaciones", blank=True)
     geom = PointField(blank=True)
 
@@ -111,7 +113,7 @@ class Tree(models.Model):
         verbose_name_plural = 'Árboles'
 
     def __str__(self):
-        return f'{self.specie} {self.field.date}'
+        return f'{self.tree_id} {self.specie} {self.field.date}'
 
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:tree_detail', kwargs={'pk': self.pk})
@@ -151,8 +153,6 @@ class TreeMeasurement(models.Model):
         (MUERTO, 'Muerto')
     ]
 
-    SUBPLOTS_CHOICES = create_subplot_name_choices(10, 10)
-
     field = models.ForeignKey("FieldWork", on_delete=models.CASCADE)
     tree = models.ForeignKey("Tree", on_delete=models.CASCADE)
     dap = models.FloatField(verbose_name='DAP', help_text='cm', validators=[tree_dap_validation])
@@ -177,4 +177,4 @@ class TreeMeasurement(models.Model):
         return f'{self.tree.tree_id}; {self.field.date}'
 
     def get_absolute_url(self):
-        return reverse_lazy('imibio_tree_ecological_data:measurement_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('imibio_tree_ecological_data:tree_measurement_detail', kwargs={'pk': self.pk})
