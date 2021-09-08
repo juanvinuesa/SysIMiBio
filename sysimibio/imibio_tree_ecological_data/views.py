@@ -132,19 +132,19 @@ class TreeMeasurementCreateView(CreateView):
 TreeMeasurementCreateView = TreeMeasurementCreateView.as_view()
 
 
-# class TreeEditView(UpdateView):
-#     model = Tree
-#     form_class = TreeForm
-#
-#
-# TreeEditView = TreeEditView.as_view()
+class TreeMeasurementEditView(UpdateView):
+    model = TreeMeasurement
+    form_class = TreeMeasurementForm
 
 
-# class TreeListView(ListView):
-#     model = Tree
+TreeMeasurementEditView = TreeMeasurementEditView.as_view()
+
+
+# class TreeMeasurementListView(ListView):
+#     model = TreeMeasurement
+# #  todo add ordering desc
 #
-#
-# TreeListView = TreeListView.as_view()
+# TreeMeasurementListView = TreeMeasurementListView.as_view()
 
 
 class TreeMeasurementDetailView(DetailView):
