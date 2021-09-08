@@ -94,22 +94,22 @@ class TreeMeasurementCreateView(TestCase):
         self.assertTrue(TreeMeasurement.objects.exists())
         self.assertRedirects(post_response, r('imibio_tree_ecological_data:tree_measurement_detail', 1))
 
-    # def test_invalid_post(self):
-    #     invalid_data = {
-    #         'field': self.field.pk,
-    #         'tree': self.tree1.pk,
-    #         'dap': -30,
-    #         'dab': -50,
-    #         'tree_height': -3,
-    #         'phytosanitary_status': '',
-    #         'sociological_classification': '',
-    #         'obs': ''
-    #     }
-    #     post_response = self.client.post(r('imibio_tree_ecological_data:tree_create'), invalid_data)
-#         self.assertFalse(Tree.objects.exists())
-#         self.assertTrue(post_response.status_code, 200)
-#
-#
+    def test_invalid_post(self):
+        invalid_data = {
+            'field': self.field.pk,
+            'tree': self.tree1.pk,
+            'dap': -30,
+            'dab': -50,
+            'tree_height': -3,
+            'phytosanitary_status': '',
+            'sociological_classification': '',
+            'obs': ''
+        }
+        post_response = self.client.post(r('imibio_tree_ecological_data:tree_measurement_create'), invalid_data)
+        self.assertFalse(TreeMeasurement.objects.exists())
+        self.assertTrue(post_response.status_code, 200)
+
+
 # class TreeEditView(TestCase):
 #     def setUp(self):
 #         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
@@ -268,57 +268,70 @@ class TreeMeasurementCreateView(TestCase):
 #         all_entries = Tree.objects.all()
 #         self.assertQuerysetEqual(self.resp.context['tree_list'],
 #                                  all_entries, ordered=False)
-#
-#
-# class TreeDetailView(TestCase):
-#     def setUp(self):
-#         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-#         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
-#         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
-#         self.permanent_parcel = PermanentParcel.objects.create(
-#             name="Reserva Yrya Pu",
-#             coordinator=self.coordinator,
-#             province="Misiones",
-#             municipality="Puerto Iguazú",
-#             locality="reserva 600 ha",
-#             obs="Prueba de registro",
-#             latitude=-26,
-#             longitude=-56,
-#             geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
-#         self.field = FieldWork(
-#             date='2020-12-30',
-#             start_time='0:0',
-#             end_time='0:30',
-#             temperature=35.9,
-#             humidity=80,
-#             coordinator=self.coordinator,
-#             parcel_id=self.permanent_parcel)
-#
-#         self.field.save()
-#         self.field.staff.add(self.staff1)
-#         self.field.staff.add(self.staff2)
-#
-#         self.Tree1 = Tree.objects.create(
-#             field=self.field,
-#             subplot='A1',
-#             tree_number=1,
-#             specie='species one',
-#             latitude=-26,
-#             longitude=-54.5,
-#             obs='observación',
-#             geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
-#
-#         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_detail', self.Tree1.pk))
-#
-#     def test_get(self):
-#         """GET /tree_detail/1 must get status code 200"""
-#         self.assertEqual(200, self.resp.status_code)
-#
-#     def test_detail_use_template(self):
-#         """GET /tree_detail/1 must use tree_detail.html template"""
-#         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/tree_detail.html')
-#
-#
+
+
+@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
+class TreeDetailView(TestCase):
+    def setUp(self):
+        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
+        self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
+        self.permanent_parcel = PermanentParcel.objects.create(
+            name="Reserva Yrya Pu",
+            coordinator=self.coordinator,
+            province="Misiones",
+            municipality="Puerto Iguazú",
+            locality="reserva 600 ha",
+            obs="Prueba de registro",
+            latitude=-26,
+            longitude=-56,
+            geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
+        self.field = FieldWork(
+            date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator=self.coordinator,
+            parcel_id=self.permanent_parcel)
+
+        self.field.save()
+        self.field.staff.add(self.staff1)
+        self.field.staff.add(self.staff2)
+
+        self.tree1 = Tree.objects.create(
+            field=self.field,
+            subplot='A1',
+            tree_number=1,
+            specie='species one',
+            latitude=-26,
+            longitude=-54.5,
+            obs='observación',
+            geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
+
+        self.measurement1 = TreeMeasurement.objects.create(
+            field=self.tree1.field,
+            tree=self.tree1,
+            dap=30,
+            dab=50,
+            tree_height=3,
+            picture=self.tempPicture,
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente',
+            obs='Observación')
+
+        self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_detail', self.measurement1.pk))
+
+    def test_get(self):
+        """GET /tree_measurement_detail/1 must get status code 200"""
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_detail_use_template(self):
+        """GET /tree_measurement_detail/1 must use treemeasurement_detail.html template"""
+        self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/treemeasurement_detail.html')
+
+
 # #     def test_detail_html(self):  # todo testar mapa
 # #         content = [
 # #             "Reserva Yrya Pu",
@@ -331,11 +344,11 @@ class TreeMeasurementCreateView(TestCase):
 # #         with self.subTest():
 # #             for expected in content:
 # #                 self.assertContains(self.resp, expected)
-#
-#
-# class PermanentParcelDetailNotFound(TestCase):
-#     def setUp(self):
-#         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_detail', 0))
-#
-#     def test_not_found(self):
-#         self.assertEqual(404, self.resp.status_code)
+
+
+class PermanentParcelDetailNotFound(TestCase):
+    def setUp(self):
+        self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_detail', 0))
+
+    def test_not_found(self):
+        self.assertEqual(404, self.resp.status_code)
