@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
@@ -100,8 +98,8 @@ class Tree(models.Model):
                                  help_text="informar en grados decimales - WGS84")
     longitude = models.FloatField(verbose_name='Longitud', validators=[validate_lon],
                                   help_text="informar en grados decimales - WGS84")
-    picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)  # todo dejar en medicion?
     obs = models.TextField(verbose_name="Observaciones", blank=True)
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True, null=True)
     geom = PointField(blank=True)
 
     @property
@@ -168,6 +166,7 @@ class TreeMeasurement(models.Model):
                                                    choices=SOCIOLOGICAL_CLASSIFICATION_CHOICES,
                                                    default=EMERGENTE)
     obs = models.TextField(verbose_name="Observaciones", blank=True)
+    created_at = models.DateTimeField(verbose_name='Fecha creación', auto_now_add=True, null=True)
 
     class Meta:
         verbose_name = 'Medición de árbol'

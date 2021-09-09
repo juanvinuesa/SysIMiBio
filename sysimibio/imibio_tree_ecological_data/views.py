@@ -140,11 +140,12 @@ class TreeMeasurementEditView(UpdateView):
 TreeMeasurementEditView = TreeMeasurementEditView.as_view()
 
 
-# class TreeMeasurementListView(ListView):
-#     model = TreeMeasurement
-# #  todo add ordering desc
-#
-# TreeMeasurementListView = TreeMeasurementListView.as_view()
+class TreeMeasurementListView(ListView):
+    model = TreeMeasurement
+    ordering = ['-created_at']
+#  todo add ordering desc
+
+TreeMeasurementListView = TreeMeasurementListView.as_view()
 
 
 class TreeMeasurementDetailView(DetailView):
@@ -153,17 +154,6 @@ class TreeMeasurementDetailView(DetailView):
 
 TreeMeasurementDetailView = TreeMeasurementDetailView.as_view()
 
-
-# class TreeMeasurementDetailGeoJson(GeoJSONLayerView):
-#     model = TreeMeasurement
-#     properties = ('popup_content',)
-#
-#     def get_queryset(self):
-#         self.tree_measurement = super().get_queryset()
-#         return self.tree_measurement.filter(pk=self.kwargs['pk'])
-
-
-# TreeDetailGeoJson = TreeDetailGeoJson.as_view()
 
 def new(request):
     if request.method == 'POST':
@@ -177,26 +167,26 @@ def detail(request, pk):
         tree_detail = Tree.objects.get(pk=pk)
     except Tree.DoesNotExist:
         raise Http404
-    return render(request, 'tree_ecological_detail.html',
+    return render(request, 'imibio_tree_ecological_data/tree_detail.html',
                   {'tree_detail': tree_detail})
 
 
 def empty_form(request):
     context = {'form': TreeForm(),
                'fieldForm': FieldForm()}
-    return render(request, 'tree_ecological_registration_form.html', context) # todo considerar Fieldwork form
+    return render(request, 'imibio_tree_ecological_data/tree_form.html', context) # todo considerar Fieldwork form
 
 
 def create(request):
     form = TreeForm(request.POST)
 
     if not form.is_valid():
-        return render(request, 'tree_ecological_registration_form.html',
+        return render(request, 'imibio_tree_ecological_data/tree_form.html',
                       {'form': form})
 
     tree_eco_data = FieldWork.objects.create(**form.cleaned_data)
     messages.success(request, "Registro ecológico agregado con exito")
-    return HttpResponseRedirect(r('imibio_tree_ecological_data:detail', tree_eco_data.pk))
+    return HttpResponseRedirect(r('imibio_tree_ecological_data:tree_detail', tree_eco_data.pk))
 
 
 class TreesGeoJson(GeoJSONLayerView):

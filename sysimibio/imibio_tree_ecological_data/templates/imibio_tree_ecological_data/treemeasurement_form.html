@@ -20,7 +20,7 @@
         {% endfor %}
         {% endif %}
         <div class="accordion" id="accordionExample">
-            <form method="POST" action="." class="post-form">
+            <form method="POST" action="." class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
 
                 {{ form|crispy }}

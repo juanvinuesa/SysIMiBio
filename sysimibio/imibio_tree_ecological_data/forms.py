@@ -2,7 +2,6 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import HiddenInput
 from geojson import Point
-from django.forms.widgets import FileInput
 from leaflet.forms.widgets import LeafletWidget
 
 from sysimibio.imibio_tree_ecological_data.models import Tree, FieldWork, Pictures, PermanentParcel, TreeMeasurement
@@ -20,10 +19,10 @@ class TreeForm(forms.ModelForm):
         cleaned_data = super().clean()
         lon = cleaned_data.get('longitude')
         lat = cleaned_data.get('latitude')
-        if all((lon, lat)): # todo clean com comportamento estrano ao testar invalid_post Tree
+        if all((lon, lat)):
             cleaned_data["geom"] = Point((lon, lat))
             if not cleaned_data["geom"].is_valid:
-               raise ValidationError("Geometria inválida")
+                raise ValidationError("Geometria inválida")
         return cleaned_data
 
 
@@ -59,7 +58,8 @@ class PermanentParcelForm(forms.ModelForm):
 class TreeMeasurementForm(forms.ModelForm):
     class Meta:
         model = TreeMeasurement
-        fields = '__all__'
-        widgets = {
-            'picture': FileInput(),
-        }
+        # fields = '__all__'
+        exclude = ('picture',)
+        # widgets = {
+        #     'picture': FileInput(),
+        # }

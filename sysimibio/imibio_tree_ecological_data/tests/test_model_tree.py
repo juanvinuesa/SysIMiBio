@@ -1,17 +1,11 @@
 from django.contrib.auth.models import User
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
-from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel
-
-TINY_GIF = b'GIF89a\x01\x00\x01\x00\x00\xff\x00,\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;'
+from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel
 
 
-# todo pregunta fotos asociada al arbol, a la medición o al campo?
-@override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')
 class TreeModelSociologicalTest(TestCase):
     def setUp(self):
-        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
                                                       coordinator=coordinator,
@@ -33,13 +27,11 @@ class TreeModelSociologicalTest(TestCase):
                           specie='Solanaceae',
                           latitude=-26,
                           longitude=-54,
-                          picture=self.tempPicture,
                           obs='Teste 1')
 
 
 class TreeModelPropertiesTest(TestCase):
     def setUp(self):
-        self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
         coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
                                                       coordinator=coordinator,
@@ -64,7 +56,6 @@ class TreeModelPropertiesTest(TestCase):
             specie='Solanaceae',
             latitude=-26,
             longitude=-54,
-            picture=self.tempPicture,
             obs='Teste 1')
 
     def test_popup(self):

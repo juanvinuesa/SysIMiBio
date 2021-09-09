@@ -155,7 +155,7 @@ class TreeEditView(TestCase):
             dap=30,
             dab=50,
             tree_height=3,
-            picture=self.tempPicture,
+            # picture=self.tempPicture,
             phytosanitary_status='Bueno',
             sociological_classification='Emergente',
             obs='Observación')
@@ -170,121 +170,156 @@ class TreeEditView(TestCase):
         """must use imibio_tree_ecological_data/treemeasurement_form.html"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/treemeasurement_form.html')
 
-#     #     def test_html(self):
-#     #         """HTML must contais input tags"""
-#     #         tags = (  # todo confirmar las tags a seren testadas
-#     #             ('<form'),
-#     #             ('<input'),
-#     #             ('type="text"'),
-#     #             ('type="submit"')
-#     #         )
-#     #         # for text in tags:
-#     #         #     with self.subTest():
-#     #         #         self.assertContains(self.resp, text)
-#     #
-#     #     def test_csrf(self):
-#     #         """html must contains CSRF"""
-#     #         self.assertContains(self.resp, 'csrfmiddlewaretoken')
+    #     #     def test_html(self):
+    #     #         """HTML must contais input tags"""
+    #     #         tags = (  # todo confirmar las tags a seren testadas
+    #     #             ('<form'),
+    #     #             ('<input'),
+    #     #             ('type="text"'),
+    #     #             ('type="submit"')
+    #     #         )
+    #     #         # for text in tags:
+    #     #         #     with self.subTest():
+    #     #         #         self.assertContains(self.resp, text)
+    #     #
+    #     #     def test_csrf(self):
+    #     #         """html must contains CSRF"""
+    #     #         self.assertContains(self.resp, 'csrfmiddlewaretoken')
 
     def test_has_form(self):
         """"Context must have tree measurement create form"""
         form = self.resp.context['form']
         self.assertIsInstance(form, TreeMeasurementForm)
 
-    def test_update(self):
+    def test_update(self):  # todo fix problem with image upload
         valid_update = {
-            'field': self.tree1.field.pk,
+            'field': self.field.pk,
             'tree': self.tree1.pk,
             'dap': 60,
             'dab': 80,
             'tree_height': 6,
-            'picture': self.measurement1.picture,
-            'phytosanitary_status': 'Regular',
-            'sociological_classification': 'Supeior Sumergido',
-            'obs': 'Observación update'
+            # 'picture': self.tempPicture,
+            'phytosanitary_status': 'Bueno',
+            'sociological_classification': 'Emergente',
+            'obs': 'Observación Update'
         }
 
         post_response = self.client.post(
             r('imibio_tree_ecological_data:tree_measurement_edit', self.measurement1.pk),
             valid_update)
-
-        self.assertRedirects(post_response, r('imibio_tree_ecological_data:tree_measurement_detail', self.measurement1.pk))
+        self.assertRedirects(post_response,
+                             r('imibio_tree_ecological_data:tree_measurement_detail',
+                               self.measurement1.pk))
 
         self.measurement1.refresh_from_db()
         self.assertEqual(self.measurement1.dap, 60)
 
 
-# class TreeListView(TestCase):
-#     def setUp(self):
-#         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
-#         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
-#         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
-#         self.permanent_parcel = PermanentParcel.objects.create(
-#             name="Reserva Yrya Pu",
-#             coordinator=self.coordinator,
-#             province="Misiones",
-#             municipality="Puerto Iguazú",
-#             locality="reserva 600 ha",
-#             obs="Prueba de registro",
-#             latitude=-26,
-#             longitude=-56,
-#             geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
-#         self.field = FieldWork(
-#             date='2020-12-30',
-#             start_time='0:0',
-#             end_time='0:30',
-#             temperature=35.9,
-#             humidity=80,
-#             coordinator=self.coordinator,
-#             parcel_id=self.permanent_parcel)
-#
-#         self.field.save()
-#         self.field.staff.add(self.staff1)
-#         self.field.staff.add(self.staff2)
-#
-#         self.tree1 = Tree.objects.create(
-#             field=self.field,
-#             subplot='A1',
-#             tree_number=1,
-#             specie='species one',
-#             latitude=-26,
-#             longitude=-54.5,
-#             obs='observación',
-#             geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
-#         self.tree2 = Tree.objects.create(
-#             field=self.field,
-#             subplot='A2',
-#             tree_number=2,
-#             specie='species two',
-#             latitude=-26.5,
-#             longitude=-55.5,
-#             obs='observación 2',
-#             geom='{"coordinates": [[-55.5, -26.5]]], "type": "Point"}')
-#         self.tree3 = Tree.objects.create(
-#             field=self.field,
-#             subplot='A3',
-#             tree_number=3,
-#             specie='species three',
-#             latitude=-26.56,
-#             longitude=-55.56,
-#             obs='observación 3',
-#             geom='{"coordinates": [[-55.56, -26.56]]], "type": "Point"}')
-#
-#         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_list'))
-#
-#     def test_get(self):
-#         """GET /tree_list/ must get status code 200"""
-#         self.assertEqual(200, self.resp.status_code)
-#
-#     def test_use_template(self):
-#         """GET /tree_list/ must use tree_list.html template"""
-#         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/tree_list.html')
-#
-#     def test_list(self):
-#         """GET /tree_list/ must have the same queryset from database"""
-#         all_entries = Tree.objects.all()
-#         self.assertQuerysetEqual(self.resp.context['tree_list'],
-#                                  all_entries, ordered=False)
+class TreeListView(TestCase):
+    def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
+        self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
+        self.permanent_parcel = PermanentParcel.objects.create(
+            name="Reserva Yrya Pu",
+            coordinator=self.coordinator,
+            province="Misiones",
+            municipality="Puerto Iguazú",
+            locality="reserva 600 ha",
+            obs="Prueba de registro",
+            latitude=-26,
+            longitude=-56,
+            geom='{"coordinates": [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]], "type": "Polygon"}')
+        self.field = FieldWork(
+            date='2020-12-30',
+            start_time='0:0',
+            end_time='0:30',
+            temperature=35.9,
+            humidity=80,
+            coordinator=self.coordinator,
+            parcel_id=self.permanent_parcel)
+
+        self.field.save()
+        self.field.staff.add(self.staff1)
+        self.field.staff.add(self.staff2)
+
+        self.tree1 = Tree.objects.create(
+            field=self.field,
+            subplot='A1',
+            tree_number=1,
+            specie='species one',
+            latitude=-26,
+            longitude=-54.5,
+            obs='observación',
+            geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
+        self.tree2 = Tree.objects.create(
+            field=self.field,
+            subplot='A2',
+            tree_number=2,
+            specie='species two',
+            latitude=-26.5,
+            longitude=-55.5,
+            obs='observación 2',
+            geom='{"coordinates": [[-55.5, -26.5]]], "type": "Point"}')
+
+        self.tree3 = Tree.objects.create(
+            field=self.field,
+            subplot='A3',
+            tree_number=3,
+            specie='species two',
+            latitude=-26.53,
+            longitude=-55.53,
+            obs='observación 3',
+            geom='{"coordinates": [[-55.5, -26.5]]], "type": "Point"}')
+
+        self.measurement1 = TreeMeasurement.objects.create(
+            field=self.tree1.field,
+            tree=self.tree1,
+            dap=30,
+            dab=50,
+            tree_height=3,
+            # picture=self.tempPicture,
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente',
+            obs='Observación1')
+
+        self.measurement2 = TreeMeasurement.objects.create(
+            field=self.tree2.field,
+            tree=self.tree2,
+            dap=60,
+            dab=100,
+            tree_height=6,
+            # picture=self.tempPicture,
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente',
+            obs='Observación2')
+
+        self.measurement3 = TreeMeasurement.objects.create(
+            field=self.tree3.field,
+            tree=self.tree3,
+            dap=30,
+            dab=80,
+            tree_height=4,
+            # picture=self.tempPicture,
+            phytosanitary_status='Bueno',
+            sociological_classification='Emergente',
+            obs='Observación3')
+
+        self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_list'))
+
+    def test_get(self):
+        """GET /tree_measurement_list/ must get status code 200"""
+        self.assertEqual(200, self.resp.status_code)
+
+    def test_use_template(self):
+        """GET /tree_measurement_list/ must use treemeasurement_list.html template"""
+        self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/treemeasurement_list.html')
+
+    def test_list(self):
+        """GET /tree_measurement_list/ must have the same queryset from database"""
+        all_entries = TreeMeasurement.objects.all().order_by('-created_at')
+        self.assertQuerysetEqual(self.resp.context['treemeasurement_list'],
+                                 all_entries)
 
 
 @override_settings(DEFAULT_FILE_STORAGE='inmemorystorage.InMemoryStorage')

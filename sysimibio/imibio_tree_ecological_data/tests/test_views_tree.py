@@ -316,7 +316,7 @@ class TreeDetailView(TestCase):
 #                 self.assertContains(self.resp, expected)
 
 
-class PermanentParcelDetailNotFound(TestCase):
+class TreeDetailNotFound(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_detail', 0))
 
