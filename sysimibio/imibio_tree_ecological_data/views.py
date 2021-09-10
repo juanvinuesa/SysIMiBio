@@ -87,7 +87,7 @@ class TreeCreateView(LoginRequiredMixin, CreateView):
 TreeCreateView = TreeCreateView.as_view()
 
 
-class TreeEditView(UpdateView):
+class TreeEditView(LoginRequiredMixin, UpdateView):
     model = Tree
     form_class = TreeForm
 
@@ -95,14 +95,14 @@ class TreeEditView(UpdateView):
 TreeEditView = TreeEditView.as_view()
 
 
-class TreeListView(ListView):
+class TreeListView(LoginRequiredMixin, ListView):
     model = Tree
 
 
 TreeListView = TreeListView.as_view()
 
 
-class TreeDetailView(DetailView):
+class TreeDetailView(LoginRequiredMixin, DetailView):
     model = Tree
 
 
@@ -121,7 +121,7 @@ class TreeDetailGeoJson(GeoJSONLayerView):
 TreeDetailGeoJson = TreeDetailGeoJson.as_view()
 
 
-class TreeMeasurementCreateView(CreateView):
+class TreeMeasurementCreateView(LoginRequiredMixin, CreateView):
     model = TreeMeasurement
     form_class = TreeMeasurementForm
 
@@ -129,7 +129,7 @@ class TreeMeasurementCreateView(CreateView):
 TreeMeasurementCreateView = TreeMeasurementCreateView.as_view()
 
 
-class TreeMeasurementEditView(UpdateView):
+class TreeMeasurementEditView(LoginRequiredMixin, UpdateView):
     model = TreeMeasurement
     form_class = TreeMeasurementForm
 
@@ -137,7 +137,7 @@ class TreeMeasurementEditView(UpdateView):
 TreeMeasurementEditView = TreeMeasurementEditView.as_view()
 
 
-class TreeMeasurementListView(ListView):
+class TreeMeasurementListView(LoginRequiredMixin, ListView):
     model = TreeMeasurement
     ordering = ['-created_at']
 
@@ -145,7 +145,7 @@ class TreeMeasurementListView(ListView):
 TreeMeasurementListView = TreeMeasurementListView.as_view()
 
 
-class TreeMeasurementDetailView(DetailView):
+class TreeMeasurementDetailView(LoginRequiredMixin, DetailView):
     model = TreeMeasurement
 
 

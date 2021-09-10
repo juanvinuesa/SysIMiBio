@@ -9,6 +9,7 @@ from sysimibio.imibio_tree_ecological_data.models import Tree, PermanentParcel, 
 class TreeCreateView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
         self.permanent_parcel = PermanentParcel.objects.create(
@@ -96,6 +97,7 @@ class TreeCreateView(TestCase):
 class TreeEditView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
         self.permanent_parcel = PermanentParcel.objects.create(
@@ -183,6 +185,7 @@ class TreeEditView(TestCase):
 class TreeListView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
         self.permanent_parcel = PermanentParcel.objects.create(
@@ -256,6 +259,7 @@ class TreeListView(TestCase):
 class TreeDetailView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.staff1 = User.objects.create_user('Feli', 'feli@imibio.com', 'felipassword')
         self.staff2 = User.objects.create_user('Fran', 'Fran@imibio.com', 'Franpassword')
         self.permanent_parcel = PermanentParcel.objects.create(
@@ -318,6 +322,8 @@ class TreeDetailView(TestCase):
 
 class TreeDetailNotFound(TestCase):
     def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_detail', 0))
 
     def test_not_found(self):
