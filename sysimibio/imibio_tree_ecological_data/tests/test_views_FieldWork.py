@@ -13,6 +13,7 @@ class FieldWorkListView(TestCase):
         self.coordinator = User.objects.create_user('Florencia',
                                                     'flor@imibio.com',
                                                     'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
                                                       coordinator=self.coordinator,
                                                       province='Misiones',
@@ -66,6 +67,7 @@ class FieldWorkDetailView(TestCase):
         self.coordinator = User.objects.create_user('Florencia',
                                                     'flor@imibio.com',
                                                     'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Reserva Yrya Pu',
                                                       coordinator=self.coordinator,
                                                       province='Misiones',
@@ -112,6 +114,10 @@ class FieldWorkDetailView(TestCase):
 
 class FieldWorkDetailNotFound(TestCase):
     def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia',
+                                                    'flor@imibio.com',
+                                                    'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.resp = self.client.get(r('imibio_tree_ecological_data:field_detail', 0))
 
     def test_not_found(self):
@@ -123,6 +129,7 @@ class FieldWorkCreateView(TestCase):
         self.coordinator = User.objects.create_user('Florencia',
                                                     'flor@imibio.com',
                                                     'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.parcel1 = PermanentParcel.objects.create(
             name='Reserva Yrya Pu',
             coordinator=self.coordinator,
@@ -211,6 +218,7 @@ class FieldWorkEditView(TestCase):
         self.coordinator = User.objects.create_user('Florencia',
                                                     'flor@imibio.com',
                                                     'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
                                                       coordinator=self.coordinator,
                                                       province='Misiones',

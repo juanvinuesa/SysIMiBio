@@ -49,7 +49,7 @@ class PlotDetailGeoJson(GeoJSONLayerView):
 PlotDetailGeoJson = PlotDetailGeoJson.as_view()
 
 
-class FieldWorkCreateView(CreateView):
+class FieldWorkCreateView(LoginRequiredMixin, CreateView):
     model = FieldWork
     form_class = FieldForm
 
@@ -57,7 +57,7 @@ class FieldWorkCreateView(CreateView):
 FieldWorkCreateView = FieldWorkCreateView.as_view()
 
 
-class FieldWorkEditView(UpdateView):
+class FieldWorkEditView(LoginRequiredMixin, UpdateView):
     model = FieldWork
     form_class = FieldForm
 
@@ -65,14 +65,14 @@ class FieldWorkEditView(UpdateView):
 FieldWorkEditView = FieldWorkEditView.as_view()
 
 
-class FieldWorkListView(ListView):
+class FieldWorkListView(LoginRequiredMixin, ListView):
     model = FieldWork
 
 
 FieldWorkListView = FieldWorkListView.as_view()
 
 
-class FieldWorkDetailView(DetailView):
+class FieldWorkDetailView(LoginRequiredMixin, DetailView):
     model = FieldWork
 
 
