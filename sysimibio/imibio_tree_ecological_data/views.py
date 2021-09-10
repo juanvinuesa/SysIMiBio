@@ -1,12 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from djgeojson.views import GeoJSONLayerView
 
-# from django.utils.decorators import method_decorator # todo usar @method_decorator(login_required)
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm, FieldForm, PermanentParcelForm, TreeMeasurementForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel, TreeMeasurement
 
 
-class PlotCreateView(CreateView):
+class PlotCreateView(LoginRequiredMixin, CreateView):
     model = PermanentParcel
     form_class = PermanentParcelForm
 
@@ -14,7 +14,7 @@ class PlotCreateView(CreateView):
 PlotCreateView = PlotCreateView.as_view()
 
 
-class PlotEditView(UpdateView):
+class PlotEditView(LoginRequiredMixin, UpdateView):
     model = PermanentParcel
     form_class = PermanentParcelForm
 
@@ -22,14 +22,14 @@ class PlotEditView(UpdateView):
 PlotEditView = PlotEditView.as_view()
 
 
-class PlotListView(ListView):
+class PlotListView(LoginRequiredMixin, ListView):
     model = PermanentParcel
 
 
 PlotListView = PlotListView.as_view()
 
 
-class PlotDetailView(DetailView):
+class PlotDetailView(LoginRequiredMixin, DetailView):
     model = PermanentParcel
 
 

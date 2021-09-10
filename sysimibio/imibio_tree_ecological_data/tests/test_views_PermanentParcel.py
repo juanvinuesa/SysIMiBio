@@ -10,6 +10,7 @@ from sysimibio.imibio_tree_ecological_data.models import PermanentParcel
 class PermanentParcelListView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.pp1 = PermanentParcel.objects.create(
             name="Reserva Yrya Pu",
             coordinator=self.coordinator,
@@ -53,6 +54,7 @@ class PermanentParcelListView(TestCase):
 class PermanentParcelDetailView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.pp1 = PermanentParcel.objects.create(
             name="Reserva Yrya Pu",
             coordinator=self.coordinator,
@@ -90,6 +92,8 @@ class PermanentParcelDetailView(TestCase):
 
 class PermanentParcelDetailNotFound(TestCase):
     def setUp(self):
+        self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_detail', 0))
 
     def test_not_found(self):
@@ -99,6 +103,7 @@ class PermanentParcelDetailNotFound(TestCase):
 class PermanentParcelCreateView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.resp = self.client.get(r('imibio_tree_ecological_data:plot_create'))
 
     def test_get(self):
@@ -166,6 +171,7 @@ class PermanentParcelCreateView(TestCase):
 class PermanentParcelEditView(TestCase):
     def setUp(self):
         self.coordinator = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
+        self.client.login(username='Florencia', password='florpassword')
         self.pp1 = PermanentParcel.objects.create(
             name="Reserva Yrya Pu",
             coordinator=self.coordinator,

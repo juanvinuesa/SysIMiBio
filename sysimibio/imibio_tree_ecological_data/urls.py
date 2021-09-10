@@ -26,7 +26,7 @@ urlpatterns = [
     path('list/tree/', TreeListView, name='tree_list'),
     path('detail/tree/<int:pk>/', TreeDetailView, name='tree_detail'),
     path('geojson/tree/<int:pk>/', TreeDetailGeoJson, name='Tree_detail_geojson'),
-    # tree measuremnt
+    # tree measurement
     path('create/tree/measurement/', TreeMeasurementCreateView, name='tree_measurement_create'),
     path('edit/tree/measurement/<int:pk>/', TreeMeasurementEditView, name='tree_measurement_edit'),
     path('list/tree/measurement/', TreeMeasurementListView, name='tree_measurement_list'),
