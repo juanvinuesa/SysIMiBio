@@ -79,7 +79,7 @@ class FieldWorkDetailView(LoginRequiredMixin, DetailView):
 FieldWorkDetailView = FieldWorkDetailView.as_view()
 
 
-class TreeCreateView(CreateView):
+class TreeCreateView(LoginRequiredMixin, CreateView):
     model = Tree
     form_class = TreeForm
 
