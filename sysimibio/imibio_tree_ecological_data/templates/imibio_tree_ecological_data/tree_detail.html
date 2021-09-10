@@ -18,6 +18,7 @@
         width: 100%;
         height: 100%;
     }
+
 </style>
 
 {% if messages %}
@@ -50,23 +51,23 @@
             </tr>
 
             <tr>
-            <th class="text-right">Sub Parcale</th>
-            <td>{{ object.subplot }}</td>
+                <th class="text-right">Sub Parcale</th>
+                <td>{{ object.subplot }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Numero del àrbol</th>
-            <td>{{ object.tree_number }}</td>
+                <th class="text-right">Numero del àrbol</th>
+                <td>{{ object.tree_number }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Nombre de la especie</th>
-            <td>{{ object.specie }}</td>
+                <th class="text-right">Nombre de la especie</th>
+                <td>{{ object.specie }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Observaciones</th>
-            <td>{{ object.obs|linebreaks }}</td>
+                <th class="text-right">Observaciones</th>
+                <td>{{ object.obs|linebreaks }}</td>
 
             </tr>
 
@@ -80,7 +81,8 @@
             {% leaflet_map "map-detail" %}
         </div>
     </div>
-    <script>
+</div>
+<script>
     var TreeDataURL = '{% url "imibio_tree_ecological_data:Tree_detail_geojson" pk=object.pk %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -113,7 +115,8 @@
             }}).addTo(map);
           });
       });
-    </script>
+
+</script>
 
 
-    {% endblock content %}
+{% endblock content %}

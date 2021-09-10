@@ -33,9 +33,11 @@ class PermanentParcelModelTest(TestCase):
         self.assertTrue(self.pp1.geom_point.is_valid)
 
     def test_geom_polygon(self):
-        self.assertEqual(self.pp1.geom, {"coordinates":
-                                             [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]],
-                                         "type": "Polygon"})
+        self.assertEqual(
+            self.pp1.geom,
+            {"coordinates":
+                 [[[-54.6, -27.0], [-54.0, -27.07], [-54.07, -26.62], [-54.6, -27.0]]],
+             "type": "Polygon"})
 
     def test_geom_point_is_valid(self):
         self.assertTrue(self.pp1.geom_point.is_valid)

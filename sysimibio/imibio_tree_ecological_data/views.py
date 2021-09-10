@@ -1,12 +1,9 @@
-from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, resolve_url as r
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from djgeojson.views import GeoJSONLayerView
 
 # from django.utils.decorators import method_decorator # todo usar @method_decorator(login_required)
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm, FieldForm, PermanentParcelForm, TreeMeasurementForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel, TreeMeasurement
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
 
 
 class PlotCreateView(CreateView):
@@ -143,7 +140,7 @@ TreeMeasurementEditView = TreeMeasurementEditView.as_view()
 class TreeMeasurementListView(ListView):
     model = TreeMeasurement
     ordering = ['-created_at']
-#  todo add ordering desc
+
 
 TreeMeasurementListView = TreeMeasurementListView.as_view()
 
@@ -153,40 +150,6 @@ class TreeMeasurementDetailView(DetailView):
 
 
 TreeMeasurementDetailView = TreeMeasurementDetailView.as_view()
-
-
-def new(request):
-    if request.method == 'POST':
-        return create(request)
-
-    return empty_form(request)
-
-
-def detail(request, pk):
-    try:
-        tree_detail = Tree.objects.get(pk=pk)
-    except Tree.DoesNotExist:
-        raise Http404
-    return render(request, 'imibio_tree_ecological_data/tree_detail.html',
-                  {'tree_detail': tree_detail})
-
-
-def empty_form(request):
-    context = {'form': TreeForm(),
-               'fieldForm': FieldForm()}
-    return render(request, 'imibio_tree_ecological_data/tree_form.html', context) # todo considerar Fieldwork form
-
-
-def create(request):
-    form = TreeForm(request.POST)
-
-    if not form.is_valid():
-        return render(request, 'imibio_tree_ecological_data/tree_form.html',
-                      {'form': form})
-
-    tree_eco_data = FieldWork.objects.create(**form.cleaned_data)
-    messages.success(request, "Registro ecológico agregado con exito")
-    return HttpResponseRedirect(r('imibio_tree_ecological_data:tree_detail', tree_eco_data.pk))
 
 
 class TreesGeoJson(GeoJSONLayerView):

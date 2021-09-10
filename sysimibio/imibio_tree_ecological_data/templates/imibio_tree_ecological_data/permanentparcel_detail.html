@@ -18,6 +18,7 @@
         width: 100%;
         height: 100%;
     }
+
 </style>
 
 {% if messages %}
@@ -56,23 +57,23 @@
             </tr>
 
             <tr>
-            <th class="text-right">Provincia</th>
-            <td>{{ object.province }}</td>
+                <th class="text-right">Provincia</th>
+                <td>{{ object.province }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Municipio</th>
-            <td>{{ object.municipality }}</td>
+                <th class="text-right">Municipio</th>
+                <td>{{ object.municipality }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Localidad</th>
-            <td>{{ object.locality }}</td>
+                <th class="text-right">Localidad</th>
+                <td>{{ object.locality }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Observaciones</th>
-            <td>{{ object.obs|linebreaks }}</td>
+                <th class="text-right">Observaciones</th>
+                <td>{{ object.obs|linebreaks }}</td>
 
             </tr>
 
@@ -86,7 +87,8 @@
             {% leaflet_map "map-detail" %}
         </div>
     </div>
-    <script>
+</div>
+<script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.pk %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -104,7 +106,8 @@
             }}).addTo(map);
           });
       });
-    </script>
+
+</script>
 
 
-    {% endblock content %}
+{% endblock content %}

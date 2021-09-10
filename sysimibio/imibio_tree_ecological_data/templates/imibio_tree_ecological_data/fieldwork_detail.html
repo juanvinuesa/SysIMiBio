@@ -18,6 +18,7 @@
         width: 100%;
         height: 100%;
     }
+
 </style>
 
 {% if messages %}
@@ -55,33 +56,33 @@
             </tr>
 
             <tr>
-            <th class="text-right">Staff</th>
-            <td>{{ object.staff.all|join:", " }}</td>
+                <th class="text-right">Staff</th>
+                <td>{{ object.staff.all|join:", " }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Fecha</th>
-            <td>{{ object.date }}</td>
+                <th class="text-right">Fecha</th>
+                <td>{{ object.date }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Inicio</th>
-            <td>{{ object.start_time }}</td>
+                <th class="text-right">Inicio</th>
+                <td>{{ object.start_time }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Fin</th>
-            <td>{{ object.end_time }}</td>
+                <th class="text-right">Fin</th>
+                <td>{{ object.end_time }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Temperatura</th>
-            <td>{{ object.temperature }}</td>
+                <th class="text-right">Temperatura</th>
+                <td>{{ object.temperature }}</td>
             </tr>
 
             <tr>
-            <th class="text-right">Humedad</th>
-            <td>{{ object.humidity }}</td>
+                <th class="text-right">Humedad</th>
+                <td>{{ object.humidity }}</td>
             </tr>
 
             </tbody>
@@ -94,7 +95,8 @@
             {% leaflet_map "map-detail" %}
         </div>
     </div>
-    <script>
+</div>
+<script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.parcel_id.pk %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
@@ -112,7 +114,8 @@
             }}).addTo(map);
           });
       });
-    </script>
+
+</script>
 
 
-    {% endblock content %}
+{% endblock content %}

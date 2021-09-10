@@ -33,7 +33,7 @@ class TreeModelAdmin(admin.ModelAdmin):
     model = Tree
     extra = 1
     inlines = [TreeMeasurementsInline]
-    list_display = ('tree_id','specie',)
+    list_display = ('tree_id', 'specie',)
     # date_hierarchy = 'field.date'
     search_fields = ('specie',)
     list_filter = ('specie',)
@@ -55,7 +55,7 @@ class TreeMeasurementAdmin(admin.ModelAdmin):
     # inlines = [TreeInline]
 
 
-admin.site.register(PermanentParcel,LeafletGeoAdmin)
+admin.site.register(PermanentParcel, LeafletGeoAdmin)
 admin.site.register(FieldWork, FieldWorkModelAdmin)
 admin.site.register(Pictures)
 admin.site.register(Tree, TreeModelAdmin)

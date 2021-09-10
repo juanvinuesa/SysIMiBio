@@ -8,7 +8,7 @@ from sysimibio.imibio_tree_ecological_data.models import FieldWork, PermanentPar
 
 class FieldRegistrationFormTest(TestCase):
     def setUp(self):
-        self.resp = self.client.get(r('imibio_tree_ecological_data:new'))
+        self.resp = self.client.get(r('imibio_tree_ecological_data:field_create'))
         self.Fieldform = FieldForm()
         self.coordinator1 = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.parcel1 = PermanentParcel.objects.create(name='Nombre test',
