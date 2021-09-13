@@ -88,6 +88,36 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-4">
+        <h2>Lista Visitas de campo</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Parcela</th>
+            <th>Fecha</th>
+            <th>Inicio</th>
+            <th>Coordenador</th>
+            <th>Apoyo</th>
+
+        </tr>
+        </thead>
+
+        {% for field in field_list %}
+        <tr>
+            <td>
+                <a href="{{ field.get_absolute_url }}">{{ field }}</a>
+            </td>
+            <td>{{ field.date }}</td>
+            <td>{{ field.start_time }}</td>
+            <td>{{ field.coordinator }}</td>
+            <td>{{ field.staff.all|join:", " }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+</div>
 <script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.pk %}';
       window.addEventListener("map:init", function (event) {

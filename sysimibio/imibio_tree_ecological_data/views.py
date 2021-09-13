@@ -32,6 +32,11 @@ PlotListView = PlotListView.as_view()
 class PlotDetailView(LoginRequiredMixin, DetailView):
     model = PermanentParcel
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['field_list'] = FieldWork.objects.filter(parcel_id=self.kwargs['pk'])
+        print(context['field_list'][0])
+        return context
 
 PlotDetailView = PlotDetailView.as_view()
 
@@ -42,7 +47,6 @@ class PlotDetailGeoJson(GeoJSONLayerView):
 
     def get_queryset(self):
         self.plot = super().get_queryset()
-        # self.plot = get_object_or_404(PermanentParcel, pk=self.kwargs['pk'])
         return self.plot.filter(pk=self.kwargs['pk'])
 
 
