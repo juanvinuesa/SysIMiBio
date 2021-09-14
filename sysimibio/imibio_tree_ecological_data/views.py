@@ -35,7 +35,8 @@ class PlotDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['field_list'] = FieldWork.objects.filter(parcel_id=self.kwargs['pk'])
-        print(context['field_list'][0])
+        context['measurement_list'] = TreeMeasurement.objects.filter(field__parcel_id=self.kwargs['pk'])
+
         return context
 
 PlotDetailView = PlotDetailView.as_view()

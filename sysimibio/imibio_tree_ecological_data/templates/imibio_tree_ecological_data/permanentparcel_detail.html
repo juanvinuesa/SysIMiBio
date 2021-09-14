@@ -40,14 +40,14 @@
         <span class="align-middle">Editar Parcela</span>
     </a>
 </div>
-<h2>Detalles de la parcela: {{ object.name }}</h2>
+    <h2>Detalles de la parcela: {{ object.name }}</h2>
 <div class="row">
     <div class="col-sm-4">
         <table class="table table-user-information">
             <tbody>
 
             <tr>
-                <th class="text-right">Nombre de la parcela permanente</th>
+                <th class="text-right">Nombre de la parcela</th>
                 <td>{{ object.name }}</td>
             </tr>
 
@@ -89,7 +89,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="jumbotron">
+    <div class="col-fluid">
         <h2>Lista Visitas de campo</h2>
 
     <table class='table table-striped'>
@@ -116,6 +117,37 @@
         </tr>
         {% endfor %}
     </table>
+    </div>
+    </div>
+    <div style="background:transparent" class="jumbotron">
+    <div class="col-fluid">
+        <h2>Lista mediciones de arboles</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>Medición</th>
+            <th>Árbol</th>
+            <th>Fecha</th>
+            <th>DAP</th>
+            <th>DAB</th>
+
+        </tr>
+        </thead>
+
+        {% for measure in measurement_list %}
+        <tr>
+            <td>
+                <a href="{{ measure.get_absolute_url }}">{{ measure }}</a>
+            </td>
+            <td>{{ measure.tree }}</td>
+            <td>{{ measure.created_at }}</td>
+            <td>{{ measure.dap }}</td>
+            <td>{{ measure.dab }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
     </div>
 </div>
 <script>
