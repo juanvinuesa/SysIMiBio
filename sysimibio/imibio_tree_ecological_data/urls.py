@@ -4,7 +4,8 @@ from django.views.generic import TemplateView
 from sysimibio.imibio_tree_ecological_data.views import trees_geojson, PlotListView, PlotDetailView, \
     PlotDetailGeoJson, PlotCreateView, PlotEditView, FieldWorkListView, FieldWorkDetailView, FieldWorkEditView, \
     FieldWorkCreateView, TreeCreateView, TreeDetailView, TreeDetailGeoJson, TreeEditView, TreeListView, \
-    TreeMeasurementCreateView, TreeMeasurementDetailView, TreeMeasurementEditView, TreeMeasurementListView
+    TreeMeasurementCreateView, TreeMeasurementDetailView, TreeMeasurementEditView, TreeMeasurementListView, \
+    PlotDetailTreesGeoJson
 
 app_name = 'imibio_tree_ecological_data'
 
@@ -15,6 +16,8 @@ urlpatterns = [
     path('list/plot/', PlotListView, name='plot_list'),
     path('detail/plot/<int:pk>/', PlotDetailView, name='plot_detail'),
     path('geojson/plot/<int:pk>/', PlotDetailGeoJson, name='plot_detail_geojson'),
+    path('geojson/plot/<int:pk>/trees', PlotDetailTreesGeoJson, name='trees_plot_detail_geojson'),
+
     # field work
     path('create/field/', FieldWorkCreateView, name='field_create'),
     path('edit/field/<int:pk>/', FieldWorkEditView, name='field_edit'),

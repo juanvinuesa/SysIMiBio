@@ -168,6 +168,22 @@
             }}).addTo(map);
           });
       });
+      var TreesPlotDetailGeoJson = '{% url "imibio_tree_ecological_data:trees_plot_detail_geojson" pk=object.pk %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(TreesPlotDetailGeoJson)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
+            }}).addTo(map);
+          });
+      });
 
 </script>
 

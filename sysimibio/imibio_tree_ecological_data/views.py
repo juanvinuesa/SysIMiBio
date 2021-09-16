@@ -54,6 +54,18 @@ class PlotDetailGeoJson(GeoJSONLayerView):
 PlotDetailGeoJson = PlotDetailGeoJson.as_view()
 
 
+class PlotDetailTreesGeoJson(GeoJSONLayerView):
+    model = Tree
+    properties = ('popup_content',)
+
+    def get_queryset(self):
+        self.tree = super().get_queryset()
+        return self.tree.filter(field__parcel_id=self.kwargs['pk'])
+
+
+PlotDetailTreesGeoJson = PlotDetailTreesGeoJson.as_view()
+
+
 class FieldWorkCreateView(LoginRequiredMixin, CreateView):
     model = FieldWork
     form_class = FieldForm
