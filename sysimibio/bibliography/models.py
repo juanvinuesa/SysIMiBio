@@ -3,6 +3,7 @@ from django.db import models
 from django.shortcuts import resolve_url as r
 
 from sysimibio.bibliography.validators import validate_isbn, validate_doi_prefix, validate_doi_slash
+from sysimibio.imibio_tree_ecological_data.validators import validate_lat, validate_lon
 
 
 class Publication(models.Model):
@@ -20,7 +21,7 @@ class Publication(models.Model):
     last_modification_at = models.DateTimeField(verbose_name='Ultima modificación', auto_now=True)
     observations = models.TextField(verbose_name='Observaciones', blank=True)
     imibio = models.BooleanField(verbose_name='Participación IMIBIO ?', default=False)
-    crossref = models.BooleanField(verbose_name='Tiene DOI/ISBN ?',help_text='Si tiene referencias con DOI O ISBN marcar.', default=True)
+    crossref = models.BooleanField(verbose_name='Tiene DOI/ISBN ?', help_text='Si tiene referencias con DOI O ISBN marcar.', default=True)
 
     def __str__(self):
         return f'{self.author}, {self.publication_year} - {self.title}'
@@ -29,3 +30,21 @@ class Publication(models.Model):
         return r('bibliography:publication_detail', kwargs={'pk': self.pk})
 
 
+class SpeciesList(models.Model): #todo quizas poner el nombre "bibliography species list"
+    scientific_name = models.CharField('Nombre científico', max_length=50)
+    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE) #todo fijarse si es foreing key o many to many
+    other_fields_json = models.JSONField(default=dict)
+
+    def __str__(self):
+        return self.scientific_name
+
+
+class OccurrenceList(models.Model):  #todo quizas poner el nombre "bibliography occurrence list"
+    scientific_name = models.CharField('Nombre científico', max_length=50, blank=True)
+    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE, primary_key=True) #todo fijarse si es foreing key o many to many
+    latitude = models.IntegerField("Latitud", validators=[validate_lat]) #todo añadir validacion usado en imibio tree ecological data
+    longitude = models.IntegerField("Longitud", validators=[validate_lon]) #todo añadir validacion usado en imibio tree ecological data
+    other_fields_json = models.JSONField(default=dict)
+
+    def __str__(self):
+        return self.scientific_name

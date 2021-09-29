@@ -32,10 +32,8 @@ class PublicationList(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'bibliography/publication_list.html')
 
-
     def test_list_equal(self):
         resp = self.client.get(r('bibliography:publication_list'))
-        resp.context['publications']
-        all_entrys = Publication.objects.all().order_by('-publication_year')
-        self.assertQuerysetEqual(resp.context['publications'], all_entrys)
+        all_entries = Publication.objects.all().order_by('-publication_year')
+        self.assertQuerysetEqual(resp.context['publications'], all_entries)
 

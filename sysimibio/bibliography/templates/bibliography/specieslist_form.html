@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class = "jumbotron">
+    <div class = "container">
+        <h2>Agregar Lista de especies</h2>
+        {% if form.non_field_errors  %}
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    <p>{{ error|escape }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    <div class="alert alert-danger" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+            <div class="accordion" id="accordionExample">
+            <form method="POST" action="." class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+          <div class="card ">
+            <div class="card-header" id="headingOne">
+              <h3 class="mb-0">
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Datos de la lista
+                </button>
+              </h3>
+            </div>
+
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                  <p>
+                      <label for="{{ form.bibliography.id_for_label }}"> {{ form.bibliography.label }} </label>
+                      {% for error in form.bibliography.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.bibliography}}
+                  </p>
+                  <p>
+                      <label for="{{ form.species_list_spreadsheet.id_for_label }}"> {{ form.species_list_spreadsheet.label }}  </label>
+                      {% for error in form.species_list_spreadsheet.errors %}
+                        <div class="alert alert-warning" role="alert">
+                            {{ error }}
+                        </div>
+                      {% endfor %}
+                      {{ form.species_list_spreadsheet }}
+                  </p>
+
+              </div>
+            </div>
+          </div>
+
+
+            <br><button type="submit" class="btn btn-success">Guardar</button>
+
+
+
+        </form>
+    </div>
+</div>
+</div>
+{% endblock %}

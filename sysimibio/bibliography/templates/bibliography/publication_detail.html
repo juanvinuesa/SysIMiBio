@@ -3,72 +3,106 @@
 {% block content %}
 
 {% if messages %}
-            {% for message in messages %}
-                    <div class="alert alert-success" role="alert">
-                        <p>{{ message }}</p>
-                    </div>
-            {% endfor %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+    <p>{{ message }}</p>
+</div>
+{% endfor %}
 {% endif %}
 
 <br>
-<a  role="button" class="btn navbar-btn btn-primary" href="{% url 'bibliography:publication_new' %}">Agregar Publicación</a>
-<a  role="button" class="btn navbar-btn btn-success" href="{% url 'bibliography:publication_list' %}">Volver a lista</a>
-<a  role="button" class="btn navbar-btn btn-warning" href="{% url 'bibliography:publication_edit' pk=publication.pk %}">Editar</a>
+<a role="button" class="btn navbar-btn btn-primary" href="{% url 'bibliography:publication_new' %}">Agregar
+    Publicación</a>
+<a role="button" class="btn navbar-btn btn-success" href="{% url 'bibliography:publication_list' %}">Volver a lista</a>
+<a role="button" class="btn navbar-btn btn-warning" href="{% url 'bibliography:publication_edit' pk=publication.pk %}">Editar</a>
 <br>
 
 <h1>Titulo: {{ publication.title }}</h1>
 <div class="row">
-<div class="col-sm-4">
-    <table class = "table table-user-information">
-        <tbody>
-        <tr>
-            <th class="text-right">Autor principal:</th>
-            <td>{{ publication.author }}</td>
-        </tr>
-        <tr>
-            <th class="text-right">Año de publicación:</th>
-            <td>{{ publication.publication_year }}</td>
-        </tr>
-        <tr>
-            <th class="text-right">Participación de IMIBIO:</th>
-            <td>{{ publication.imibio|yesno:"Si,No"  }}</td>
-        </tr>
-        {% if publication.DOI %}
-        <tr>
-            <th class="text-right">DOI:</th>
-            <td>{{ publication.DOI }}</td>
-        </tr>
-        {% endif %}
+    <div class="col-sm-4">
+        <table class="table table-user-information">
+            <tbody>
+            <tr>
+                <th class="text-right">Autor principal:</th>
+                <td>{{ publication.author }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Año de publicación:</th>
+                <td>{{ publication.publication_year }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Participación de IMIBIO:</th>
+                <td>{{ publication.imibio|yesno:"Si,No" }}</td>
+            </tr>
+            {% if publication.DOI %}
+            <tr>
+                <th class="text-right">DOI:</th>
+                <td>{{ publication.DOI }}</td>
+            </tr>
+            {% endif %}
 
-        {% if publication.ISBN %}
-        <tr>
-            <th class="text-right">ISBN:</th>
-            <td>{{ publication.ISBN }}</td>
-        </tr>
-        {% endif %}
+            {% if publication.ISBN %}
+            <tr>
+                <th class="text-right">ISBN:</th>
+                <td>{{ publication.ISBN }}</td>
+            </tr>
+            {% endif %}
 
-        <tr>
-            <th class="text-right">Temas o palabras clave:</th>
-            <td>{{ publication.subject }}</td>
-        </tr>
-        {% if publication.URL %}
-        <tr>
-            <th class="text-right">URL:</th>
-            <td><a href="{{ publication.URL }}">{{ publication.URL }}</a></td>
-        </tr>
-        {% endif %}
-         {% if publication.observations %}
-        <tr>
-            <th class="text-right">Observaciones:</th>
-            <td><p>{{ publication.observations }}</p></td>
-        </tr>
-        {% endif %}
-        </tbody>
-    </table>
+            <tr>
+                <th class="text-right">Temas o palabras clave:</th>
+                <td>{{ publication.subject }}</td>
+            </tr>
+            {% if publication.URL %}
+            <tr>
+                <th class="text-right">URL:</th>
+                <td><a href="{{ publication.URL }}">{{ publication.URL }}</a></td>
+            </tr>
+            {% endif %}
+            {% if publication.observations %}
+            <tr>
+                <th class="text-right">Observaciones:</th>
+                <td><p>{{ publication.observations }}</p></td>
+            </tr>
+            {% endif %}
+            {% if publication.observations %}
+            <tr>
+                <th class="text-right">Observaciones:</th>
+                <td><p>{{ publication.observations }}</p></td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    </div>
+    {% if species_list %}
+    <h3>Lista de especies</h3>
+    <div class="row">
 
+        <table class='table table-striped'>
+            <tbody>
+            <thead>
+            <tr>
+                <th>Nombre ceintifico</th>
+                <th>otras columnas</th>
 
-</div>
-</div>
+            </tr>
+
+            </thead>
+            {% for specie in species_list %}
+            <tr>
+                <td>
+                    {{ specie.scientific_name }}</a>
+                </td>
+                <td>
+                    {{ specie.other_fields_json}}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
 
 
 {% endblock %}

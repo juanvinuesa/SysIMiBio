@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from isbnlib import is_isbn10, to_isbn13
 
-from sysimibio.bibliography.models import Publication
+from sysimibio.bibliography.models import Publication, SpeciesList
 
 
 class PublicationForm(forms.ModelForm):
@@ -44,3 +44,19 @@ class PublicationForm(forms.ModelForm):
         if doi.endswith("/"):
             doi = doi[:-1]
         return doi
+
+
+class UploadSpeciesListForm(forms.ModelForm):
+    species_list_spreadsheet = forms.FileField()
+
+    class Meta:
+        model = SpeciesList
+        exclude = ('scientific_name', 'other_fields_json',)
+
+
+class UpdateSpeciesListForm(forms.ModelForm):
+    species_list_spreadsheet = forms.FileField()
+
+    class Meta:
+        model = SpeciesList
+        exclude = ('scientific_name', 'other_fields_json',)

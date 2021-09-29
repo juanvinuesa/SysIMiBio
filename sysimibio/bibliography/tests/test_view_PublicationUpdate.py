@@ -14,7 +14,6 @@ class PublicationUpdateTest(TestCase):
             reverse('bibliography:publication_edit', kwargs={'pk': p1.id}),
             {'title': 'The Catcher in the Rye', 'author': 'Juan vinuesa', 'publication_year': '1940', 'created_by': 'user'})
 
-
         self.assertEqual(response.status_code, 302)
 
         p1.refresh_from_db()
