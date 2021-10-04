@@ -94,8 +94,33 @@ def handle_uploaded_species_list_file(file, publication_pk):
     return result
 
 
-def upload_specieslist(request):
-    if request.method == 'POST':
+# def upload_specieslist(request):
+#     if request.method == 'POST':
+#         form = UploadSpeciesListForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             uploaded_file = request.FILES['species_list_spreadsheet'],
+#             publication_pk = request.POST["bibliography"]
+#             df = handle_uploaded_species_list_file(
+#                 file=uploaded_file[0],
+#                 publication_pk=publication_pk)
+#             SpeciesList.objects.bulk_create(
+#                 SpeciesList(**vals) for vals in df.to_dict('records'))
+#             return HttpResponseRedirect(r('bibliography:publication_detail',
+#                                           publication_pk))
+#         else:
+#             return render(request, 'bibliography/specieslist_form.html', {'form': form})
+#     else:
+#         form = UploadSpeciesListForm()
+#         return render(request, 'bibliography/specieslist_form.html',
+#                       {'form': form})
+
+
+class SpeciesListCreateClass(LoginRequiredMixin, CreateView):
+    model = Publication
+    form_class = UpdateSpeciesListForm
+
+    def post(self, request, *args, **kwargs):
         form = UploadSpeciesListForm(request.POST, request.FILES)
 
         if form.is_valid():
@@ -110,40 +135,14 @@ def upload_specieslist(request):
                                           publication_pk))
         else:
             return render(request, 'bibliography/specieslist_form.html', {'form': form})
-    else:
+
+    def get(self, request, *args, **kwargs):
         form = UploadSpeciesListForm()
         return render(request, 'bibliography/specieslist_form.html',
                       {'form': form})
 
 
-# def uploadspecieslistupdate2(request, pk):
-#     if request.method == 'POST':
-#         form = UpdateSpeciesListForm(request.POST, request.FILES)
-#
-#         if form.is_valid():
-#             uploaded_file = request.FILES['species_list_spreadsheet'],
-#             publication_pk = request.POST["bibliography"]
-#             species_to_update = SpeciesList.objects.filter(bibliography=publication_pk)
-#             df = handle_uploaded_species_list_file(
-#                 file=uploaded_file[0],
-#                 publication_pk=publication_pk)
-#             dict_list = [row for row in df.to_dict('records')]
-#             for index, obj in enumerate(list(species_to_update)):
-#                 dato = dict_list[index]
-#                 for key, value in dato.items():
-#                     setattr(obj, key, value)
-#             SpeciesList.objects.bulk_update(
-#                 species_to_update,
-#                 ['scientific_name', 'other_fields_json'])
-#             return HttpResponseRedirect(r('bibliography:publication_detail',
-#                                           publication_pk))
-#         else:
-#             return render(request, 'bibliography/specieslist_form.html', {'form': form})
-#     else:
-#         form = UpdateSpeciesListForm()
-#         form.fields["bibliography"].queryset = Publication.objects.filter(pk=pk)
-#         return render(request, 'bibliography/specieslist_form.html',
-#                       {'form': form})
+SpeciesListCreateView = SpeciesListCreateClass.as_view()
 
 
 class SpeciesListUpdateClass(LoginRequiredMixin, UpdateView):
