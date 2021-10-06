@@ -16,7 +16,7 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     municipality = models.CharField(verbose_name='Municipio',
                                     max_length=50)  # TODO add 75 municipio como choices o como geojson FK
     locality = models.CharField(verbose_name='lugar', max_length=50)
-    cadastral_parcel = models.BigIntegerField(verbose_name='Nomenclatura catastral', help_text='Verificar en <a href="http://ide.ordenamientoterritorial.misiones.gob.ar/index.php?option=com_content&view=article&id=8&Itemid=3"> GeoMisiones (IDE Misiones)</a>, capa "Parcelario Misiones')
+    cadastral_parcel = models.BigIntegerField(verbose_name='Nomenclatura catastral', help_text='Verificar en <a href="http://ide.ordenamientoterritorial.misiones.gob.ar/index.php?option=com_content&view=article&id=8&Itemid=3"> GeoMisiones (IDE Misiones)</a>, capa "Parcelario Misiones', default=0000000000000000000)
     plot_type = models.CharField(verbose_name='Tipo de parcela', choices=(('Publico', 'Publico'), ('Privado', 'Privado')), max_length=10, default='Publico')
     obs = models.TextField(verbose_name='Obervaciones', blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
