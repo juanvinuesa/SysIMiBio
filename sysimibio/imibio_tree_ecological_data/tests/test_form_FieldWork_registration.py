@@ -15,6 +15,8 @@ class FieldRegistrationFormTest(TestCase):
                                                       coordinator=self.coordinator1,
                                                       province='Misiones',
                                                       municipality='Puerto Iguazu',
+                                                      cadastral_parcel=1668002000000000012,
+                                                      plot_type='Publico',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')

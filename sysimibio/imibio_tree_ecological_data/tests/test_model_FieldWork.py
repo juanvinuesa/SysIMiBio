@@ -15,7 +15,10 @@ class FieldWorkRegistrationTest(TestCase):
                                                       coordinator=coordinator,
                                                       province='Misiones',
                                                       municipality='Puerto Iguazu',
-                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      locality='600 ha',
+                                                      cadastral_parcel=1668002000000000012,
+                                                      plot_type='Publico',
+                                                      obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
         self.field = FieldWork(
             date='2020-12-30',
@@ -38,7 +41,7 @@ class FieldWorkRegistrationTest(TestCase):
 
     def test_str(self):
         """Field Work str must be date + coordinator"""
-        self.assertEqual('2020-12-30 Florencia', str(self.field))
+        self.assertEqual('Nombre test, Puerto Iguazu - Florencia-2020-12-30', str(self.field))
 
     def test_modified_at(self):
         """Field Work registration must have and created at attr"""

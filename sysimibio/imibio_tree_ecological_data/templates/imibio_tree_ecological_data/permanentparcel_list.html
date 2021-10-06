@@ -22,7 +22,8 @@
             <th>Nombre</th>
             <th>Responsable</th>
             <th>Municipio</th>
-            <th>Localidad</th>
+            <th>Lugar</th>
+            <th>Fecha de creación</th>
         </tr>
         </thead>
 
@@ -34,6 +35,7 @@
             <td>{{ object.coordinator }}</td>
             <td>{{ object.municipality }}</td>
             <td>{{ object.locality }}</td>
+            <td>{{ object.created_at }}</td>
         </tr>
         {% endfor %}
     </table>

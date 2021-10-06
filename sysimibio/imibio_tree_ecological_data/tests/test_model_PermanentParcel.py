@@ -14,6 +14,8 @@ class PermanentParcelModelTest(TestCase):
             province="Misiones",
             municipality="Puerto Iguazú",
             locality='reserva 600 ha',
+            cadastral_parcel=1668002000000000012,
+            plot_type='Publico',
             obs="Prueba de registro",
             latitude=-26,
             longitude=-54,

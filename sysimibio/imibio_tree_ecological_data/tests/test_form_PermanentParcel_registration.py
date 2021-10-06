@@ -15,7 +15,8 @@ class PermanenParcelFormTest(TestCase):
             name="YryaPu",
             coordinator=self.coordinator1,
             province='Misiones', municipality='Capital',
-            locality='600Ha', obs='Parcela de prueba', latitude=-26,
+            locality='600Ha', cadastral_parcel = 1668002000000000012,
+            plot_type='Publico', obs='Parcela de prueba', latitude=-26,
             longitude=-54,
             geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]]))
         valid_form.update(**kwargs)
@@ -25,7 +26,8 @@ class PermanenParcelFormTest(TestCase):
     def test_permanent_parcel_has_fields(self):
         """Permanent Parcel form must have models fields"""
         self.assertSequenceEqual(
-            ['name', 'coordinator', 'province', 'municipality', 'locality', 'obs', 'latitude', 'longitude',
+            ['name', 'coordinator', 'province', 'municipality', 'locality',
+             'cadastral_parcel', 'plot_type', 'obs', 'latitude', 'longitude',
              'geom'], list(self.pp.fields))
 
     def test_form_is_valid(self):

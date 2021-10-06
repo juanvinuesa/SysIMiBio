@@ -67,8 +67,20 @@
             </tr>
 
             <tr>
-                <th class="text-right">Localidad</th>
+                <th class="text-right">Lugar</th>
                 <td>{{ object.locality }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Nomenclatura catastral</th>
+                <td>{{ object.cadastral_parcel }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Tipo de parcela</th>
+                <td>{{ object.plot_type }}</td>
+            </tr>
+            <tr>
+                <th class="text-right">Fecha de creación</th>
+                <td>{{ object.created_at }}</td>
             </tr>
 
             <tr>
@@ -97,7 +109,7 @@
         <thead>
         <tr>
             <th>Parcela</th>
-            <th>Fecha</th>
+            <th>Fecha</th> <!-- todo mantener fecha? -->
             <th>Inicio</th>
             <th>Coordenador</th>
             <th>Apoyo</th>

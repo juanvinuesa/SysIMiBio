@@ -22,6 +22,8 @@ class TreeMeasurementFormTest(TestCase):
             province='Misiones',
             municipality='Puerto Iguazú',
             locality='600Ha',
+            cadastral_parcel=1668002000000000012,
+            plot_type='Publico',
             obs='Parcela de prueba',
             latitude=-26,
             longitude=-54,

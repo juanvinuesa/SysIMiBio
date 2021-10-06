@@ -10,13 +10,15 @@ from sysimibio.toolbox import create_subplot_name_choices
 
 
 class PermanentParcel(models.Model):  # todo change to Permanent Plot?
-    name = models.CharField(verbose_name="Nombre de la parcela", max_length=50)
+    name = models.CharField(verbose_name='Nombre de la parcela', max_length=50)
     coordinator = models.ForeignKey(User, verbose_name='Responsable', max_length=100, on_delete=models.CASCADE)
-    province = models.CharField(verbose_name="Provincia", choices=(('Misiones', 'Misiones'),), max_length=10)
-    municipality = models.CharField(verbose_name="Municipio",
+    province = models.CharField(verbose_name='Provincia', choices=(('Misiones', 'Misiones'),), max_length=10)
+    municipality = models.CharField(verbose_name='Municipio',
                                     max_length=50)  # TODO add 75 municipio como choices o como geojson FK
-    locality = models.CharField(verbose_name="Localidad", max_length=50)
-    obs = models.TextField(verbose_name="Obervaciones", blank=True)
+    locality = models.CharField(verbose_name='lugar', max_length=50)
+    cadastral_parcel = models.BigIntegerField(verbose_name='Nomenclatura catastral', help_text='Verificar en <a href="http://ide.ordenamientoterritorial.misiones.gob.ar/index.php?option=com_content&view=article&id=8&Itemid=3"> GeoMisiones (IDE Misiones)</a>, capa "Parcelario Misiones')
+    plot_type = models.CharField(verbose_name='Tipo de parcela', choices=(('Publico', 'Publico'), ('Privado', 'Privado')), max_length=10, default='Publico')
+    obs = models.TextField(verbose_name='Obervaciones', blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
                                  validators=[validate_lat], blank=True,
                                  help_text="informar en formato en grados decimales WGS84 - epsg4326")
@@ -71,7 +73,7 @@ class FieldWork(models.Model):
         ordering = ('-date',)
 
     def __str__(self):
-        return f'{self.date} {self.coordinator}'
+        return f'{self.parcel_id}-{self.date}'
 
     def get_absolute_url(self):
         return reverse_lazy('imibio_tree_ecological_data:field_detail', kwargs={'pk': self.pk})

@@ -13,7 +13,10 @@ class TreeMeasurementTest(TestCase):
                                                       coordinator=self.coordinator,
                                                       province='Misiones',
                                                       municipality='Puerto Iguazu',
-                                                      locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
+                                                      locality='600 ha',
+                                                      cadastral_parcel=1668002000000000012,
+                                                      plot_type='Publico',
+                                                      obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
         self.field = FieldWork.objects.create(
             date='2020-12-30',
