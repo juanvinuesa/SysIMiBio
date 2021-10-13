@@ -1,12 +1,10 @@
+import csv
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-import csv
-from django.shortcuts import resolve_url as r
-
 
 from sysimibio.bibliography.models import Publication, SpeciesList
-from sysimibio.bibliography.forms import UpdateSpeciesListForm
 
 
 class SpeciesListUpdateTest(TestCase):

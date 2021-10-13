@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from isbnlib import is_isbn10, to_isbn13
 
-from sysimibio.bibliography.models import Publication, SpeciesList
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
 
 class PublicationForm(forms.ModelForm):
@@ -54,9 +54,10 @@ class UploadSpeciesListForm(forms.ModelForm):
         exclude = ('scientific_name', 'other_fields_json',)
 
 
-class UpdateSpeciesListForm(forms.ModelForm):
-    species_list_spreadsheet = forms.FileField()
+class UploadOccurrencesListForm(forms.ModelForm):
+    occurrences_list_spreadsheet = forms.FileField()
 
     class Meta:
-        model = SpeciesList
-        exclude = ('scientific_name', 'other_fields_json',)
+        model = OccurrenceList
+        exclude = ('scientific_name', 'latitude', 'longitude', 'other_fields_json',)
+

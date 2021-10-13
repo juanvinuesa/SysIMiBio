@@ -7,8 +7,9 @@ from django.shortcuts import render, resolve_url as r
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from isbnlib import is_isbn13, meta
 
-from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UpdateSpeciesListForm
-from sysimibio.bibliography.models import Publication, SpeciesList
+from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
+
 
 
 class PublicationUpdateClass(LoginRequiredMixin, UpdateView):
@@ -27,6 +28,7 @@ class PublicationListClass(LoginRequiredMixin, ListView):
     model = Publication
     context_object_name = 'publications'
     ordering = ['-publication_year']
+
 
 
 PublicationList = PublicationListClass.as_view()
@@ -93,32 +95,23 @@ def handle_uploaded_species_list_file(file, publication_pk):
         pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
     return result
 
-
-# def upload_specieslist(request):
-#     if request.method == 'POST':
-#         form = UploadSpeciesListForm(request.POST, request.FILES)
-#
-#         if form.is_valid():
-#             uploaded_file = request.FILES['species_list_spreadsheet'],
-#             publication_pk = request.POST["bibliography"]
-#             df = handle_uploaded_species_list_file(
-#                 file=uploaded_file[0],
-#                 publication_pk=publication_pk)
-#             SpeciesList.objects.bulk_create(
-#                 SpeciesList(**vals) for vals in df.to_dict('records'))
-#             return HttpResponseRedirect(r('bibliography:publication_detail',
-#                                           publication_pk))
-#         else:
-#             return render(request, 'bibliography/specieslist_form.html', {'form': form})
-#     else:
-#         form = UploadSpeciesListForm()
-#         return render(request, 'bibliography/specieslist_form.html',
-#                       {'form': form})
+def handle_uploaded_ocurrences_list_file(file, publication_pk):
+    import pandas as pd
+    df = pd.read_csv(file)
+    columns_sequence = [number for number in range(1, len(df.columns))]
+    result = pd.DataFrame()
+    result["scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
+    result["latitude"] = df.latitude
+    result["longitude"] = df.longitude
+    result["bibliography"] = Publication.objects.get(pk=publication_pk)
+    result = result.join(
+        pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
+    return result
 
 
 class SpeciesListCreateClass(LoginRequiredMixin, CreateView):
     model = Publication
-    form_class = UpdateSpeciesListForm
+    form_class = UploadSpeciesListForm
 
     def post(self, request, *args, **kwargs):
         form = UploadSpeciesListForm(request.POST, request.FILES)
@@ -147,10 +140,10 @@ SpeciesListCreateView = SpeciesListCreateClass.as_view()
 
 class SpeciesListUpdateClass(LoginRequiredMixin, UpdateView):
     model = Publication
-    form_class = UpdateSpeciesListForm
+    form_class = UploadSpeciesListForm
 
     def post(self, request, *args, **kwargs):
-        form = UpdateSpeciesListForm(request.POST, request.FILES)
+        form = UploadSpeciesListForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['species_list_spreadsheet'],
             publication_pk = request.POST["bibliography"]
@@ -173,10 +166,40 @@ class SpeciesListUpdateClass(LoginRequiredMixin, UpdateView):
 
     def get(self, request, *args, **kwargs):
         pk = self.kwargs.get(self.pk_url_kwarg)
-        form = UpdateSpeciesListForm()
+        form = UploadSpeciesListForm()
         form.fields["bibliography"].queryset = Publication.objects.filter(pk=pk)
         return render(request, 'bibliography/specieslist_form.html',
                       {'form': form})
 
 
 SpeciesListUpdateView = SpeciesListUpdateClass.as_view()
+
+
+class OccurrenceListCreateClass(LoginRequiredMixin, CreateView):
+    model = Publication
+    form_class = UploadOccurrencesListForm
+
+    def post(self, request, *args, **kwargs):
+        form = UploadOccurrencesListForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            uploaded_file = request.FILES['occurrences_list_spreadsheet'],
+            publication_pk = request.POST["bibliography"]
+            df = handle_uploaded_ocurrences_list_file(
+                file=uploaded_file[0],
+                publication_pk=publication_pk)
+            OccurrenceList.objects.bulk_create(
+                OccurrenceList(**vals) for vals in df.to_dict('records'))
+            return HttpResponseRedirect(r('bibliography:publication_detail',
+                                          publication_pk))
+        else:
+            return render(request, 'bibliography/occurrenceslist_form.html', {'form': form})
+
+    def get(self, request, *args, **kwargs):
+        form = UploadOccurrencesListForm()
+        return render(request, 'bibliography/occurrenceslist_form.html',
+                      {'form': form})
+
+
+OccurrenceListCreateView = OccurrenceListCreateClass.as_view()
+

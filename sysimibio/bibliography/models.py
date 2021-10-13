@@ -32,18 +32,18 @@ class Publication(models.Model):
 
 class SpeciesList(models.Model): #todo quizas poner el nombre "bibliography species list"
     scientific_name = models.CharField('Nombre científico', max_length=50)
-    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE) #todo fijarse si es foreing key o many to many
+    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE)
     other_fields_json = models.JSONField(default=dict)
 
     def __str__(self):
         return self.scientific_name
 
 
-class OccurrenceList(models.Model):  #todo quizas poner el nombre "bibliography occurrence list"
+class OccurrenceList(models.Model):
     scientific_name = models.CharField('Nombre científico', max_length=50, blank=True)
-    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE, primary_key=True) #todo fijarse si es foreing key o many to many
-    latitude = models.IntegerField("Latitud", validators=[validate_lat]) #todo añadir validacion usado en imibio tree ecological data
-    longitude = models.IntegerField("Longitud", validators=[validate_lon]) #todo añadir validacion usado en imibio tree ecological data
+    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    latitude = models.IntegerField("Latitud", validators=[validate_lat])
+    longitude = models.IntegerField("Longitud", validators=[validate_lon])
     other_fields_json = models.JSONField(default=dict)
 
     def __str__(self):

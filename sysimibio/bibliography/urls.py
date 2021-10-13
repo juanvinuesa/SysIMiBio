@@ -3,8 +3,8 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from sysimibio.bibliography.views import PublicationList, \
-    PublicationDetail, PublicationUpdateView, PublicationCreateView, upload_specieslist, \
-    SpeciesListUpdateView, SpeciesListCreateView
+    PublicationDetail, PublicationUpdateView, PublicationCreateView, \
+    SpeciesListUpdateView, SpeciesListCreateView, OccurrenceListCreateView
 
 app_name = 'bibliography'
 
@@ -13,10 +13,10 @@ urlpatterns = [
     path('detail/<int:pk>/', PublicationDetail, name='publication_detail'),
     path('list/', PublicationList, name='publication_list'),
     path('edit/<int:pk>/', PublicationUpdateView, name='publication_edit'),
-    path('new/specieslist/', SpeciesListCreateView, name='species_new'),
+    path('new/specieslist/', SpeciesListCreateView, name='species_new'), #todo cambiar a specieslist_new
     path('edit/specieslist/<int:pk>/', SpeciesListUpdateView, name='specieslist_edit'),
+    path('new/occurrenceslist/', OccurrenceListCreateView, name='occurrences_new'), #todo cambiar a occurrenceslist_new
 
-    # path('list/specieslist/', Species_List, name='species_list'),
 ]
 
 if settings.DEBUG:
