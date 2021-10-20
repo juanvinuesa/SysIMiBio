@@ -13,6 +13,7 @@
 <br>
 <a role="button" class="btn navbar-btn btn-primary" href="{% url 'bibliography:publication_new' %}">Agregar
     Publicación</a>
+
 <a role="button" class="btn navbar-btn btn-success" href="{% url 'bibliography:publication_list' %}">Volver a lista</a>
 <a role="button" class="btn navbar-btn btn-warning" href="{% url 'bibliography:publication_edit' pk=publication.pk %}">Editar</a>
 <br>
@@ -74,7 +75,15 @@
         </table>
     </div>
     </div>
-    {% if species_list %}
+<br>
+      <a role="button" class="btn navbar-btn btn-dark" href="{% url 'bibliography:specieslist_new' pk=publication.pk %}">Agregar
+    Lista de especies</a>
+
+<a role="button" class="btn navbar-btn btn-dark" href="{% url 'bibliography:occurrenceslist_new' pk=publication.pk %}">Agregar lista de ocurrencias</a>
+</br>
+<p></p>
+
+    {% if species_list  %}
     <h3>Lista de especies</h3>
     <div class="row">
 
@@ -102,7 +111,31 @@
         </table>
     </div>
     {% endif %}
+ <h3>Lista de occurrencias</h3>
+    <div class="row">
 
+        <table class='table table-striped'>
+            <tbody>
+            <thead>
+            <tr>
+                <th>Nombre científico</th>
+                <th>otras columnas</th>
 
+            </tr>
+
+            </thead>
+            {% for occurrence in occurrence_list %}
+            <tr>
+                <td>
+                    {{ occurrence.scientific_name }}</a>
+                </td>
+                <td>
+                    {{ occurrence.other_fields_json}}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}

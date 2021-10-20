@@ -30,9 +30,9 @@ class Publication(models.Model):
         return r('bibliography:publication_detail', kwargs={'pk': self.pk})
 
 
-class SpeciesList(models.Model): #todo quizas poner el nombre "bibliography species list"
+class SpeciesList(models.Model):
     scientific_name = models.CharField('Nombre científico', max_length=50)
-    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
     other_fields_json = models.JSONField(default=dict)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class SpeciesList(models.Model): #todo quizas poner el nombre "bibliography spec
 
 class OccurrenceList(models.Model):
     scientific_name = models.CharField('Nombre científico', max_length=50, blank=True)
-    bibliography = models.ForeignKey(Publication, on_delete=models.CASCADE)
+    publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
     latitude = models.IntegerField("Latitud", validators=[validate_lat])
     longitude = models.IntegerField("Longitud", validators=[validate_lon])
     other_fields_json = models.JSONField(default=dict)

@@ -37,13 +37,13 @@
             <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
               <div class="card-body">
                   <p>
-                      <label for="{{ form.bibliography.id_for_label }}"> {{ form.bibliography.label }} </label>
-                      {% for error in form.bibliography.errors %}
+                      <label for="{{ form.bibliography.id_for_label }}"> {{ form.publication.label }} </label>
+                      {% for error in form.publication.errors %}
                         <div class="alert alert-warning" role="alert">
                             {{ error }}
                         </div>
                       {% endfor %}
-                      {{ form.bibliography}}
+                      {{ form.publication}}
                   </p>
                   <p>
                       <label for="{{ form.species_list_spreadsheet.id_for_label }}"> {{ form.species_list_spreadsheet.label }}  </label>

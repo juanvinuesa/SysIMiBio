@@ -28,7 +28,7 @@ class PublicationModelTest(TestCase):
         )
         self.species_list = SpeciesList.objects.create(
             scientific_name='Cercopithecidae', #Monkey
-            bibliography=self.p1,
+            publication=self.p1,
             other_fields_json={'kingdom': 'animalia',
                                'identificador': {0: 'algun identificador'},
                                'herbario': {"herbario_name": "JBRJ"},
@@ -37,7 +37,7 @@ class PublicationModelTest(TestCase):
 
         self.occurrence_list = OccurrenceList.objects.create(
             scientific_name='Sus scrofa', #PIG
-            bibliography=self.p2,
+            publication=self.p2,
             latitude=3911,
             longitude=314,
             other_fields_json='{}'
@@ -62,7 +62,7 @@ class PublicationModelTest(TestCase):
         occ_list = OccurrenceList.objects.get(scientific_name='Sus scrofa')
         self.assertEqual(occ_list.latitude, 3911)
         self.assertEqual(occ_list.longitude, 314)
-        self.assertEqual(spp_list.bibliography.title, 'Jorge el curioso')
+        self.assertEqual(spp_list.publication.title, 'Jorge el curioso')
         self.assertEqual(p1.title, 'Jorge el curioso')
         self.assertEqual(p1.author, 'juan')
         self.assertEqual(p1.publication_year, '2001')

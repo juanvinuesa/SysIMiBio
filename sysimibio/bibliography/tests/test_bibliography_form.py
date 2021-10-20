@@ -63,22 +63,6 @@ class PublicationRegisterForm(TestCase):
         form.is_valid()
         return form
 
-
-
-    def assertFormCode(self, form, field, code):
-        error = form.errors.as_data()
-        error_list = error[field]
-        exception = error_list[0]
-        self.assertEqual(code, exception.code)
-
-    # def test_isbn_valid(self): #todo hacer funcionar (arroja none)
-    #     form = self.make_PublicationForm_validated(ISBN='1')
-    #     self.assertFormCode(form, 'ISBN', 'Ingrese un ISBN con 10 o 13 caracteres')
-
-    # def test_doi_valid(self):
-    #     form = self.make_PublicationForm_validated(DOI='100.4031')
-    #     self.assertFormCode(form, 'DOI', 'Doi tiene que comenzar con 10.')
-
     def test_form_is_valid(self):
         form = self.make_publicationform_validated()  # Le paso data valida
         form = form.is_valid()
