@@ -76,10 +76,14 @@
     </div>
     </div>
 <br>
+{% if  not species_list  %}
       <a role="button" class="btn navbar-btn btn-dark" href="{% url 'bibliography:specieslist_new' pk=publication.pk %}">Agregar
     Lista de especies</a>
-
+{% endif  %}
+{% if  not occurrence_list  %}
 <a role="button" class="btn navbar-btn btn-dark" href="{% url 'bibliography:occurrenceslist_new' pk=publication.pk %}">Agregar lista de ocurrencias</a>
+{% endif %}
+
 </br>
 <p></p>
 
@@ -119,6 +123,8 @@
             <thead>
             <tr>
                 <th>Nombre científico</th>
+                <th>Longitud</th>
+                <th>Latitud</th>
                 <th>otras columnas</th>
 
             </tr>
@@ -128,6 +134,12 @@
             <tr>
                 <td>
                     {{ occurrence.scientific_name }}</a>
+                </td>
+                <td>
+                    {{ occurrence.longitude }}</a>
+                </td>
+                <td>
+                    {{ occurrence.latitude }}</a>
                 </td>
                 <td>
                     {{ occurrence.other_fields_json}}

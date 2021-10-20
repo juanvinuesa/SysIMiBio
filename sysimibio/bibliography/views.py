@@ -99,7 +99,7 @@ def handle_uploaded_species_list_file(file, publication_pk):
 def handle_uploaded_ocurrences_list_file(file, publication_pk):
     import pandas as pd
     df = pd.read_csv(file)
-    columns_sequence = [number for number in range(1, len(df.columns))]
+    columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
     result["scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
     result["latitude"] = df.latitude
