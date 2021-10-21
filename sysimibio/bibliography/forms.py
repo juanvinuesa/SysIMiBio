@@ -2,13 +2,13 @@ from django import forms
 from django.core.exceptions import ValidationError
 from isbnlib import is_isbn10, to_isbn13
 
-from sysimibio.bibliography.models import Publication
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
 
 class PublicationForm(forms.ModelForm):
     class Meta:
         model = Publication
-        fields='__all__'
+        fields = '__all__'
         exclude = ('created_by',)
 
     def clean(self):
@@ -27,15 +27,37 @@ class PublicationForm(forms.ModelForm):
 
         return cleaned_data
 
-
     def clean_ISBN(self):
             isbn = self.cleaned_data.get("ISBN")
             if isbn:
                 if is_isbn10(isbn):
                     isbn = to_isbn13(isbn)
                 if "-" in isbn:
-                    isbn = isbn.replace('-','')
+                    isbn = isbn.replace('-', '')
                 if "." in isbn:
                     isbn = isbn.replace('.', '')
-                return isbn
+
             return isbn
+
+    def clean_DOI(self):
+        doi = self.cleaned_data.get("DOI")
+        if doi.endswith("/"):
+            doi = doi[:-1]
+        return doi
+
+
+class UploadSpeciesListForm(forms.ModelForm):
+    species_list_spreadsheet = forms.FileField()
+
+    class Meta:
+        model = SpeciesList
+        exclude = ('scientific_name', 'other_fields_json',)
+
+
+class UploadOccurrencesListForm(forms.ModelForm):
+    occurrences_list_spreadsheet = forms.FileField()
+
+    class Meta:
+        model = OccurrenceList
+        exclude = ('scientific_name', 'latitude', 'longitude', 'other_fields_json',)
+
