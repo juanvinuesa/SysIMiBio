@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render, resolve_url as r
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from isbnlib import is_isbn13, meta
-
+from djgeojson.views import GeoJSONLayerView
 from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
@@ -244,3 +244,13 @@ class OccurrenceListUpdateClass(LoginRequiredMixin, UpdateView):
 
 
 OccurrenceListUpdateView = OccurrenceListUpdateClass.as_view()
+
+class OccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerView):
+    model = OccurrenceList
+    properties = ('popup_content',)
+
+    def get_queryset(self, **kwargs):
+        self.obs = super().get_queryset()
+        return self.obs.filter(publication=self.kwargs['pk'])
+
+OccurrenceListGeoJsonView = OccurrenceListGeoJsonClass.as_view()

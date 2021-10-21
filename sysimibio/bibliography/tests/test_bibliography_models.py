@@ -139,3 +139,13 @@ class PublicationModelTest(TestCase):
 
         self.assertIn('kingdom', self.species_list.other_fields_json)
         self.assertIn('identificador', self.species_list.other_fields_json)
+
+    def test_occurrence_list_geojson_field(self):
+        self.occurrence_list.latitude = -26
+        self.occurrence_list.longitude = -55
+        self.occurrence_list.save()
+        self.assertTrue(self.occurrence_list.geom.is_valid)
+
+    def test_occurrence_list_popup(self):
+        self.assertEqual(self.occurrence_list.popup_content,
+                         '<p><strong><span>Nombre científico: </span>Sus scrofa</strong></p><span><a href=/bibliography/detail/2/>Detalles de la publicación</a></strong><br>')

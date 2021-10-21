@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import resolve_url as r
-
+from geojson import Point
 from sysimibio.bibliography.validators import validate_isbn, validate_doi_prefix, validate_doi_slash
 from sysimibio.imibio_tree_ecological_data.validators import validate_lat, validate_lon
 
@@ -27,7 +27,7 @@ class Publication(models.Model):
         return f'{self.author}, {self.publication_year} - {self.title}'
 
     def get_absolute_url(self):
-        return r('bibliography:publication_detail', kwargs={'pk': self.pk})
+        return r('bibliography:publication_detail', self.pk)
 
 
 class SpeciesList(models.Model):
@@ -45,6 +45,19 @@ class OccurrenceList(models.Model):
     latitude = models.IntegerField("Latitud", validators=[validate_lat])
     longitude = models.IntegerField("Longitud", validators=[validate_lon])
     other_fields_json = models.JSONField(default=dict)
+
+    def get_publication_absolute_url(self):
+        return r('bibliography:publication_detail', self.publication.pk)
+
+    @property
+    def geom(self):
+        return Point((self.longitude, self.latitude))
+
+    @property
+    def popup_content(self):
+        popup = f'<p><strong><span>Nombre científico: </span>{self.scientific_name}</strong></p>'
+        popup += f'<span><a href={self.get_publication_absolute_url()}>Detalles de la publicación</a></strong><br>'
+        return popup
 
     def __str__(self):
         return self.scientific_name
