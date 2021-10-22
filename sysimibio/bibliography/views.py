@@ -5,8 +5,9 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.shortcuts import render, resolve_url as r
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
-from isbnlib import is_isbn13, meta
 from djgeojson.views import GeoJSONLayerView
+from isbnlib import is_isbn13, meta
+
 from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
@@ -101,7 +102,8 @@ def handle_uploaded_ocurrences_list_file(file, publication_pk):
     df = pd.read_csv(file)
     columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
-    result["scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
+    result[
+        "scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
     result["latitude"] = df.latitude
     result["longitude"] = df.longitude
     result["publication"] = Publication.objects.get(pk=publication_pk)
@@ -245,7 +247,8 @@ class OccurrenceListUpdateClass(LoginRequiredMixin, UpdateView):
 
 OccurrenceListUpdateView = OccurrenceListUpdateClass.as_view()
 
-class OccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerView):
+
+class PublicationOccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerView):
     model = OccurrenceList
     properties = ('popup_content',)
 
@@ -253,4 +256,21 @@ class OccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerView):
         self.obs = super().get_queryset()
         return self.obs.filter(publication=self.kwargs['pk'])
 
-OccurrenceListGeoJsonView = OccurrenceListGeoJsonClass.as_view()
+
+PublicationOccurrenceListGeoJsonView = PublicationOccurrenceListGeoJsonClass.as_view()
+
+
+class AllPublicationOccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerView):
+    model = OccurrenceList
+    properties = ('popup_content',)
+
+
+AllPublicationOccurrenceListGeoJsonView = AllPublicationOccurrenceListGeoJsonClass.as_view()
+
+
+class map_all_publication_occurrences(LoginRequiredMixin, ListView):
+    model = Publication
+    template_name = 'bibliography/occurrencelist_map.html'
+
+
+AllPublicationOccurrencesMap = map_all_publication_occurrences.as_view()

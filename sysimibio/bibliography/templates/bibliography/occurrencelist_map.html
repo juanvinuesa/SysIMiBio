@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+
+{% load static %}
+
+{% block js %}
+{% leaflet_js %}
+{% endblock %}
+
+{% block css %}
+{% leaflet_css %}
+{% endblock %}
+
+{% block content %}
+
+<style>
+body {
+    padding: 0;
+    margin: 100;
+    }
+html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+</style>
+
+ <div id="map">
+    {% leaflet_map "map" %}
+ </div>
+
+<script>
+      var dataurl = '{% url "bibliography:all_publication_occurrenceslist_geojson" %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
+            }}).addTo(map);
+          });
+      });
+
+
+</script>
+
+{% endblock content %}

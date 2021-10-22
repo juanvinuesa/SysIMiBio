@@ -170,7 +170,7 @@
 
 </div>
 <script>
-      var dataurl = '{% url "bibliography:occurrenceslist_geojson" pk=publication.pk%}';
+      var dataurl = '{% url "bibliography:publication_occurrenceslist_geojson" pk=publication.pk%}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         // Download GeoJSON data with Ajax
