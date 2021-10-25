@@ -5,8 +5,8 @@ from django.urls import path
 from sysimibio.bibliography.views import PublicationList, \
     PublicationDetail, PublicationUpdateView, PublicationCreateView, \
     SpeciesListUpdateView, SpeciesListCreateView, OccurrenceListCreateView, OccurrenceListUpdateView, \
-    PublicationOccurrenceListGeoJsonView, AllPublicationOccurrenceListGeoJsonView, map_all_publication_occurrences, \
-    AllPublicationOccurrencesMap
+    PublicationOccurrenceListGeoJsonView, AllPublicationOccurrenceListGeoJsonView, AllPublicationOccurrencesMap, \
+    ListAllPublicationOccurrences, ListAllPublicationSpecies, PublicationListFilter
 
 app_name = 'bibliography'
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('new/', PublicationCreateView, name='publication_new'),
     path('detail/<int:pk>/', PublicationDetail, name='publication_detail'),
     path('list/', PublicationList, name='publication_list'),
+    path('list/filter/', PublicationListFilter, name='publication_list_filter'),
     path('edit/<int:pk>/', PublicationUpdateView, name='publication_edit'),
     path('new/specieslist/<int:pk>/', SpeciesListCreateView, name='specieslist_new'),
     path('edit/specieslist/<int:pk>/', SpeciesListUpdateView, name='specieslist_edit'),
@@ -24,6 +25,8 @@ urlpatterns = [
     path('geojson/occurrenceslist/', AllPublicationOccurrenceListGeoJsonView,
          name='all_publication_occurrenceslist_geojson'),
     path('map/occurrenceslist/', AllPublicationOccurrencesMap, name='map_all_publication_occurrenceslist'),
+    path('list/occurrenceslist/', ListAllPublicationOccurrences, name='list_all_publication_occurrenceslist'),
+    path('list/specieslist/', ListAllPublicationSpecies, name='list_all_publication_specieslist'),
 ]
 
 if settings.DEBUG:

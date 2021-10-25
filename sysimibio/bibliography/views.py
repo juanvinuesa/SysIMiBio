@@ -7,7 +7,7 @@ from django.shortcuts import render, resolve_url as r
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from djgeojson.views import GeoJSONLayerView
 from isbnlib import is_isbn13, meta
-
+from sysimibio.bibliography.filters import PublicationFilters
 from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
@@ -32,6 +32,22 @@ class PublicationListClass(LoginRequiredMixin, ListView):
 
 
 PublicationList = PublicationListClass.as_view()
+
+
+def PublicationListFilter(request):
+    # paginate_by = 6
+    # model = Publication
+    template_name = 'bibliography/publication_filter_list.html'
+    object_list = Publication.objects.all()
+    publication_list = PublicationFilters(request.GET, queryset=object_list)
+    context = {
+        'objects_list': object_list,
+        'filter': publication_list
+    }
+    return render(request, template_name, context)
+
+
+# PublicationListFilter = PublicationListFilterClass.as_view()
 
 
 class PublicationDetailClass(LoginRequiredMixin, DetailView):
@@ -274,3 +290,19 @@ class map_all_publication_occurrences(LoginRequiredMixin, ListView):
 
 
 AllPublicationOccurrencesMap = map_all_publication_occurrences.as_view()
+
+
+class list_all_publication_occurrenceslist(LoginRequiredMixin, ListView):
+    model = OccurrenceList
+    ordering = ['-publication__created_at']
+
+
+ListAllPublicationOccurrences = list_all_publication_occurrenceslist.as_view()
+
+
+class list_all_publication_specieslist(LoginRequiredMixin, ListView):
+    model = SpeciesList
+    ordering = ['-publication__created_at']
+
+
+ListAllPublicationSpecies = list_all_publication_specieslist.as_view()
