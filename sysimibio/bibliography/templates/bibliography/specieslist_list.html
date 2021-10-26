@@ -2,6 +2,15 @@
 
 {% block content %}
 <br>
+<div class="row">
+    <div class="col-sm">
+        <form method="get">
+            {{ filter.form }}
+            <button type="button" class="btn btn-primary"> Filtrar </button>
+        </form>
+    </div>
+</div>
+<br>
 <table class = 'table table-striped'>
     <thead>
     <tr>
@@ -35,8 +44,8 @@
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-        <a  role="button" class="btn navbar-btn btn-light btn-sm"   <a href="?page=1"> Primera</a>
-        <a  role="button" class="btn navbar-btn btn-light btn-sm" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        <a  role="button" class="btn navbar-btn btn-dark btn-sm"   <a href="?page=1"> Primera</a>
+        <a  role="button" class="btn navbar-btn btn-dark btn-sm" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
         {% endif %}
 
         <span class="current">
@@ -44,8 +53,8 @@
         </span>
 
         {% if page_obj.has_next %}
-        <a  role="button" class="btn navbar-btn btn-light btn-sm" <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-        <a  role="button" class="btn navbar-btn btn-light btn-sm"  <a href="?page={{ page_obj.paginator.num_pages }}">Ultima</a>
+        <a  role="button" class="btn navbar-btn btn-dark btn-sm" <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+        <a  role="button" class="btn navbar-btn btn-dark btn-sm"  <a href="?page={{ page_obj.paginator.num_pages }}">Ultima</a>
         {% endif %}
     </span>
 </div>

@@ -5,9 +5,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.shortcuts import render, resolve_url as r
 from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django_filters.views import FilterView
 from djgeojson.views import GeoJSONLayerView
 from isbnlib import is_isbn13, meta
-from sysimibio.bibliography.filters import PublicationFilters
+from sysimibio.bibliography.filters import PublicationFilters, SpeciesListFilters, OccurrenceListFilters
 from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
@@ -24,30 +25,14 @@ class PublicationUpdateClass(LoginRequiredMixin, UpdateView):
 PublicationUpdateView = PublicationUpdateClass.as_view()
 
 
-class PublicationListClass(LoginRequiredMixin, ListView):
-    paginate_by = 6
-    model = Publication
-    context_object_name = 'publications'
+class PublicationListClass(LoginRequiredMixin, FilterView):
+    paginate_by = 15
     ordering = ['-publication_year']
+    filterset_class = PublicationFilters
+    template_name = 'bibliography/publication_list.html'
 
 
 PublicationList = PublicationListClass.as_view()
-
-
-def PublicationListFilter(request):
-    # paginate_by = 6
-    # model = Publication
-    template_name = 'bibliography/publication_filter_list.html'
-    object_list = Publication.objects.all()
-    publication_list = PublicationFilters(request.GET, queryset=object_list)
-    context = {
-        'objects_list': object_list,
-        'filter': publication_list
-    }
-    return render(request, template_name, context)
-
-
-# PublicationListFilter = PublicationListFilterClass.as_view()
 
 
 class PublicationDetailClass(LoginRequiredMixin, DetailView):
@@ -102,11 +87,11 @@ PublicationCreateView = PublicationCreateClass.as_view()
 
 def handle_uploaded_species_list_file(file, publication_pk):
     import pandas as pd
-    df = pd.read_csv(file)  # todo confirmar si funcion anda bien con solo una columna, felipe
+    df = pd.read_csv(file)
     columns_sequence = [number for number in range(1, len(df.columns))]
     result = pd.DataFrame()
     result[
-        "scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
+        "scientific_name"] = df.scientific_name
     result["publication"] = Publication.objects.get(pk=publication_pk)
     result = result.join(
         pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
@@ -119,7 +104,7 @@ def handle_uploaded_ocurrences_list_file(file, publication_pk):
     columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
     result[
-        "scientific_name"] = df.scientific_name  # todo como gneralizar eso para que sea la primera columna independiente de su nombre felipe
+        "scientific_name"] = df.scientific_name
     result["latitude"] = df.latitude
     result["longitude"] = df.longitude
     result["publication"] = Publication.objects.get(pk=publication_pk)
@@ -292,17 +277,21 @@ class map_all_publication_occurrences(LoginRequiredMixin, ListView):
 AllPublicationOccurrencesMap = map_all_publication_occurrences.as_view()
 
 
-class list_all_publication_occurrenceslist(LoginRequiredMixin, ListView):
-    model = OccurrenceList
+class list_all_publication_occurrenceslist(LoginRequiredMixin, FilterView):
+    paginate_by = 15
+    template_name = 'bibliography/occurrencelist_list.html'
+    filterset_class = OccurrenceListFilters
     ordering = ['-publication__created_at']
 
 
 ListAllPublicationOccurrences = list_all_publication_occurrenceslist.as_view()
 
 
-class list_all_publication_specieslist(LoginRequiredMixin, ListView):
-    model = SpeciesList
+class list_all_publication_specieslist(LoginRequiredMixin, FilterView):
+    paginate_by = 15
     ordering = ['-publication__created_at']
+    template_name = 'bibliography/specieslist_list.html'
+    filterset_class = SpeciesListFilters
 
 
 ListAllPublicationSpecies = list_all_publication_specieslist.as_view()

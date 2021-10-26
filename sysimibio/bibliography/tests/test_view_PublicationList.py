@@ -35,5 +35,5 @@ class PublicationList(TestCase):
     def test_list_equal(self):
         resp = self.client.get(r('bibliography:publication_list'))
         all_entries = Publication.objects.all().order_by('-publication_year')
-        self.assertQuerysetEqual(resp.context['publications'], all_entries)
+        self.assertQuerysetEqual(resp.context['object_list'], all_entries, ordered=False)
 
