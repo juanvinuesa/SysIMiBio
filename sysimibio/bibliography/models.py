@@ -42,8 +42,8 @@ class SpeciesList(models.Model):
 class OccurrenceList(models.Model):
     scientific_name = models.CharField('Nombre científico', max_length=50, blank=True)
     publication = models.ForeignKey(Publication, on_delete=models.CASCADE)
-    latitude = models.IntegerField("Latitud", validators=[validate_lat])
-    longitude = models.IntegerField("Longitud", validators=[validate_lon])
+    latitude = models.FloatField("Latitud", validators=[validate_lat])
+    longitude = models.FloatField("Longitud", validators=[validate_lon])
     other_fields_json = models.JSONField(default=dict)
 
     def get_publication_absolute_url(self):

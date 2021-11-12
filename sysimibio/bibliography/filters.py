@@ -19,7 +19,9 @@ class PublicationFilters(django_filters.FilterSet):
             Q(DOI__icontains=value) |
             Q(ORCID__icontains=value)
         )
-
+        # queryset = queryset.filter(Q(title__icontains=value) |
+        #     Q(author__icontains=value))
+        # return queryset
 
 class SpeciesListFilters(django_filters.FilterSet):
     scientific_name = django_filters.CharFilter(lookup_expr='icontains', label='Filtrar por nombre científico ')
