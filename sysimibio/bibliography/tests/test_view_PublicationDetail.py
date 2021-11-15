@@ -1,7 +1,8 @@
-from django.test import TestCase
-from sysimibio.bibliography.models import Publication
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
+from sysimibio.bibliography.models import Publication
 
 
 class PublicationDetail(TestCase):
@@ -32,10 +33,12 @@ class PublicationDetail(TestCase):
     #         for expected in content:
     #             self.assertContains(self.resp, expected)
 
+
 class PublicationDetailNotFound(TestCase):
     def setUp(self):
         User.objects.create_user(username="myusername", password="password", email="abc@testmail.com")
         self.client.login(username='myusername', password='password')
         self.resp = self.client.get(r('bibliography:publication_detail', 0))
+
     def test_not_found(self):
         self.assertEqual(404, self.resp.status_code)

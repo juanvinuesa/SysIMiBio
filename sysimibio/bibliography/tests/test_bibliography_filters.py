@@ -1,7 +1,8 @@
-from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
-from sysimibio.bibliography.filters import PublicationFilters, SpeciesListFilters, OccurrenceListFilters
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
+
+from sysimibio.bibliography.filters import PublicationFilters, SpeciesListFilters, OccurrenceListFilters
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
 
 class PublicationFilterTest(TestCase):
@@ -19,7 +20,7 @@ class PublicationFilterTest(TestCase):
             subject='One,',
             observations='article',
             created_by=user
-            )
+        )
         self.p2 = Publication.objects.create(
             title='people report',
             publication_year='2011',
@@ -47,7 +48,6 @@ class PublicationFilterTest(TestCase):
         qs = Publication.objects.all()
         f = PublicationFilters()
         result = f.my_custom_filter(qs, 'title', 'people report')
-        print(len(result))
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].title, self.p2.title)
 
@@ -85,7 +85,6 @@ class PublicationFilterTest(TestCase):
         result = f.my_custom_filter(qs, 'subject', 'One')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].subject, self.p1.subject)
-
 
     def test_ORCID_filter(self):
         qs = Publication.objects.all()
@@ -146,14 +145,14 @@ class SpeciesListFilterTest(TestCase):
 
     def test_specieslist_ScientificName_filter(self):
         qs = SpeciesList.objects.all()
-        f = SpeciesListFilters(data={'scientific_name' : 'Cercopithecidae'}, queryset=qs)
+        f = SpeciesListFilters(data={'scientific_name': 'Cercopithecidae'}, queryset=qs)
         result = f.qs
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].scientific_name, self.species_list.scientific_name)
 
     def test_occurrencelist_ScientificName_filter(self):
         qs = OccurrenceList.objects.all()
-        f = OccurrenceListFilters(data={'scientific_name' : 'Sus scrofa'}, queryset=qs)
+        f = OccurrenceListFilters(data={'scientific_name': 'Sus scrofa'}, queryset=qs)
         result = f.qs
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].scientific_name, self.occurrence_list.scientific_name)

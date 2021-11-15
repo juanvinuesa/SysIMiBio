@@ -38,7 +38,8 @@ class OccurrenceListViewNewPost(TestCase):
         try:
             myfile = open('test.csv', 'w')
             wr = csv.writer(myfile)
-            wr.writerow(('scientific_name', 'latitude', 'longitude', 'herbarium', 'kingdom', 'conservation_status', 'autor'))
+            wr.writerow(
+                ('scientific_name', 'latitude', 'longitude', 'herbarium', 'kingdom', 'conservation_status', 'autor'))
             wr.writerow(('1', -26, -55, 'herbarium1', 'kingdom1', 'status1', 'felipe'))
             wr.writerow(('2', -26, -55, 'herbarium2', 'kingdom2', 'status2', 'juan'))
             wr.writerow(('3', -26, -55, 'herbarium3', 'kingdom3', 'status3', 'francisco'))
@@ -46,6 +47,7 @@ class OccurrenceListViewNewPost(TestCase):
             myfile.close()
 
         return myfile
+
     def setUp(self):
         self.user = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.client.login(username='Florencia', password='florpassword')
@@ -57,17 +59,14 @@ class OccurrenceListViewNewPost(TestCase):
         myfile = self.generate_file()
         file_path = myfile.name
         f = open(file_path, "r")
-        self.resp = self.client.post(r('bibliography:occurrenceslist_new', self.publication1.pk), {'occurrences_list_spreadsheet': f, 'publication': self.publication1.pk})
+        self.resp = self.client.post(r('bibliography:occurrenceslist_new', self.publication1.pk),
+                                     {'occurrences_list_spreadsheet': f, 'publication': self.publication1.pk})
 
     def test_post(self):
         self.assertEqual(302, self.resp.status_code)
 
     def test_redirect(self):
         self.assertRedirects(self.resp, r('bibliography:publication_detail', 1))
-
-    # def test_use_template(self):
-    #     """must use publication_detail.html template"""
-    #     self.assertTemplateUsed(self.resp, 'bibliography/detail')
 
     def test_exist_species_list(self):
         self.assertTrue(OccurrenceList.objects.exists())
@@ -84,9 +83,11 @@ class OccurrenceViewNewPostInvalid(TestCase):
         )
         data = SimpleUploadedFile("species_list.csv", b"file_content", content_type="text/csv")
         data_manual = {'file': data,
-                       'scientific_name':'juan',
-                        'publication': self.publication1} #Esto carga el archivo vacio
-        self.resp = self.client.post(r('bibliography:occurrenceslist_new', self.publication1.pk), {'occurrences_list_spreadsheet': data_manual, 'bibliography': self.publication1.pk})
+                       'scientific_name': 'juan',
+                       'publication': self.publication1}  # Esto carga el archivo vacio
+        self.resp = self.client.post(r('bibliography:occurrenceslist_new', self.publication1.pk),
+                                     {'occurrences_list_spreadsheet': data_manual,
+                                      'bibliography': self.publication1.pk})
 
     def test_post(self):
         self.assertEqual(200, self.resp.status_code)
