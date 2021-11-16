@@ -25,7 +25,8 @@ class SpeciesListUpdateTest(TestCase):
     def test_update_specieslist(self):
         user = User.objects.create_user(username="myusername", password="password", email="abc@testmail.com")
         self.client.login(username='myusername', password='password')
-        self.p1 = Publication.objects.create(title='Test de species list', publication_year='1940', author='juan', created_by=user)
+        self.p1 = Publication.objects.create(title='Test de species list', publication_year='1940', author='juan',
+                                             created_by=user)
         myfile = self.generate_file()
         file_path = myfile.name
         f = open(file_path, "rb")
@@ -39,6 +40,3 @@ class SpeciesListUpdateTest(TestCase):
              'publication': self.p1.pk})
         self.species_list.refresh_from_db()
         self.assertEqual(response.status_code, 302)
-
-
-        # self.assertEqual(species_list.scientific_name, "BRS")

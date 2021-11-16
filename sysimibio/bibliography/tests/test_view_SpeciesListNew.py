@@ -1,17 +1,20 @@
+import csv
+
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
+
+from sysimibio.bibliography.forms import UploadSpeciesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList
-from sysimibio.bibliography.forms import  UploadSpeciesListForm
-from django.core.files.uploadedfile import SimpleUploadedFile
-import csv
+
 
 class SpeciesListViewNewGet(TestCase):
 
     def setUp(self):
         User.objects.create_user(username="myusername", password="password", email="abc@testmail.com")
         self.client.login(username='myusername', password='password')
-        self.resp = self.client.get(r('bibliography:specieslist_new',1))
+        self.resp = self.client.get(r('bibliography:specieslist_new', 1))
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
@@ -43,6 +46,7 @@ class SpeciesListViewNewPost(TestCase):
             myfile.close()
 
         return myfile
+
     def setUp(self):
         self.user = User.objects.create_user('Florencia', 'flor@imibio.com', 'florpassword')
         self.client.login(username='Florencia', password='florpassword')
@@ -54,7 +58,8 @@ class SpeciesListViewNewPost(TestCase):
         myfile = self.generate_file()
         file_path = myfile.name
         f = open(file_path, "r")
-        self.resp = self.client.post(r('bibliography:specieslist_new', self.publication1.pk), {'species_list_spreadsheet': f, 'publication': self.publication1.pk})
+        self.resp = self.client.post(r('bibliography:specieslist_new', self.publication1.pk),
+                                     {'species_list_spreadsheet': f, 'publication': self.publication1.pk})
 
     def test_post(self):
         self.assertEqual(302, self.resp.status_code)
@@ -81,9 +86,10 @@ class SpeciesListViewNewPostInvalid(TestCase):
         )
         data = SimpleUploadedFile("species_list.csv", b"file_content", content_type="text/csv")
         data_manual = {'file': data,
-                       'scientific_name':'juan',
-                        'publication': self.publication1} #Esto carga el archivo vacio
-        self.resp = self.client.post(r('bibliography:specieslist_new', 1), {'species_list_spreadsheet': data_manual, 'bibliography': self.publication1.pk})
+                       'scientific_name': 'juan',
+                       'publication': self.publication1}  # Esto carga el archivo vacio
+        self.resp = self.client.post(r('bibliography:specieslist_new', 1),
+                                     {'species_list_spreadsheet': data_manual, 'bibliography': self.publication1.pk})
 
     def test_post(self):
         self.assertEqual(200, self.resp.status_code)

@@ -1,8 +1,10 @@
-from django.contrib.auth.models import User
-from django.test import TestCase
-from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 from datetime import datetime
+
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 from sysimibio.imibio_tree_ecological_data.validators import validate_lat, validate_lon
 
 
@@ -17,7 +19,7 @@ class PublicationModelTest(TestCase):
             created_by=user,
             URL='http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/TeoriaEvolucion-Darwin.pdf',
             ORCID='https://orcid.org/0000-0002-1825-0097'
-            )
+        )
         self.p2 = Publication.objects.create(
             DOI='10.1038/s41467-021-22702-2',
             created_by=user
@@ -27,7 +29,7 @@ class PublicationModelTest(TestCase):
             created_by=user
         )
         self.species_list = SpeciesList.objects.create(
-            scientific_name='Cercopithecidae', #Monkey
+            scientific_name='Cercopithecidae',  # Monkey
             publication=self.p1,
             other_fields_json={'kingdom': 'animalia',
                                'identificador': {0: 'algun identificador'},
@@ -36,22 +38,19 @@ class PublicationModelTest(TestCase):
         )
 
         self.occurrence_list = OccurrenceList.objects.create(
-            scientific_name='Sus scrofa', #PIG
+            scientific_name='Sus scrofa',  # PIG
             publication=self.p2,
-            latitude=3911,
-            longitude=314,
+            latitude=-26,
+            longitude=-55,
             other_fields_json='{}'
-
-
         )
-
 
     def test_check_object(self):
         self.assertTrue(Publication.objects.exists())
         self.assertTrue(SpeciesList.objects.exists())
         self.assertTrue(OccurrenceList.objects.exists())
 
-    def test_count_created_objects(self): #must be 3 //
+    def test_count_created_objects(self):  # must be 3 //
         self.assertEqual(Publication.objects.count(), 3)
         self.assertEqual(SpeciesList.objects.count(), 1)
         self.assertEqual(OccurrenceList.objects.count(), 1)
@@ -60,8 +59,8 @@ class PublicationModelTest(TestCase):
         p1 = Publication.objects.get(title='Jorge el curioso')
         spp_list = SpeciesList.objects.get(scientific_name='Cercopithecidae')
         occ_list = OccurrenceList.objects.get(scientific_name='Sus scrofa')
-        self.assertEqual(occ_list.latitude, 3911)
-        self.assertEqual(occ_list.longitude, 314)
+        self.assertEqual(occ_list.latitude, -26)
+        self.assertEqual(occ_list.longitude, -55)
         self.assertEqual(spp_list.publication.title, 'Jorge el curioso')
         self.assertEqual(p1.title, 'Jorge el curioso')
         self.assertEqual(p1.author, 'juan')
@@ -69,7 +68,8 @@ class PublicationModelTest(TestCase):
         self.assertEqual(p1.observations, '')
         self.assertEqual(p1.subject, '')
         self.assertEqual(p1.ORCID, 'https://orcid.org/0000-0002-1825-0097')
-        self.assertEqual(p1.URL, 'http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/TeoriaEvolucion-Darwin.pdf')
+        self.assertEqual(p1.URL,
+                         'http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/TeoriaEvolucion-Darwin.pdf')
 
     def test_check_object_is_article(self):
         self.assertTrue(self.p2.DOI)
@@ -112,7 +112,8 @@ class PublicationModelTest(TestCase):
         self.assertFalse(self.p2.imibio)
 
     def test_Url_field(self):
-        self.assertEqual(self.p1.URL, "http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/TeoriaEvolucion-Darwin.pdf")
+        self.assertEqual(self.p1.URL,
+                         "http://bibliotecadigital.ilce.edu.mx/Colecciones/ObrasClasicas/_docs/TeoriaEvolucion-Darwin.pdf")
 
     def test_ORCID_field(self):
         self.assertEqual(self.p1.ORCID, 'https://orcid.org/0000-0002-1825-0097')
@@ -133,9 +134,9 @@ class PublicationModelTest(TestCase):
         self.assertTrue(self.species_list.other_fields_json)
         self.assertTrue(self.species_list.other_fields_json.keys())
         self.assertEqual(self.species_list.other_fields_json, {'kingdom': 'animalia',
-                               'identificador': {0: 'algun identificador'},
-                               'herbario': {"herbario_name": "JBRJ"},
-                               'Estatus  de conservacion': "amenazada"})
+                                                               'identificador': {0: 'algun identificador'},
+                                                               'herbario': {"herbario_name": "JBRJ"},
+                                                               'Estatus  de conservacion': "amenazada"})
 
         self.assertIn('kingdom', self.species_list.other_fields_json)
         self.assertIn('identificador', self.species_list.other_fields_json)

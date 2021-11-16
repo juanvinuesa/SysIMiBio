@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
+
 from sysimibio.bibliography.models import Publication
 
 
@@ -36,4 +37,3 @@ class PublicationList(TestCase):
         resp = self.client.get(r('bibliography:publication_list'))
         all_entries = Publication.objects.all().order_by('-publication_year')
         self.assertQuerysetEqual(resp.context['object_list'], all_entries, ordered=False)
-

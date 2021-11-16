@@ -35,7 +35,7 @@ class PublicationRegisterForm(TestCase):
     def test_publicationform_has_fields(self):
         self.assertSequenceEqual(
             ['publication_year', 'title', 'author', 'DOI', 'ISBN'
-             , 'subject', 'ORCID', 'URL', 'observations', 'imibio', 'crossref'], list(self.publication_form.fields))
+                , 'subject', 'ORCID', 'URL', 'observations', 'imibio', 'crossref'], list(self.publication_form.fields))
 
     def make_publicationform_validated(self, **kwargs):
         user = User.objects.get(pk=1)
@@ -43,7 +43,6 @@ class PublicationRegisterForm(TestCase):
             ISBN='9780618884117',
             crossref=True,
             created_by=user
-
         )
         data = dict(valid, **kwargs)
         form = PublicationForm(data)
@@ -56,7 +55,6 @@ class PublicationRegisterForm(TestCase):
             ISBN='2',
             crossref=True,
             created_by=user
-
         )
         data = dict(invalid, **kwargs)
         form = PublicationForm(data)
@@ -69,7 +67,7 @@ class PublicationRegisterForm(TestCase):
         self.assertTrue(form)
 
     def test_form_is_not_valid(self):
-        form = self.make_publicationform_not_validated() #le paso data invalida
+        form = self.make_publicationform_not_validated()  # le paso data invalida
         form = form.is_valid()
         self.assertFalse(form)
 
@@ -79,7 +77,7 @@ class PublicationRegisterForm(TestCase):
         self.assertListEqual(['__all__'], list(form.errors))
 
     def test_wrong_isbn(self):
-        form = PublicationForm(data={"ISBN": "123"}) #testeo un isbn de 3 digitos
+        form = PublicationForm(data={"ISBN": "123"})  # testeo un isbn de 3 digitos
 
         self.assertEqual(
             form.errors["ISBN"], ["Ingrese un ISBN con 10 o 13 caracteres"]
@@ -92,16 +90,19 @@ class PublicationRegisterForm(TestCase):
             form.errors["DOI"], ["Doi tiene que comenzar con 10."]
         )
 
-    def test_form_error_one(self): #testeo cuando el formulario esta mal cargado, si crossref esta desactivado hay que cargar title, publication_year, author
+    def test_form_error_one(
+            self):  # testeo cuando el formulario esta mal cargado, si crossref esta desactivado hay que cargar title, publication_year, author
         form = PublicationForm(data={"crossref": False, "title": "", "publication_year": "", "author": ""})
 
         self.assertEqual(
-            form.errors["__all__"], ["Si la publicacion no posee DOI ni ISBN, cargar Titulo, autor y año de publicacion"]
+            form.errors["__all__"],
+            ["Si la publicacion no posee DOI ni ISBN, cargar Titulo, autor y año de publicacion"]
         )
 
-    def test_form_error_two(self): #testeo cuando el formulario posee error de doi y isbn vacio
+    def test_form_error_two(self):  # testeo cuando el formulario posee error de doi y isbn vacio
         form = PublicationForm(data={"DOI": "", "ISBN": "", "crossref": True})
 
         self.assertEqual(
-            form.errors["__all__"], ["Ingresar DOI o ISBN. Si la publicacion no posee ninguno de los dos deshabilitar checkbox"]
+            form.errors["__all__"],
+            ["Ingresar DOI o ISBN. Si la publicacion no posee ninguno de los dos deshabilitar checkbox"]
         )

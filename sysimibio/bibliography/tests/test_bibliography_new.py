@@ -59,13 +59,15 @@ class PublicationViewNewPostInvalid(TestCase):
 
     def test_form_error_all_blank(self):
         self.assertFalse(self.form.is_valid())
-        self.assertEqual(self.form.errors["__all__"][0], "Si la publicacion no posee DOI ni ISBN, cargar Titulo, autor y año de publicacion") #Primero por la validacion del metodo clean
+        self.assertEqual(self.form.errors["__all__"][0],
+                         "Si la publicacion no posee DOI ni ISBN, cargar Titulo, autor y año de publicacion")  # Primero por la validacion del metodo clean
 
     def test_form_error_crossref_doi_isbn_blank(self):
-        resp = self.client.post(r('bibliography:publication_new'), {'crossref':True})
+        resp = self.client.post(r('bibliography:publication_new'), {'crossref': True})
 
         self.assertFalse(resp.context['form'].is_valid())
-        self.assertEqual(resp.context['form'].errors["__all__"][0], "Ingresar DOI o ISBN. Si la publicacion no posee ninguno de los dos deshabilitar checkbox") #Primero por la validacion del metodo clean
+        self.assertEqual(resp.context['form'].errors["__all__"][0],
+                         "Ingresar DOI o ISBN. Si la publicacion no posee ninguno de los dos deshabilitar checkbox")  # Primero por la validacion del metodo clean
 
     def test_dont_save_publication(self):
         self.assertFalse(Publication.objects.exists())
@@ -125,4 +127,3 @@ class PublicationNewValid(TestCase):
 
     def test_exists_manual(self):
         self.assertTrue(Publication.objects.exists())
-
