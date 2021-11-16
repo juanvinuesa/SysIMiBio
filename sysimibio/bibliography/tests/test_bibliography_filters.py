@@ -47,7 +47,6 @@ class PublicationFilterTest(TestCase):
         qs = Publication.objects.all()
         f = PublicationFilters()
         result = f.my_custom_filter(qs, 'title', 'people report')
-        print(len(result))
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].title, self.p2.title)
 
