@@ -2,6 +2,7 @@ from django.db.models import Q
 import django_filters
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
+
 class PublicationFilters(django_filters.FilterSet):
     q = django_filters.CharFilter(method='my_custom_filter', label="Definir filtro ")
 
@@ -19,9 +20,7 @@ class PublicationFilters(django_filters.FilterSet):
             Q(DOI__icontains=value) |
             Q(ORCID__icontains=value)
         )
-        # queryset = queryset.filter(Q(title__icontains=value) |
-        #     Q(author__icontains=value))
-        # return queryset
+
 
 class SpeciesListFilters(django_filters.FilterSet):
     scientific_name = django_filters.CharFilter(lookup_expr='icontains', label='Filtrar por nombre científico ')
