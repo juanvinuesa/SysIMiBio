@@ -92,7 +92,25 @@
     </div>
 </div>
 <script>
-    var TreeDataURL = '{% url "imibio_tree_ecological_data:Tree_detail_geojson" pk=object.pk %}';
+    var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.field.parcel_id.pk %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(dataurl)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
+                 map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+            }}).addTo(map);
+          });
+      });
+
+      var TreeDataURL = '{% url "imibio_tree_ecological_data:Tree_detail_geojson" pk=object.pk %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         fetch(TreeDataURL)
@@ -107,23 +125,7 @@
             }}).addTo(map);
           });
       });
-      var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.field.parcel_id.pk %}';
-      window.addEventListener("map:init", function (event) {
-        var map = event.detail.map;
-        // Download GeoJSON data with Ajax
-        fetch(dataurl)
-          .then(function(resp) {
-            return resp.json();
-          })
-          .then(function(data) {
-            L.geoJson(data, {
-              onEachFeature: function onEachFeature(feature, layer) {
-                var props = feature.properties.popup_content;
-                layer.bindPopup(props);
-                 map.fitBounds(layer.getBounds(), { maxZoom: 13 });
-            }}).addTo(map);
-          });
-      });
+
 
 </script>
 

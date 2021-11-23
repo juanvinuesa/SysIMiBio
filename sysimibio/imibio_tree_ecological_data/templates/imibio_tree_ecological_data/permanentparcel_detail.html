@@ -176,7 +176,7 @@
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties.popup_content;
                 layer.bindPopup(props);
-                 map.fitBounds(layer.getBounds(), { maxZoom: 13 });
+                 map.fitBounds(layer.getBounds(), { maxZoom: 15 });
             }}).addTo(map);
           });
       });
