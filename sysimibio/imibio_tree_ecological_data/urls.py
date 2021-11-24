@@ -5,7 +5,7 @@ from sysimibio.imibio_tree_ecological_data.views import trees_geojson, PlotListV
     PlotDetailGeoJson, PlotCreateView, PlotEditView, FieldWorkListView, FieldWorkDetailView, FieldWorkEditView, \
     FieldWorkCreateView, TreeCreateView, TreeDetailView, TreeDetailGeoJson, TreeEditView, TreeListView, \
     TreeMeasurementCreateView, TreeMeasurementDetailView, TreeMeasurementEditView, TreeMeasurementListView, \
-    PlotDetailTreesGeoJson
+    PlotDetailTreesGeoJson, FieldWorkDetailTreesGeoJson
 
 app_name = 'imibio_tree_ecological_data'
 
@@ -23,6 +23,8 @@ urlpatterns = [
     path('edit/field/<int:pk>/', FieldWorkEditView, name='field_edit'),
     path('list/field/', FieldWorkListView, name='field_list'),
     path('detail/field/<int:pk>/', FieldWorkDetailView, name='field_detail'),
+    path('geojson/field/<int:pk>/trees', FieldWorkDetailTreesGeoJson, name='trees_field_detail_geojson'),
+
     # tree
     path('create/tree/', TreeCreateView, name='tree_create'),
     path('edit/tree/<int:pk>/', TreeEditView, name='tree_edit'),

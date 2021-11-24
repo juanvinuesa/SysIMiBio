@@ -32,6 +32,15 @@
 
 <br>
 <div class="row">
+    <a role="button" class="btn btn-success btn-lg" href="{% url 'imibio_tree_ecological_data:tree_measurement_list' %}">
+        <span class="align-middle">Lista de mediciones</span>
+    </a>
+    <a role="button" class="btn btn-warning btn-lg"
+       href="{% url 'imibio_tree_ecological_data:tree_measurement_edit' pk=object.pk %}">
+        <span class="align-middle">Editar medición</span>
+    </a>
+</div>
+<div class="row">
 
 </div>
 <h2>Detalles de la medición del Árbol: {{ object.tree.tree_id }}</h2>

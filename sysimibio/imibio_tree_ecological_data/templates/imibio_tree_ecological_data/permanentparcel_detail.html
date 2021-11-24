@@ -109,7 +109,7 @@
         <thead>
         <tr>
             <th>Parcela</th>
-            <th>Fecha</th> <!-- todo mantener fecha? -->
+            <th>Fecha</th>
             <th>Inicio</th>
             <th>Coordenador</th>
             <th>Apoyo</th>
@@ -133,7 +133,34 @@
     </div>
     <div style="background:transparent" class="jumbotron">
     <div class="col-fluid">
-        <h2>Lista mediciones de arboles</h2>
+        <h2>Lista individuos arbóreos</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>specie</th>
+            <th>str</th>
+        </tr>
+        </thead>
+
+        {% for tree in tree_list %}
+        <tr>
+            <td>
+                <a href="{{ tree.get_absolute_url }}">{{ tree.tree_id }}</a>
+            </td>
+            <td>{{ tree.specie }}</td>
+            <td>{{ tree }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+</div>
+<div class="row">
+    <div style="background:transparent" class="jumbotron">
+    <div class="col-fluid">
+        <h2>Lista mediciones de árboles</h2>
 
     <table class='table table-striped'>
         <thead>

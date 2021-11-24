@@ -91,6 +91,38 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="jumbotron">
+    <div class="col-fluid">
+        <h2>Lista mediciones</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Individuo</th>
+            <th>DAB</th>
+            <th>DAP</th>
+            <th>Altura</th>
+        </tr>
+        </thead>
+
+        {% for measure in measurement_list %}
+        <tr>
+            <td>
+                <a href="{{ measure.get_absolute_url }}">{{ measure }}</a>
+            </td>
+            <td>{{ measure.tree.specie }}</td>
+            <td>{{ measure.dab }}</td>
+            <td>{{ measure.dap }}</td>
+            <td>{{ measure.tree_height }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+</div>
 <script>
     var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.field.parcel_id.pk %}';
       window.addEventListener("map:init", function (event) {

@@ -36,7 +36,7 @@ class PlotDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['field_list'] = FieldWork.objects.filter(parcel_id=self.kwargs['pk'])
         context['measurement_list'] = TreeMeasurement.objects.filter(field__parcel_id=self.kwargs['pk'])
-
+        context['tree_list'] = Tree.objects.filter(field__parcel_id=self.kwargs['pk'])
         return context
 
 PlotDetailView = PlotDetailView.as_view()
@@ -92,8 +92,26 @@ FieldWorkListView = FieldWorkListView.as_view()
 class FieldWorkDetailView(LoginRequiredMixin, DetailView):
     model = FieldWork
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['measurement_list'] = TreeMeasurement.objects.filter(field__pk=self.kwargs['pk'])
+        context['tree_list'] = Tree.objects.filter(field__pk=self.kwargs['pk'])
+        return context
+
 
 FieldWorkDetailView = FieldWorkDetailView.as_view()
+
+
+class FieldWorkDetailTreesGeoJson(GeoJSONLayerView):
+    model = Tree
+    properties = ('popup_content',)
+
+    def get_queryset(self):
+        self.tree = super().get_queryset()
+        return self.tree.filter(field__pk=self.kwargs['pk'])
+
+
+FieldWorkDetailTreesGeoJson = FieldWorkDetailTreesGeoJson.as_view()
 
 
 class TreeCreateView(LoginRequiredMixin, CreateView):
@@ -121,6 +139,11 @@ TreeListView = TreeListView.as_view()
 
 class TreeDetailView(LoginRequiredMixin, DetailView):
     model = Tree
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['measurement_list'] = TreeMeasurement.objects.filter(tree__pk=self.kwargs['pk'])
+        return context
 
 
 TreeDetailView = TreeDetailView.as_view()

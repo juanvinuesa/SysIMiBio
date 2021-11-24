@@ -96,6 +96,64 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="jumbotron">
+    <div class="col-fluid">
+        <h2>Lista individuos arbóreos</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>specie</th>
+            <th>Fecha registro</th>
+        </tr>
+        </thead>
+
+        {% for tree in tree_list %}
+        <tr>
+            <td>
+                <a href="{{ tree.get_absolute_url }}">{{ tree.tree_id }}</a>
+            </td>
+            <td>{{ tree.specie }}</td>
+            <td>{{ tree.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+    <div style="background:transparent" class="jumbotron">
+    <div class="col-fluid">
+        <h2>Lista mediciones</h2>
+
+    <table class='table table-striped'>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Individuo</th>
+            <th>DAB</th>
+            <th>DAP</th>
+            <th>Altura</th>
+        </tr>
+        </thead>
+
+        {% for measure in measurement_list %}
+        <tr>
+            <td>
+                <a href="{{ measure.get_absolute_url }}">{{ measure }}</a>
+            </td>
+            <td>{{ measure.tree.specie }}</td>
+            <td>{{ measure.dab }}</td>
+            <td>{{ measure.dap }}</td>
+            <td>{{ measure.tree_height }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+    </div>
+</div>
+
 <script>
       var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.parcel_id.pk %}';
       window.addEventListener("map:init", function (event) {
@@ -110,7 +168,24 @@
               onEachFeature: function onEachFeature(feature, layer) {
                 var props = feature.properties.popup_content;
                 layer.bindPopup(props);
-                 map.fitBounds(layer.getBounds(), { padding: [200, 200] });
+                 map.fitBounds(layer.getBounds(), { maxZoom: 15 });
+            }}).addTo(map);
+          });
+      });
+
+      var TreesFieldDetailGeoJson = '{% url "imibio_tree_ecological_data:trees_field_detail_geojson" pk=object.pk %}';
+      window.addEventListener("map:init", function (event) {
+        var map = event.detail.map;
+        // Download GeoJSON data with Ajax
+        fetch(TreesFieldDetailGeoJson)
+          .then(function(resp) {
+            return resp.json();
+          })
+          .then(function(data) {
+            L.geoJson(data, {
+              onEachFeature: function onEachFeature(feature, layer) {
+                var props = feature.properties.popup_content;
+                layer.bindPopup(props);
             }}).addTo(map);
           });
       });
