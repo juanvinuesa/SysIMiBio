@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from isbnlib import is_isbn10, to_isbn13
 
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
@@ -47,7 +48,7 @@ class PublicationForm(forms.ModelForm):
 
 
 class UploadSpeciesListForm(forms.ModelForm):
-    species_list_spreadsheet = forms.FileField()
+    species_list_spreadsheet = forms.FileField(validators=[FileExtensionValidator(['csv'])])
 
     class Meta:
         model = SpeciesList
@@ -55,7 +56,7 @@ class UploadSpeciesListForm(forms.ModelForm):
 
 
 class UploadOccurrencesListForm(forms.ModelForm):
-    occurrences_list_spreadsheet = forms.FileField()
+    occurrences_list_spreadsheet = forms.FileField(validators=[FileExtensionValidator(['csv'])])
 
     class Meta:
         model = OccurrenceList

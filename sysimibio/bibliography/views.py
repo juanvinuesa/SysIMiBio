@@ -88,23 +88,27 @@ PublicationCreateView = PublicationCreateClass.as_view()
 def handle_uploaded_species_list_file(file, publication_pk):
     import pandas as pd
     df = pd.read_csv(file)
+    assert "scientific_name" in df.columns, "Archivo .CSV Inválido.Debe tener scientific_name como primera columna"
     columns_sequence = [number for number in range(1, len(df.columns))]
     result = pd.DataFrame()
     result[
         "scientific_name"] = df.scientific_name
     result["publication"] = Publication.objects.get(pk=publication_pk)
     result = result.join(
-        pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
+            pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
     return result
 
 
 def handle_uploaded_ocurrences_list_file(file, publication_pk):
     import pandas as pd
     df = pd.read_csv(file)
+    assert "scientific_name" in df.columns, "Archivo .CSV Inválido.Falta columna scientific_name"
+    assert "latitude" in df.columns, "Archivo .CSV Inválido.Falta columna latitude"
+    assert "longitude" in df.columns, "Archivo .CSV Inválido.Falta columna longitude"
     columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
     result[
-        "scientific_name"] = df.scientific_name
+            "scientific_name"] = df.scientific_name
     result["latitude"] = df.latitude
     result["longitude"] = df.longitude
     result["publication"] = Publication.objects.get(pk=publication_pk)
@@ -123,11 +127,16 @@ class SpeciesListCreateClass(LoginRequiredMixin, CreateView):
         if form.is_valid():
             uploaded_file = request.FILES['species_list_spreadsheet'],
             publication_pk = request.POST["publication"]
-            df = handle_uploaded_species_list_file(
-                file=uploaded_file[0],
-                publication_pk=publication_pk)
-            SpeciesList.objects.bulk_create(
-                SpeciesList(**vals) for vals in df.to_dict('records'))
+            try:
+
+                df = handle_uploaded_species_list_file(
+                    file=uploaded_file[0],
+                    publication_pk=publication_pk)
+                SpeciesList.objects.bulk_create(
+                    SpeciesList(**vals) for vals in df.to_dict('records'))
+            except AssertionError as e:
+                messages.error(self.request, e)
+                return render(request, 'bibliography/specieslist_form.html', {'form': form})
             return HttpResponseRedirect(r('bibliography:publication_detail',
                                           publication_pk))
         else:
@@ -154,17 +163,21 @@ class SpeciesListUpdateClass(LoginRequiredMixin, UpdateView):
             uploaded_file = request.FILES['species_list_spreadsheet'],
             publication_pk = request.POST["publication"]
             species_to_update = SpeciesList.objects.filter(publication=publication_pk)
-            df = handle_uploaded_species_list_file(
+            try:
+                df = handle_uploaded_species_list_file(
                 file=uploaded_file[0],
                 publication_pk=publication_pk)
-            dict_list = [row for row in df.to_dict('records')]
-            for index, obj in enumerate(list(species_to_update)):
-                dato = dict_list[index]
-                for key, value in dato.items():
-                    setattr(obj, key, value)
-            SpeciesList.objects.bulk_update(
-                species_to_update,
-                ['scientific_name', 'other_fields_json'])
+                dict_list = [row for row in df.to_dict('records')]
+                for index, obj in enumerate(list(species_to_update)):
+                    dato = dict_list[index]
+                    for key, value in dato.items():
+                        setattr(obj, key, value)
+                SpeciesList.objects.bulk_update(
+                    species_to_update,
+                    ['scientific_name', 'other_fields_json'])
+            except AssertionError as e:
+                messages.error(self.request, e)
+                return render(request, 'bibliography/specieslist_form.html', {'form': form})
             return HttpResponseRedirect(r('bibliography:publication_detail',
                                           publication_pk))
         else:
@@ -191,11 +204,15 @@ class OccurrenceListCreateClass(LoginRequiredMixin, CreateView):
         if form.is_valid():
             uploaded_file = request.FILES['occurrences_list_spreadsheet'],
             publication_pk = request.POST["publication"]
-            df = handle_uploaded_ocurrences_list_file(
-                file=uploaded_file[0],
-                publication_pk=publication_pk)
-            OccurrenceList.objects.bulk_create(
-                OccurrenceList(**vals) for vals in df.to_dict('records'))
+            try:
+                df = handle_uploaded_ocurrences_list_file(
+                    file=uploaded_file[0],
+                    publication_pk=publication_pk)
+                OccurrenceList.objects.bulk_create(
+                    OccurrenceList(**vals) for vals in df.to_dict('records'))
+            except AssertionError as e:
+                messages.error(self.request, e)
+                return render(request, 'bibliography/occurrenceslist_form.html', {'form': form})
             return HttpResponseRedirect(r('bibliography:publication_detail',
                                           publication_pk))
         else:
@@ -222,17 +239,21 @@ class OccurrenceListUpdateClass(LoginRequiredMixin, UpdateView):
             uploaded_file = request.FILES['occurrences_list_spreadsheet'],
             publication_pk = request.POST["publication"]
             occurrences_to_update = OccurrenceList.objects.filter(publication=publication_pk)
-            df = handle_uploaded_ocurrences_list_file(
-                file=uploaded_file[0],
-                publication_pk=publication_pk)
-            dict_list = [row for row in df.to_dict('records')]
-            for index, obj in enumerate(list(occurrences_to_update)):
-                dato = dict_list[index]
-                for key, value in dato.items():
-                    setattr(obj, key, value)
-            OccurrenceList.objects.bulk_update(
-                occurrences_to_update,
-                ['scientific_name', 'latitude', 'longitude', 'other_fields_json'])
+            try:
+                df = handle_uploaded_ocurrences_list_file(
+                    file=uploaded_file[0],
+                    publication_pk=publication_pk)
+                dict_list = [row for row in df.to_dict('records')]
+                for index, obj in enumerate(list(occurrences_to_update)):
+                    dato = dict_list[index]
+                    for key, value in dato.items():
+                        setattr(obj, key, value)
+                OccurrenceList.objects.bulk_update(
+                    occurrences_to_update,
+                    ['scientific_name', 'latitude', 'longitude', 'other_fields_json'])
+            except AssertionError as e:
+                messages.error(self.request, e)
+                return render(request, 'bibliography/occurrenceslist_form.html', {'form': form})
             return HttpResponseRedirect(r('bibliography:publication_detail',
                                           publication_pk))
         else:
