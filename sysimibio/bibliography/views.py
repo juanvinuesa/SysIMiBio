@@ -27,7 +27,7 @@ PublicationUpdateView = PublicationUpdateClass.as_view()
 
 class PublicationListClass(LoginRequiredMixin, FilterView):
     paginate_by = 15
-    ordering = ['-publication_year']
+    queryset = Publication.objects.all().order_by('-publication_year')
     filterset_class = PublicationFilters
     template_name = 'bibliography/publication_list.html'
 
