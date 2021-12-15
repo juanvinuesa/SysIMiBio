@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import resolve_url as r
 from geojson import Point
+
 from sysimibio.bibliography.validators import validate_isbn, validate_doi_prefix, validate_doi_slash
 from sysimibio.imibio_tree_ecological_data.validators import validate_lat, validate_lon
 
