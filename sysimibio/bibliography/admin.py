@@ -7,6 +7,7 @@ from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceLi
 class PublicationAdmin(admin.ModelAdmin):
     form = PublicationForm
 
+
 class SpeciesListForm(admin.ModelAdmin):
     form = UploadSpeciesListForm
 
