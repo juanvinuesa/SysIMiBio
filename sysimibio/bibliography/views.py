@@ -102,9 +102,9 @@ def handle_uploaded_species_list_file(file, publication_pk):
 def handle_uploaded_ocurrences_list_file(file, publication_pk):
     import pandas as pd
     df = pd.read_csv(file)
-    assert "scientific_name" in df.columns, "Archivo .CSV Inválido.Falta columna scientific_name"
-    assert "latitude" in df.columns, "Archivo .CSV Inválido.Falta columna latitude"
-    assert "longitude" in df.columns, "Archivo .CSV Inválido.Falta columna longitude"
+    assert "scientific_name" in df.columns, "Archivo .csv Inválido.Falta columna scientific_name"
+    assert "latitude" in df.columns, "Archivo .csv Inválido.Falta columna latitude"
+    assert "longitude" in df.columns, "Archivo .csv Inválido.Falta columna longitude"
     columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
     result[
