@@ -22,10 +22,18 @@ class PublicationModelTest(TestCase):
         )
         self.p2 = Publication.objects.create(
             DOI='10.1038/s41467-021-22702-2',
+            title='hdad',
+            author='felipe',
+            crossref=True,
+            publication_year=1240,
             created_by=user
         )
         self.p3 = Publication.objects.create(
             ISBN='9780300206111',
+            title='ha',
+            publication_year='2001',
+            author='Juan',
+            crossref=True,
             created_by=user
         )
         self.species_list = SpeciesList.objects.create(
