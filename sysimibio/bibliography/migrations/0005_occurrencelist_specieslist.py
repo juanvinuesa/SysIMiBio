@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name='OccurrenceList',
             fields=[
                 ('scientific_name', models.CharField(blank=True, max_length=50, verbose_name='Nombre científico')),
-                ('bibliography', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='bibliography.publication')),
+                ('bibliography', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, primary_key=False, serialize=False, to='bibliography.publication')),
                 ('latitude', models.IntegerField(validators=[sysimibio.imibio_tree_ecological_data.validators.validate_lat], verbose_name='Latitud')),
                 ('longitude', models.IntegerField(validators=[sysimibio.imibio_tree_ecological_data.validators.validate_lon], verbose_name='Longitud')),
                 ('other_fields_json', models.JSONField(default=dict)),
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SpeciesList',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True, primary_key=False, serialize=False, verbose_name='ID')),
                 ('scientific_name', models.CharField(blank=True, max_length=50, verbose_name='Nombre científico')),
                 ('other_fields_json', models.JSONField(default=dict)),
                 ('bibliography', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bibliography.publication')),
