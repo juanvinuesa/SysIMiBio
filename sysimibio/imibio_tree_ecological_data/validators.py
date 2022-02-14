@@ -10,8 +10,8 @@ def validate_date(value):
 
 
 def validate_temperature(temp):
-    if temp < -5 or temp > 45:
-        raise ValidationError('Temperatura debe estar en un rango desde -5 hasta 45° Celsius',
+    if temp < -5 or temp > 55:
+        raise ValidationError('Temperatura debe estar en un rango desde -5 hasta 55° Celsius',
                               'Temperature out of the range')
 
 
