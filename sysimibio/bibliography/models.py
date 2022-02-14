@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import resolve_url as r
 from geojson import Point
+from view_table.models import ViewTable
 
 from sysimibio.bibliography.validators import validate_isbn, validate_doi_prefix, validate_doi_slash
 from sysimibio.imibio_tree_ecological_data.validators import validate_lat, validate_lon
@@ -62,3 +63,14 @@ class OccurrenceList(models.Model):
 
     def __str__(self):
         return self.scientific_name
+
+
+class SpeciesListViewTable(ViewTable):
+    scientific_name = models.CharField('Nombre científico', max_length=50)
+    occurrence = models.IntegerField()
+
+    @classmethod
+    def get_query(self):
+        # return Book.objects.values('category').annotate(count=models.Count('category')).query
+        # You can also write:
+        return 'select id, scientific_name, occurrence from ( select id, scientific_name, 1 as occurrence from bibliography_specieslist union all select id, scientific_name, 0 as occurrence from bibliography_occurrencelist) a order by a.scientific_name'

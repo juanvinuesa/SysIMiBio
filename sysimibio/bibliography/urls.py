@@ -6,7 +6,8 @@ from sysimibio.bibliography.views import PublicationList, \
     PublicationDetail, PublicationUpdateView, PublicationCreateView, \
     SpeciesListUpdateView, SpeciesListCreateView, OccurrenceListCreateView, OccurrenceListUpdateView, \
     PublicationOccurrenceListGeoJsonView, AllPublicationOccurrenceListGeoJsonView, AllPublicationOccurrencesMap, \
-    ListAllPublicationOccurrences, ListAllPublicationSpecies
+    ListAllPublicationOccurrences, ListAllPublicationSpecies, \
+    ListAllPublicationOccurrencesSpecies
 
 app_name = 'bibliography'
 
@@ -26,6 +27,7 @@ urlpatterns = [
     path('map/occurrenceslist/', AllPublicationOccurrencesMap, name='map_all_publication_occurrenceslist'),
     path('list/occurrenceslist/', ListAllPublicationOccurrences, name='occurrenceslist'),
     path('list/specieslist/', ListAllPublicationSpecies, name='specieslist'),
+    path('list/specieslist2/', ListAllPublicationOccurrencesSpecies, name='occurrencespecieslist'),
 ]
 
 if settings.DEBUG:

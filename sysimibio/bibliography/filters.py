@@ -1,6 +1,6 @@
 from django.db.models import Q
 import django_filters
-from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
+from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList, SpeciesListViewTable
 
 
 class PublicationFilters(django_filters.FilterSet):
@@ -27,6 +27,14 @@ class SpeciesListFilters(django_filters.FilterSet):
 
     class Meta:
         model = SpeciesList
+        fields = ['scientific_name']
+
+
+class OccurrenceSpeciesListFilters(django_filters.FilterSet):
+    scientific_name = django_filters.CharFilter(lookup_expr='icontains', label='Filtrar por nombre científico ')
+
+    class Meta:
+        model = SpeciesListViewTable
         fields = ['scientific_name']
 
 

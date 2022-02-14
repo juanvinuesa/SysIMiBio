@@ -8,7 +8,9 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from django_filters.views import FilterView
 from djgeojson.views import GeoJSONLayerView
 from isbnlib import is_isbn13, meta
-from sysimibio.bibliography.filters import PublicationFilters, SpeciesListFilters, OccurrenceListFilters
+
+from sysimibio.bibliography.filters import PublicationFilters, SpeciesListFilters, OccurrenceListFilters, \
+    OccurrenceSpeciesListFilters
 from sysimibio.bibliography.forms import PublicationForm, UploadSpeciesListForm, UploadOccurrencesListForm
 from sysimibio.bibliography.models import Publication, SpeciesList, OccurrenceList
 
@@ -95,7 +97,7 @@ def handle_uploaded_species_list_file(file, publication_pk):
         "scientific_name"] = df.scientific_name
     result["publication"] = Publication.objects.get(pk=publication_pk)
     result = result.join(
-            pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
+        pd.DataFrame({"other_fields_json": df.iloc[:, columns_sequence].to_dict("records")}))
     return result
 
 
@@ -108,7 +110,7 @@ def handle_uploaded_ocurrences_list_file(file, publication_pk):
     columns_sequence = [number for number in range(3, len(df.columns))]
     result = pd.DataFrame()
     result[
-            "scientific_name"] = df.scientific_name
+        "scientific_name"] = df.scientific_name
     result["latitude"] = df.latitude
     result["longitude"] = df.longitude
     result["publication"] = Publication.objects.get(pk=publication_pk)
@@ -165,8 +167,8 @@ class SpeciesListUpdateClass(LoginRequiredMixin, UpdateView):
             species_to_update = SpeciesList.objects.filter(publication=publication_pk)
             try:
                 df = handle_uploaded_species_list_file(
-                file=uploaded_file[0],
-                publication_pk=publication_pk)
+                    file=uploaded_file[0],
+                    publication_pk=publication_pk)
                 dict_list = [row for row in df.to_dict('records')]
                 for index, obj in enumerate(list(species_to_update)):
                     dato = dict_list[index]
@@ -316,3 +318,13 @@ class list_all_publication_specieslist(LoginRequiredMixin, FilterView):
 
 
 ListAllPublicationSpecies = list_all_publication_specieslist.as_view()
+
+
+class list_publications_occurrencespecies(LoginRequiredMixin, FilterView):
+    paginate_by = 15
+    ordering = ['-publication__created_at']
+    template_name = 'bibliography/occurrencespecieslist_list.html'
+    filterset_class = OccurrenceSpeciesListFilters
+
+
+ListAllPublicationOccurrencesSpecies = list_publications_occurrencespecies.as_view()

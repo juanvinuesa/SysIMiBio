@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'djgeojson',
     'leaflet',
+    'view_table',
 
     # apps
     'sysimibio.core',
