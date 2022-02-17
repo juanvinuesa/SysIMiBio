@@ -27,7 +27,7 @@ urlpatterns = [
     path('map/occurrenceslist/', AllPublicationOccurrencesMap, name='map_all_publication_occurrenceslist'),
     path('list/occurrenceslist/', ListAllPublicationOccurrences, name='occurrenceslist'),
     path('list/specieslist/', ListAllPublicationSpecies, name='specieslist'),
-    path('list/specieslist2/', ListAllPublicationOccurrencesSpecies, name='occurrencespecieslist'),
+    path('list/consolidada/', ListAllPublicationOccurrencesSpecies, name='occurrencespecieslist'),
 ]
 
 if settings.DEBUG:

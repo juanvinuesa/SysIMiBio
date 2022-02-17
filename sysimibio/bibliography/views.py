@@ -322,7 +322,7 @@ ListAllPublicationSpecies = list_all_publication_specieslist.as_view()
 
 class list_publications_occurrencespecies(LoginRequiredMixin, FilterView):
     paginate_by = 15
-    ordering = ['-publication__created_at']
+    ordering = ['-species_name']
     template_name = 'bibliography/occurrencespecieslist_list.html'
     filterset_class = OccurrenceSpeciesListFilters
 
