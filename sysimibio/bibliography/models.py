@@ -31,6 +31,14 @@ class Publication(models.Model):
     def get_absolute_url(self):
         return r('bibliography:publication_detail', self.pk)
 
+    def update(self, **kwargs):
+            for name, values in kwargs.items():
+                try:
+                    setattr(self, name, values)
+                except KeyError:
+                    pass
+            return self
+
 
 class SpeciesList(models.Model):
     scientific_name = models.CharField('Nombre científico', max_length=50)

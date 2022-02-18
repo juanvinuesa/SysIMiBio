@@ -52,6 +52,29 @@ class PublicationDetailClass(LoginRequiredMixin, DetailView):
 PublicationDetail = PublicationDetailClass.as_view()
 
 
+def get_paper_data_from_doi(paper_data_result, subject):
+    sub = paper_data_result.get("subject", subject)  # TODO
+    paper_data = {
+        'publication_year': paper_data_result.get('created').get('date-parts')[0][0],
+        'title': paper_data_result.get('title')[0],
+        'author': f"\
+{paper_data_result.get('author')[0].get('given')},\
+{paper_data_result.get('author')[0].get('family')}",
+        'subject': ', '.join([str(elem) for elem in sub]),
+        'URL': paper_data_result.get('URL')
+    }
+    return paper_data
+
+
+def get_book_data_from_isbn(book_data_result):
+    book_data = {
+        'publication_year': book_data_result.get('Year'),
+        'title': book_data_result.get('Title'),
+        'author': book_data_result.get('Authors')[0]
+    }
+    return book_data
+
+
 class PublicationCreateClass(LoginRequiredMixin, CreateView):
     model = Publication
     form_class = PublicationForm
@@ -62,18 +85,14 @@ class PublicationCreateClass(LoginRequiredMixin, CreateView):
         works = Works()
         if self.publication.DOI != "" and works.doi_exists(self.publication.DOI):
             paper_data_result = works.doi(self.publication.DOI)
-            self.publication.publication_year = str(paper_data_result.get('created').get('date-parts')[0][0])
-            self.publication.title = paper_data_result.get('title')[0]
-            self.publication.author = f"{paper_data_result.get('author')[0].get('given')},{paper_data_result.get('author')[0].get('family')}"
-            sub = paper_data_result.get("subject", [self.publication.subject])
-            self.publication.subject = ', '.join([str(elem) for elem in sub])
-            self.publication.URL = paper_data_result.get('URL')
+            subject = [self.publication.subject]
+            paper_data_result = get_paper_data_from_doi(paper_data_result, subject)
+            self.publication.update(**paper_data_result)
 
         elif self.publication.ISBN != "" and is_isbn13(self.publication.ISBN):
             book_data_result = meta(self.publication.ISBN)
-            self.publication.publication_year = book_data_result.get('Year')
-            self.publication.title = book_data_result.get('Title')
-            self.publication.author = book_data_result.get('Authors')[0]
+            book_data_result = get_book_data_from_isbn(book_data_result)
+            self.publication.update(**book_data_result)
 
         elif self.publication.crossref and (self.publication.DOI or self.publication.ISBN):
             messages.error(self.request, 'DOI/ISBN no encontrado. Cargar datos y desmarcar el campo "tiene DOI/ISBN"')
@@ -292,39 +311,39 @@ class AllPublicationOccurrenceListGeoJsonClass(LoginRequiredMixin, GeoJSONLayerV
 AllPublicationOccurrenceListGeoJsonView = AllPublicationOccurrenceListGeoJsonClass.as_view()
 
 
-class map_all_publication_occurrences(LoginRequiredMixin, ListView):
+class MapAllPublicationOccurrences(LoginRequiredMixin, ListView):
     model = Publication
     template_name = 'bibliography/occurrencelist_map.html'
 
 
-AllPublicationOccurrencesMap = map_all_publication_occurrences.as_view()
+AllPublicationOccurrencesMap = MapAllPublicationOccurrences.as_view()
 
 
-class list_all_publication_occurrenceslist(LoginRequiredMixin, FilterView):
+class ListAllPublicationOccurrences(LoginRequiredMixin, FilterView):
     paginate_by = 15
     template_name = 'bibliography/occurrencelist_list.html'
     filterset_class = OccurrenceListFilters
     ordering = ['-publication__created_at']
 
 
-ListAllPublicationOccurrences = list_all_publication_occurrenceslist.as_view()
+ListAllPublicationOccurrences = ListAllPublicationOccurrences.as_view()
 
 
-class list_all_publication_specieslist(LoginRequiredMixin, FilterView):
+class ListAllPublicationSpecies(LoginRequiredMixin, FilterView):
     paginate_by = 15
     ordering = ['-publication__created_at']
     template_name = 'bibliography/specieslist_list.html'
     filterset_class = SpeciesListFilters
 
 
-ListAllPublicationSpecies = list_all_publication_specieslist.as_view()
+ListAllPublicationSpecies = ListAllPublicationSpecies.as_view()
 
 
-class list_publications_occurrencespecies(LoginRequiredMixin, FilterView):
+class ListPublicationsOccurrencesSpecies(LoginRequiredMixin, FilterView):
     paginate_by = 15
     ordering = ['-species_name']
     template_name = 'bibliography/occurrencespecieslist_list.html'
     filterset_class = OccurrenceSpeciesListFilters
 
 
-ListAllPublicationOccurrencesSpecies = list_publications_occurrencespecies.as_view()
+ListAllPublicationOccurrencesSpecies = ListPublicationsOccurrencesSpecies.as_view()
