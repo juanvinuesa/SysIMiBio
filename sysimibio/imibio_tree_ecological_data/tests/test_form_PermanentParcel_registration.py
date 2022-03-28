@@ -15,8 +15,8 @@ class PermanenParcelFormTest(TestCase):
             name="YryaPu",
             coordinator=self.coordinator1,
             province='Misiones', municipality='Capital',
-            locality='600Ha', cadastral_parcel = 1668002000000000012,
-            plot_type='Publico', obs='Parcela de prueba', latitude=-26,
+            locality='600Ha', cadastral_parcel='1668002000000000012',
+            plot_type='Fiscal', obs='Parcela de prueba', latitude=-26,
             longitude=-54,
             geom=Polygon([[(-54.6, -27.0), (-54.0, -27.07), (-54.07, -26.62), (-54.6, -27.0)]]))
         valid_form.update(**kwargs)

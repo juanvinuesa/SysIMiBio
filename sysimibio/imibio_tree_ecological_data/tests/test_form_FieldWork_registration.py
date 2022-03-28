@@ -16,7 +16,7 @@ class FieldRegistrationFormTest(TestCase):
                                                       province='Misiones',
                                                       municipality='Puerto Iguazu',
                                                       cadastral_parcel=1668002000000000012,
-                                                      plot_type='Publico',
+                                                      plot_type='Fiscal',
                                                       locality='600 ha', obs='Observacion', latitude=-26, longitude=-56,
                                                       geom='')
         self.staff1 = User.objects.create_user('Felipe', 'feli@imibio.com', 'felipassword')
@@ -63,7 +63,7 @@ class FieldRegistrationFormTest(TestCase):
         self.assertFormCode(form, 'date', 'Date in the future')
 
     def test_field_temp_not_bigger_45(self):
-        form = self.make_FieldForm_validated(temperature='46')
+        form = self.make_FieldForm_validated(temperature='56')
         self.assertFormCode(form, 'temperature', 'Temperature out of the range')
 
     def test_field_temp_not_lower_minus5(self):

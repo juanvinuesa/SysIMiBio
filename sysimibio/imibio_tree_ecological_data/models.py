@@ -16,8 +16,14 @@ class PermanentParcel(models.Model):  # todo change to Permanent Plot?
     municipality = models.CharField(verbose_name='Municipio',
                                     max_length=50)  # TODO add 75 municipio como choices o como geojson FK
     locality = models.CharField(verbose_name='lugar', max_length=50)
-    cadastral_parcel = models.BigIntegerField(verbose_name='Nomenclatura catastral', help_text='Verificar en <a href="http://ide.ordenamientoterritorial.misiones.gob.ar/index.php?option=com_content&view=article&id=8&Itemid=3"> GeoMisiones (IDE Misiones)</a>, capa "Parcelario Misiones', default=0000000000000000000)
-    plot_type = models.CharField(verbose_name='Tipo de parcela', choices=(('Publico', 'Publico'), ('Privado', 'Privado')), max_length=10, default='Publico')
+    cadastral_parcel = models.CharField(verbose_name='Nomenclatura catastral',
+                                        help_text='<strong>Referente a la parcela catastral de donde la parcela de investigación está ubicada.</strong>\
+    Verificar en <a href="http://ide.ordenamientoterritorial.misiones.gob.ar/index.php?option=com_content&view=article&id=8&Itemid=3"> GeoMisiones (IDE Misiones)</a>, capa "Parcelario Misiones',
+                                        max_length=50,
+                                        default='0000000000000000000')
+    plot_type = models.CharField(verbose_name='Tipo de parcela',
+                                 choices=(('Fiscal', 'Fiscal'), ('Privado', 'Privado')),
+                                 max_length=10, default='Fiscal')
     obs = models.TextField(verbose_name='Obervaciones', blank=True)
     latitude = models.FloatField(verbose_name='Latitud',
                                  validators=[validate_lat], blank=True,
@@ -160,7 +166,8 @@ class TreeMeasurement(models.Model):
     tree_height = models.FloatField(verbose_name='Altura del árbol', help_text='m',
                                     validators=[tree_height_validation])
     picture = models.ForeignKey(Pictures, on_delete=models.CASCADE, blank=True, null=True)
-    phytosanitary_status = models.CharField(max_length=100,
+    phytosanitary_status = models.CharField(verbose_name='Estado fitosanitario',
+                                            max_length=100,
                                             choices=PHYTOSANITARY_STATUS_CHOICES,
                                             default=BUENO)
     sociological_classification = models.CharField(verbose_name='Clasificación sociologica',
