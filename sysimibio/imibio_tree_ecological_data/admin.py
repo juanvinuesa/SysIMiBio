@@ -1,6 +1,7 @@
 from django.contrib import admin
 from leaflet.admin import LeafletGeoAdmin
-
+from django.forms import CheckboxSelectMultiple
+from django.db import models
 from sysimibio.imibio_tree_ecological_data.forms import FieldForm, PicturesForm, TreeForm, PermanentParcelForm, \
     TreeMeasurementForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, Pictures, PermanentParcel, TreeMeasurement
@@ -41,17 +42,19 @@ class TreeModelAdmin(admin.ModelAdmin):
 
 class FieldWorkModelAdmin(admin.ModelAdmin):
     form = FieldForm
-    inlines = [TreeInline, TreeMeasurementsInline]
+    inlines = [TreeInline]
     list_display = ('date', 'coordinator', 'start_time', 'end_time', 'parcel_id', 'created_at', 'last_modification_at')
     date_hierarchy = 'date'
     search_fields = ('date', 'coordinator', 'parcel_id')
     list_filter = ('date', 'coordinator', 'parcel_id')
-
+    formfield_overrides = {
+        models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+    }
 
 class TreeMeasurementAdmin(admin.ModelAdmin):
     model = TreeMeasurement
     form = TreeMeasurementForm
-    list_display = ('field', 'tree')
+    list_display = ('tree',)
     # inlines = [TreeInline]
 
 

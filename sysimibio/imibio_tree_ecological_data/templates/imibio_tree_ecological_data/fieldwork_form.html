@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
+<!-- todo configurar crispy para organizar los campos -->
 {% block content %}
 
 <div class="jumbotron">
@@ -27,9 +27,9 @@
             <form method="POST" action="." class="post-form">
                 {% csrf_token %}
 
-                {{ form|crispy }}
+                {% crispy form %}
 
-                <button type="submit" class="btn btn-success">Guardar</button>
+
 
             </form>
         </div>

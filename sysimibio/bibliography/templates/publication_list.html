@@ -3,7 +3,16 @@
 <!--comentarios-->
  {% block content %}
 
+<br>
+<div class="row">
+    <div class="col-sm">
+        <form method="get">
+            {{ filter.form }}
+            <button type="submit" class="btn btn-primary" > Filtrar </button>
+        </form>
+    </div>
 
+<br>
     <table class = 'table table-striped'>
                 <thead>
                 <tr>

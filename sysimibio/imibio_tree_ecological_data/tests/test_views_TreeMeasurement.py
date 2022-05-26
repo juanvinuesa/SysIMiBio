@@ -83,14 +83,14 @@ class TreeMeasurementCreateView(TestCase):
 
     def test_valid_post(self):
         valid_data = {
-            'field': self.tree1.field.pk,
             'tree': self.tree1.pk,
             'dap': 30,
             'dab': 50,
             'tree_height': 3,
             'picture': self.tempPicture,
-            'phytosanitary_status': 'Bueno',
-            'sociological_classification': 'Emergente',
+            'phytosanitary_status': 1,
+            'sociological_classification': 1,
+            'liana_cover': 1,
             'obs': 'Observación'
         }
         post_response = self.client.post(r('imibio_tree_ecological_data:tree_measurement_create'), valid_data)
@@ -99,7 +99,6 @@ class TreeMeasurementCreateView(TestCase):
 
     def test_invalid_post(self):
         invalid_data = {
-            'field': self.field.pk,
             'tree': self.tree1.pk,
             'dap': -30,
             'dab': -50,
@@ -156,14 +155,14 @@ class TreeEditView(TestCase):
             obs='observación',
             geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
         self.measurement1 = TreeMeasurement.objects.create(
-            field=self.tree1.field,
             tree=self.tree1,
             dap=30,
             dab=50,
             tree_height=3,
             # picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente',
+            phytosanitary_status=2,
+            sociological_classification=2,
+            liana_cover=1,
             obs='Observación')
 
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_edit', self.measurement1.pk))
@@ -176,22 +175,22 @@ class TreeEditView(TestCase):
         """must use imibio_tree_ecological_data/treemeasurement_form.html"""
         self.assertTemplateUsed(self.resp, 'imibio_tree_ecological_data/treemeasurement_form.html')
 
-    #     #     def test_html(self):
-    #     #         """HTML must contais input tags"""
-    #     #         tags = (  # todo confirmar las tags a seren testadas
-    #     #             ('<form'),
-    #     #             ('<input'),
-    #     #             ('type="text"'),
-    #     #             ('type="submit"')
-    #     #         )
-    #     #         # for text in tags:
-    #     #         #     with self.subTest():
-    #     #         #         self.assertContains(self.resp, text)
-    #     #
-    #     #     def test_csrf(self):
-    #     #         """html must contains CSRF"""
-    #     #         self.assertContains(self.resp, 'csrfmiddlewaretoken')
-
+#     #     #     def test_html(self):
+#     #     #         """HTML must contais input tags"""
+#     #     #         tags = (  # todo confirmar las tags a seren testadas
+#     #     #             ('<form'),
+#     #     #             ('<input'),
+#     #     #             ('type="text"'),
+#     #     #             ('type="submit"')
+#     #     #         )
+#     #     #         # for text in tags:
+#     #     #         #     with self.subTest():
+#     #     #         #         self.assertContains(self.resp, text)
+#     #     #
+#     #     #     def test_csrf(self):
+#     #     #         """html must contains CSRF"""
+#     #     #         self.assertContains(self.resp, 'csrfmiddlewaretoken')
+#
     def test_has_form(self):
         """"Context must have tree measurement create form"""
         form = self.resp.context['form']
@@ -199,14 +198,14 @@ class TreeEditView(TestCase):
 
     def test_update(self):  # todo fix problem with image upload
         valid_update = {
-            'field': self.field.pk,
             'tree': self.tree1.pk,
             'dap': 60,
             'dab': 80,
             'tree_height': 6,
-            # 'picture': self.tempPicture,
-            'phytosanitary_status': 'Bueno',
-            'sociological_classification': 'Emergente',
+            'picture': self.tempPicture,
+            'phytosanitary_status': 1,
+            'sociological_classification': 1,
+            'liana_cover':1,
             'obs': 'Observación Update'
         }
 
@@ -282,36 +281,36 @@ class TreeListView(TestCase):
             geom='{"coordinates": [[-55.5, -26.5]]], "type": "Point"}')
 
         self.measurement1 = TreeMeasurement.objects.create(
-            field=self.tree1.field,
             tree=self.tree1,
             dap=30,
             dab=50,
             tree_height=3,
             # picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente',
+            phytosanitary_status=1,
+            sociological_classification=1,
+            liana_cover=1,
             obs='Observación1')
 
         self.measurement2 = TreeMeasurement.objects.create(
-            field=self.tree2.field,
             tree=self.tree2,
             dap=60,
             dab=100,
             tree_height=6,
             # picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente',
+            phytosanitary_status=2,
+            sociological_classification=2,
+            liana_cover=2,
             obs='Observación2')
 
         self.measurement3 = TreeMeasurement.objects.create(
-            field=self.tree3.field,
             tree=self.tree3,
             dap=30,
             dab=80,
             tree_height=4,
             # picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente',
+            phytosanitary_status=3,
+            sociological_classification=3,
+            liana_cover=3,
             obs='Observación3')
 
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_list'))
@@ -375,14 +374,13 @@ class TreeDetailView(TestCase):
             geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
 
         self.measurement1 = TreeMeasurement.objects.create(
-            field=self.tree1.field,
             tree=self.tree1,
             dap=30,
             dab=50,
             tree_height=3,
             picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente',
+            phytosanitary_status=1,
+            sociological_classification=1,
             obs='Observación')
 
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_measurement_detail', self.measurement1.pk))

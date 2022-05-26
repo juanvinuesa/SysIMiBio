@@ -70,4 +70,4 @@ class TreeModelPropertiesTest(TestCase):
 
     def test_tree_id(self):
         self.assertEqual(self.tree.tree_id,
-                         "NTA11")
+                         "NTA101")

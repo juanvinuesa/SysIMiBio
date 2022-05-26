@@ -51,12 +51,12 @@
 
             <tr>
                 <th class="text-right">Campo de registro</th>
-                <td>{{ object.field }}</td>
+                <td>{{ object.tree.field }}</td>
             </tr>
 
             <tr>
                 <th class="text-right">Parcela Permanente</th>
-                <td>{{ object.field.parcel_id }}</td>
+                <td>{{ object.tree.field.parcel_id }}</td>
             </tr>
 
             <tr>
@@ -120,7 +120,7 @@
     </div>
 </div>
 <script>
-    var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.field.parcel_id.pk %}';
+    var dataurl = '{% url "imibio_tree_ecological_data:plot_detail_geojson" pk=object.tree.field.parcel_id.pk %}';
       window.addEventListener("map:init", function (event) {
         var map = event.detail.map;
         // Download GeoJSON data with Ajax
