@@ -22,7 +22,8 @@
             <th>Parcela</th>
             <th>Fecha</th>
             <th>Inicio</th>
-            <th>Coordenador</th>
+            <th>Fin</th>
+            <th>Coordinador</th>
             <th>Apoyo</th>
 
         </tr>
@@ -35,6 +36,7 @@
             </td>
             <td>{{ object.date }}</td>
             <td>{{ object.start_time }}</td>
+            <td>{{ object.end_time }}</td>
             <td>{{ object.coordinator }}</td>
             <td>{{ object.staff.all|join:", " }}</td>
         </tr>

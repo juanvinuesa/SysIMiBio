@@ -43,3 +43,14 @@ def tree_dap_validation(tree_dap):
     if tree_dap <= 10:
         raise ValidationError('DAP del árbol debe ser mayor a 10 cm',
                               'Tree DAP too small')
+
+
+def validate_dist_x(dist_x_value):
+    if 0 > dist_x_value or dist_x_value > 10:
+        raise ValidationError("La distancia no puede ser menos que cero ni mayor que diez")
+
+
+def validate_dist_y(dist_y_value):
+    if 0 > dist_y_value or dist_y_value > 10:
+        raise ValidationError("La distancia no puede ser menos que cero ni mayor que diez")
+

@@ -74,8 +74,10 @@ class TreeCreateView(TestCase):
             'subplot': 'A1',
             'tree_number': 1,
             'specie': "spp1",
-            'latitude': -26,
-            'longitude': -54.5
+            'latitude': 5,
+            'longitude': 9,
+            "has_herbarium": True,
+            "herbarium_info": "",
         }
         post_response = self.client.post(r('imibio_tree_ecological_data:tree_create'), data)
         self.assertTrue(Tree.objects.exists())
@@ -132,10 +134,13 @@ class TreeEditView(TestCase):
             subplot='A1',
             tree_number=1,
             specie='species one',
-            latitude=-26,
-            longitude=-54.5,
+            latitude=5,
+            longitude=9,
             obs='observación',
-            geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}')
+            geom='{"coordinates": [[-54.5, -26.0]]], "type": "Point"}',
+            has_herbarium=True,
+            herbarium_info="",
+        )  # todo buscar una forma de generar la latitud a partir de la distancia
         self.resp = self.client.get(r('imibio_tree_ecological_data:tree_edit', self.tree1.pk))
 
     def test_get(self):
@@ -169,13 +174,15 @@ class TreeEditView(TestCase):
 
     def test_update(self):
         update = {
-            'field': self.field.pk,
+            'field': self.tree1.field.pk,
             'subplot': 'A3',
             'tree_number': 2,
             'specie': 'species update',
-            'latitude': -26,
-            'longitude': -56,
-            'obs': 'observación update'
+            'latitude': 6,
+            'longitude': 6,
+            'obs': 'observación update',
+            "has_herbarium": False,
+            "herbarium_info": "teste",
         }
 
         post_response = self.client.post(r('imibio_tree_ecological_data:tree_edit', self.tree1.pk), update)

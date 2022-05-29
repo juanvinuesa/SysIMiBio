@@ -16,7 +16,7 @@ class TreeMeasurementFormTest(TestCase):
 
         self.tempPicture = Pictures.objects.create(picture=SimpleUploadedFile('tiny.gif', TINY_GIF))
 
-        self.pemanent_plot1 = PermanentParcel.objects.create(
+        self.permanent_plot1 = PermanentParcel.objects.create(
             name="Reserva Yriapu",
             coordinator=self.coordinator1,
             province='Misiones',
@@ -36,7 +36,7 @@ class TreeMeasurementFormTest(TestCase):
             temperature=35.9,
             humidity=80,
             coordinator=self.coordinator1,
-            parcel_id=self.pemanent_plot1)
+            parcel_id=self.permanent_plot1)
 
         self.tree = Tree.objects.create(
             field=self.field1,
@@ -55,8 +55,9 @@ class TreeMeasurementFormTest(TestCase):
             tree=self.tree,
             dap=11, dab=20, tree_height=10,
             picture=self.tempPicture,
-            phytosanitary_status='Bueno',
-            sociological_classification='Emergente'
+            phytosanitary_status=1,
+            sociological_classification=4,
+            liana_cover=1
         )
         valid_form.update(**kwargs)
         form = TreeMeasurementForm(valid_form)
@@ -65,8 +66,8 @@ class TreeMeasurementFormTest(TestCase):
     def test_tree_measurement_has_fields(self):
         """Tree Measurement form must have models fields"""
         self.assertSequenceEqual(
-            ['field', 'tree', 'dap', 'dab', 'tree_height',
-             'phytosanitary_status', 'sociological_classification', 'obs'],
+            ['tree', 'dap', 'dab', 'tree_height',
+             'phytosanitary_status', 'sociological_classification', 'liana_cover', 'obs'],
             list(self.tree_measurement_form.fields))
 
     def test_form_is_valid(self):

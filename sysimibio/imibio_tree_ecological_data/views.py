@@ -1,7 +1,14 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
-from djgeojson.views import GeoJSONLayerView
+import json
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
+from django.shortcuts import redirect, render, get_object_or_404
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django_filters.views import FilterView
+from djgeojson.views import GeoJSONLayerView
+from django.shortcuts import render, resolve_url as r
+
+from sysimibio.imibio_tree_ecological_data.filters import TreeMeasurementFilters
 from sysimibio.imibio_tree_ecological_data.forms import TreeForm, FieldForm, PermanentParcelForm, TreeMeasurementForm
 from sysimibio.imibio_tree_ecological_data.models import FieldWork, Tree, PermanentParcel, TreeMeasurement
 
@@ -10,13 +17,44 @@ class PlotCreateView(LoginRequiredMixin, CreateView):
     model = PermanentParcel
     form_class = PermanentParcelForm
 
+    def post(self, request, *args, **kwargs):
+        form = PermanentParcelForm(request.POST)
+        if form.is_valid():
+            self.object = form.save(commit=False)
+            choices = form.cleaned_data.get('plot_choices')
+            choices = json.dumps(choices)
+            self.object.plot_type = choices
+            self.object.save()
+            return redirect('imibio_tree_ecological_data:plot_detail', self.object.pk)
+        else:
+            return render(self.request, 'imibio_tree_ecological_data/permanentparcel_form.html', {'form': form})
+
+
 
 PlotCreateView = PlotCreateView.as_view()
 
 
-class PlotEditView(LoginRequiredMixin, UpdateView):
+class PlotEditView(LoginRequiredMixin, UpdateView): #todo revisar edit view / esta creando objectos
     model = PermanentParcel
     form_class = PermanentParcelForm
+
+    # def get_success_url(self):
+    #     objectid = self.kwargs['pk']
+    #     return r('imibio_tree_ecological_data:plot_detail', objectid) #No se precisa
+
+    def post(self, request, *args, **kwargs):
+        pk = self.kwargs['pk']
+        parcel = get_object_or_404(PermanentParcel, pk=pk)
+        form = PermanentParcelForm(request.POST, instance=parcel)
+        if form.is_valid():
+            form.save(commit=False)
+            choices = form.cleaned_data.get('plot_choices')
+            choices = json.dumps(choices)
+            parcel.plot_type = choices
+            form.save()
+            return redirect('imibio_tree_ecological_data:plot_detail', pk)
+        else:
+            return render(self.request, 'imibio_tree_ecological_data/permanentparcel_form.html', {'form': form})
 
 
 PlotEditView = PlotEditView.as_view()
@@ -35,9 +73,10 @@ class PlotDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['field_list'] = FieldWork.objects.filter(parcel_id=self.kwargs['pk'])
-        context['measurement_list'] = TreeMeasurement.objects.filter(field__parcel_id=self.kwargs['pk'])
+        context['measurement_list'] = TreeMeasurement.objects.filter(tree__field__parcel_id=self.kwargs['pk'])
         context['tree_list'] = Tree.objects.filter(field__parcel_id=self.kwargs['pk'])
         return context
+
 
 PlotDetailView = PlotDetailView.as_view()
 
@@ -94,7 +133,7 @@ class FieldWorkDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['measurement_list'] = TreeMeasurement.objects.filter(field__pk=self.kwargs['pk'])
+        context['measurement_list'] = TreeMeasurement.objects.filter(tree__field__pk=self.kwargs['pk'])
         context['tree_list'] = Tree.objects.filter(field__pk=self.kwargs['pk'])
         return context
 
@@ -177,9 +216,13 @@ class TreeMeasurementEditView(LoginRequiredMixin, UpdateView):
 TreeMeasurementEditView = TreeMeasurementEditView.as_view()
 
 
-class TreeMeasurementListView(LoginRequiredMixin, ListView):
+class TreeMeasurementListView(LoginRequiredMixin, FilterView):
     model = TreeMeasurement
-    ordering = ['-created_at']
+    queryset = TreeMeasurement.objects.all().order_by('-created_at')
+    filterset_class = TreeMeasurementFilters
+    template_name = 'imibio_tree_ecological_data/treemeasurement_list.html'
+
+
 
 
 TreeMeasurementListView = TreeMeasurementListView.as_view()

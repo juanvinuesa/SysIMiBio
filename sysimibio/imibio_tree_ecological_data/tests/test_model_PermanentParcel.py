@@ -43,3 +43,8 @@ class PermanentParcelModelTest(TestCase):
 
     def test_geom_point_is_valid(self):
         self.assertTrue(self.pp1.geom_point.is_valid)
+
+    def test_entry_saved_data(self):
+        self.assertEqual(self.pp1.plot_type, 'Publico')
+
+  #TODO FALTA TESTAR PROPIEDADES EN MODELS
